@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "521803306947",
+    "project_id": "ifixit-fac6e",
+    "storage_bucket": "ifixit-fac6e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521803306947:android:2ba75dc8c14066df898f76",
+        "android_client_info": {
+          "package_name": "com.example.ifixit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521803306947-gjrqfgvn5k3q9qut2tq24pmvn94577pv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ifixit",
+            "certificate_hash": "8e29b3752fe537f41d14849c058d39bc95dc0859"
+          }
+        },
+        {
+          "client_id": "521803306947-7b7dpbs137tm4ah8u1d6207cakqrq2vt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhrjdsmW7jlr4YVzY-wtdeJp3RRvsSpWk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "521803306947-7b7dpbs137tm4ah8u1d6207cakqrq2vt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
