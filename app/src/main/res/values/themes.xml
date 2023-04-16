@@ -13,4 +13,13 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="SplashScreen." parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor" >?attr/colorOnPrimary</item>
+    </style>
+    <style name="Theme.Ifixit.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.Ifixit.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.Ifixit.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

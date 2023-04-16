@@ -15,7 +15,7 @@
     </style>
 
     <!---SplashScreen-->
-    <style name="SplashScreen" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="SplashScreen." parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:statusBarColor" >?attr/colorOnPrimary</item>
     </style>
 
