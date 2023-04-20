@@ -19,14 +19,17 @@ import com.example.ifixit.R;
 import com.example.ifixit.databinding.ActivityCustomerMapsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
 
-public class CustomerMapsActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
+public class CustomerMapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+
+    //, NavigationView.OnNavigationItemSelectedListener
     //Variables
     private DrawerLayout drawer;
     private GoogleMap mMap;
@@ -43,17 +46,17 @@ public class CustomerMapsActivity extends AppCompatActivity implements OnMapRead
                 .findFragmentById(id.map);
         mapFragment.getMapAsync(this);
 
-
-        Toolbar toolbar = findViewById(id.toolbar);
-        setSupportActionBar(toolbar);
-
-        drawer = findViewById(id.drawer_layout);
-        NavigationView navigationView = findViewById(id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer,toolbar, string.navigation_drawer_open , string.navigation_drawer_close );
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+//
+//        Toolbar toolbar = findViewById(id.toolbar);
+//        setSupportActionBar(toolbar);
+//
+//        drawer = findViewById(id.drawer_layout);
+//        NavigationView navigationView = findViewById(id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(this);
+//
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer,toolbar, string.navigation_drawer_open , string.navigation_drawer_close );
+//        drawer.addDrawerListener(toggle);
+//        toggle.syncState();
 
 //        if(savedInstanceState==null){
 //            getSupportFragmentManager().beginTransaction().replace(id.fragment_container,new MessageFragment()).commit();
@@ -62,42 +65,42 @@ public class CustomerMapsActivity extends AppCompatActivity implements OnMapRead
 
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case id.nav_profile:
-                getSupportFragmentManager().beginTransaction().replace(id.fragment_container,new ProfileFragment()).commit();
-                break;
-            case id.nav_map:
-                Intent intent = new Intent(CustomerMapsActivity.this,CustomerMapsActivity.class);
-                startActivity(intent);
-                break;
-            case id.nav_message:
-                getSupportFragmentManager().beginTransaction().replace(id.fragment_container,new MessageFragment()).commit();
-                break;
-            case id.nav_notification:
-                getSupportFragmentManager().beginTransaction().replace(id.fragment_container,new NotificationFragment()).commit();
-                break;
-            case id.nav_share:
-                Toast.makeText(this, "Shared", Toast.LENGTH_SHORT).show();
-                break;
-
-        }
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        if(drawer.isDrawerOpen(GravityCompat.START)){
-            drawer.closeDrawer(GravityCompat.START);
-        }else{
-            super.onBackPressed();
-        }
-
-
-    }
+//    @Override
+//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//        switch (item.getItemId()){
+//            case id.nav_profile:
+//                getSupportFragmentManager().beginTransaction().replace(id.fragment_container,new ProfileFragment()).commit();
+//                break;
+//            case id.nav_map:
+//                Intent intent = new Intent(CustomerMapsActivity.this,CustomerMapsActivity.class);
+//                startActivity(intent);
+//                break;
+//            case id.nav_message:
+//                getSupportFragmentManager().beginTransaction().replace(id.fragment_container,new MessageFragment()).commit();
+//                break;
+//            case id.nav_notification:
+//                getSupportFragmentManager().beginTransaction().replace(id.fragment_container,new NotificationFragment()).commit();
+//                break;
+//            case id.nav_share:
+//                Toast.makeText(this, "Shared", Toast.LENGTH_SHORT).show();
+//                break;
+//
+//        }
+//        drawer.closeDrawer(GravityCompat.START);
+//        return true;
+//    }
+//
+//
+//    @Override
+//    public void onBackPressed() {
+//        if(drawer.isDrawerOpen(GravityCompat.START)){
+//            drawer.closeDrawer(GravityCompat.START);
+//        }else{
+//            super.onBackPressed();
+//        }
+//
+//
+//    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
