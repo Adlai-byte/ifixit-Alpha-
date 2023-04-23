@@ -17,44 +17,57 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class CustomerLoginActivity extends AppCompatActivity {
+import java.util.HashMap;
+import java.util.Map;
 
-    //---Variables
+public class CustomerRegistrationActivity extends AppCompatActivity {
+
+    //Variables
 
     //------Firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
 
+
+
     //------EditTexts
+    private EditText etName;
+    private EditText etAddress;
     private EditText etEmail;
     private EditText etPassword;
 
     //------Buttons
-    private Button btnLogin;
+    private Button btnRegister;
 
-    //------TextViews
-    private TextView tvNoAccout;
+    //------TextView
+    private TextView tvAlreadyHave;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer_login);
+        setContentView(R.layout.activity_customer_registration);
 
-        //-----Referencing
+        //---Layout Connecting
+        etName = (EditText) findViewById(R.id.etFullName);
+        etAddress =(EditText) findViewById(R.id.etAddress);
         etEmail = (EditText) findViewById(R.id.etEmail);
-        etPassword = (EditText) findViewById(R.id.etPassword);
+        etPassword = (EditText)findViewById(R.id.etPassword);
 
-        btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnRegister = (Button) findViewById(R.id.btnRegister);
 
-        tvNoAccout = (TextView) findViewById(R.id.tvNoAccout);
+        tvAlreadyHave = (TextView) findViewById(R.id.tvAlreadyHaveAnAccount);
+
         mAuth = FirebaseAuth.getInstance();
         firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if(user!=null){
-                    Intent intent = new Intent(CustomerLoginActivity.this, CustomerMainMenuActivity.class);
+                    Intent intent = new Intent(CustomerRegistrationActivity.this, CustomerMapsActivity.class);
                     startActivity(intent);
                     finish();
                     return;
@@ -62,33 +75,45 @@ public class CustomerLoginActivity extends AppCompatActivity {
             }
         };
 
-        //-----On Click listeners
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        //---On Click Listeners
+        btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 final String email = etEmail.getText().toString();
                 final String password = etPassword.getText().toString();
+                final String name = etName.getText().toString();
+                final String address = etAddress.getText().toString();
 
-                mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(CustomerLoginActivity.this, new OnCompleteListener<AuthResult>() {
+                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(CustomerRegistrationActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful() ){
-                            Toast.makeText(CustomerLoginActivity.this, "Sign in error", Toast.LENGTH_SHORT).show();
+                        if(!task.isSuccessful()){
+                            Toast.makeText(CustomerRegistrationActivity.this, "Sign-up Error", Toast.LENGTH_SHORT).show();
+                        }else {
+                            String userID = mAuth.getCurrentUser().getUid();
+                            DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("USERS").child("CUSTOMERS").child(userID);
+                            current_user_db.setValue(true);
+
+                            Map userInfo = new HashMap();
+                            userInfo.put("NAME", name);
+                            userInfo.put("EMAIL", email);
+                            userInfo.put("ADDRESS", address);
+                            current_user_db.updateChildren(userInfo);
                         }
                     }
                 });
+
             }
         });
-
-        tvNoAccout.setOnClickListener(new View.OnClickListener() {
+        tvAlreadyHave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CustomerLoginActivity.this, CustomerRegistrationActivity.class);
+                Intent intent = new Intent(CustomerRegistrationActivity.this, CustomerLoginActivity.class);
                 startActivity(intent);
                 return;
             }
         });
-
     }
     @Override
     protected void onStart() {

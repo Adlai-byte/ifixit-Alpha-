@@ -1,16 +1,15 @@
-package com.example.ifixit.CUSTOMER_FILES;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.ifixit.SERVICE_PROVIDER_FILES;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ifixit.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,7 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CustomerRegistration extends AppCompatActivity {
+public class ServiceProviderRegistrationActivity extends AppCompatActivity {
 
     //Variables
 
@@ -50,7 +49,7 @@ public class CustomerRegistration extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer_registration);
+        setContentView(R.layout.activity_service_provider_registration);
 
         //---Layout Connecting
         etName = (EditText) findViewById(R.id.etFullName);
@@ -68,7 +67,7 @@ public class CustomerRegistration extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if(user!=null){
-                    Intent intent = new Intent(CustomerRegistration.this, CustomerMapsActivity.class);
+                    Intent intent = new Intent(ServiceProviderRegistrationActivity.this, ServiceProviderMainMenuActivity.class);
                     startActivity(intent);
                     finish();
                     return;
@@ -86,14 +85,14 @@ public class CustomerRegistration extends AppCompatActivity {
                 final String name = etName.getText().toString();
                 final String address = etAddress.getText().toString();
 
-                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(CustomerRegistration.this, new OnCompleteListener<AuthResult>() {
+                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(ServiceProviderRegistrationActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful()){
-                            Toast.makeText(CustomerRegistration.this, "Sign-up Error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ServiceProviderRegistrationActivity.this, "Sign-up Error", Toast.LENGTH_SHORT).show();
                         }else {
                             String userID = mAuth.getCurrentUser().getUid();
-                            DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("USERS").child("CUSTOMERS").child(userID);
+                            DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("USERS").child("SERVICE-PROVIDERS").child(userID);
                             current_user_db.setValue(true);
 
                             Map userInfo = new HashMap();
@@ -110,7 +109,7 @@ public class CustomerRegistration extends AppCompatActivity {
         tvAlreadyHave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CustomerRegistration.this, CustomerLoginActivity.class);
+                Intent intent = new Intent(ServiceProviderRegistrationActivity.this, ServiceProviderLoginActivity.class);
                 startActivity(intent);
                 return;
             }

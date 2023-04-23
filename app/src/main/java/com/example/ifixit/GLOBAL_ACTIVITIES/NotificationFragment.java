@@ -1,4 +1,4 @@
-package com.example.ifixit.CUSTOMER_FILES;
+package com.example.ifixit.GLOBAL_ACTIVITIES;
 
 
 import android.os.Bundle;

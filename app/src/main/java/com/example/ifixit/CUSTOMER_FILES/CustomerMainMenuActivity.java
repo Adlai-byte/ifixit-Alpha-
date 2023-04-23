@@ -1,23 +1,26 @@
 package com.example.ifixit.CUSTOMER_FILES;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.ifixit.GLOBAL_ACTIVITIES.DashboardFragment;
+import com.example.ifixit.GLOBAL_ACTIVITIES.MessageFragment;
+import com.example.ifixit.GLOBAL_ACTIVITIES.NotificationFragment;
+import com.example.ifixit.GLOBAL_ACTIVITIES.ProfileFragment;
 import com.example.ifixit.R;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
-public class MainMenuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class CustomerMainMenuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
     //Variables
@@ -39,8 +42,8 @@ public class MainMenuActivity extends AppCompatActivity implements NavigationVie
         toggle.syncState();
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MessageFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_message);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DashboardFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_dashboard);
         }
 
     }
@@ -48,6 +51,8 @@ public class MainMenuActivity extends AppCompatActivity implements NavigationVie
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+
+
             case R.id.nav_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
                 break;
@@ -55,7 +60,7 @@ public class MainMenuActivity extends AppCompatActivity implements NavigationVie
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DashboardFragment()).commit();
                 break;
             case R.id.nav_map:
-                Intent intent = new Intent(MainMenuActivity.this, CustomerMapsActivity.class);
+                Intent intent = new Intent(CustomerMainMenuActivity.this, CustomerMapsActivity.class);
                 startActivity(intent);
                 break;
             case R.id.nav_message:
@@ -66,6 +71,12 @@ public class MainMenuActivity extends AppCompatActivity implements NavigationVie
                 break;
             case R.id.nav_share:
                 Toast.makeText(this, "Shared", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_logout:
+                FirebaseAuth.getInstance().signOut();
+                Intent intent1 = new Intent(CustomerMainMenuActivity.this, CustomerLoginActivity.class);
+                startActivity(intent1);
+                finish();
                 break;
 
         }
@@ -83,4 +94,6 @@ public class MainMenuActivity extends AppCompatActivity implements NavigationVie
 
 
     }
+
+
 }
