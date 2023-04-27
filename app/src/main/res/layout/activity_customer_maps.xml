@@ -18,13 +18,13 @@
 
 
     <LinearLayout
-
+        android:id="@+id/serviceProviderInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:orientation="horizontal"
         android:background="@color/white"
-        >
+        android:orientation="horizontal"
+        android:visibility="gone">
 
 
         <ImageView
@@ -48,18 +48,18 @@
                 android:text="Service Provider Name" />
 
             <TextView
-                android:id="@+id/serviceProviderJob"
+                android:id="@+id/serviceProviderEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="10sp"
-                android:text="Plumber" />
+                android:text="" />
 
             <TextView
-                android:id="@+id/serviceProviderLocation"
+                android:id="@+id/serviceProviderAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="10sp"
-                android:text="Location: --" />
+                android:text="" />
         </LinearLayout>
 
     </LinearLayout>

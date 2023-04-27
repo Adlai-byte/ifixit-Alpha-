@@ -7,8 +7,10 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +28,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -50,6 +53,11 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
     private HashMap<String, Marker> mMarkers;
 
     private Button scanService;
+    private TextView serviceProviderName;
+    private TextView serviceProviderEmail;
+    private TextView serviceProviderAddress;
+    private LinearLayout serviceProviderLayout;
+
 
 
 
@@ -62,15 +70,22 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
         setContentView(R.layout.activity_customer_maps);
 
 
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
+        serviceProviderName = (TextView) findViewById(R.id.serviceProviderName);
+        serviceProviderAddress = (TextView) findViewById(R.id.serviceProviderAddress);
+        serviceProviderEmail = (TextView) findViewById(R.id.serviceProviderEmail);
+        serviceProviderLayout = (LinearLayout) findViewById(R.id.serviceProviderInfo);
 
-        pushDataToDatabase();
+
+
+
+//        pushDataToDatabase();
+
 
 
     }
@@ -96,11 +111,83 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
 
         Mmap.getUiSettings().setZoomControlsEnabled(true);
 
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         } else {
+
+
             getCurrentLocation();
-            showMarkersForServiceProviders(googleMap);
+
+
+            Query query = FirebaseDatabase.getInstance().getReference()
+                    .child("USERS")
+                    .child("SERVICE-PROVIDERS")
+                    .orderByChild("NAME");
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                        String userId = childSnapshot.getKey();
+                        String name = childSnapshot.child("NAME").getValue(String.class);
+                        String email = childSnapshot.child("EMAIL").getValue(String.class);
+                        String latStr = childSnapshot.child("LOCATION").child("lat").getValue(String.class);
+                        String lngStr = childSnapshot.child("LOCATION").child("lng").getValue(String.class);
+                        double lat = latStr != null ? Double.parseDouble(latStr.trim()) : 0.0;
+                        double lng = lngStr != null ? Double.parseDouble(lngStr.trim()) : 0.0;
+
+                        LatLng location = new LatLng(lat, lng);
+
+                        // Add a marker for each location
+                        mMarkers = new HashMap<>();
+                        Marker marker = mMarkers.get(name);
+                        if (marker != null) {
+                            marker.setPosition(location);
+                        } else {
+
+                            marker = Mmap.addMarker(new MarkerOptions()
+                                    .position(location)
+                                    .title(userId)
+                                    .snippet(email)
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                            mMarkers.put(name, marker);
+
+
+                            //Mao ni ang changes
+                            marker.setTag(userId);
+                            //Pa load sa ko piste
+                        }
+                    }
+
+
+                }
+
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                }
+            });
+
+
+            Mmap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(@NonNull Marker marker) {
+
+                    displayToTextView(marker.getTag().toString());
+                    return true;
+                }
+            });
+
+            Mmap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(@NonNull LatLng latLng) {
+                    serviceProviderName.setText("");
+                    serviceProviderAddress.setText("");
+                    serviceProviderEmail.setText("");
+                    serviceProviderLayout.setVisibility(View.GONE);
+                }
+            });
         }
 
 
@@ -120,13 +207,14 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                             latLng = new LatLng(location.getLatitude(), location.getLongitude());
                             Mmap.addMarker(new MarkerOptions().position(latLng).title("Current Location"));
                             Mmap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f));
+
+                            pushDataToDatabase();
                         }
                     });
         }
     }
 
 
-    private Marker mDriverMarker;
     private DatabaseReference customerRef;
     private ValueEventListener customerLocationRefListener;
 
@@ -138,8 +226,8 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 HashMap map = new HashMap();
                 //Adding fields
-                    map.put("lat", String.valueOf(latLng.latitude));
-                    map.put("lng", String.valueOf(latLng.longitude));
+                map.put("lat", String.valueOf(latLng.latitude));
+                map.put("lng", String.valueOf(latLng.longitude));
 
                 customerRef.updateChildren(map);
 
@@ -152,29 +240,6 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
         });
 
 
-    }
-    public void displayDriverLocations() {
-        String customerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        FirebaseDatabase.getInstance().getReference().child("USERS").child("SERVICE-PROVIDERS").child(customerId).child("LOCATION")
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            String driverId = snapshot.getKey();
-                            double lat = snapshot.child("lat").getValue(Double.class);
-                            double lng = snapshot.child("lng").getValue(Double.class);
-                            LatLng location = new LatLng(lat, lng);
-                            Marker marker = Mmap.addMarker(new MarkerOptions().position(location)
-                                    .title("Driver #" + driverId));
-                        }
-                    }
-
-
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(CustomerMapsActivity.this, "Failed to load drivers",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
     }
 
 
@@ -197,47 +262,34 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
-    public void showMarkersForServiceProviders(GoogleMap googleMap) {
-        Mmap = googleMap;
 
-        // Query the Firebase database to retrieve the locations of all the SERVICE-PROVIDERS
-        Query query = FirebaseDatabase.getInstance().getReference()
-                .child("USERS")
-                .child("SERVICE-PROVIDERS")
-                .orderByChild("NAME");
-        query.addValueEventListener(new ValueEventListener() {
+
+    public void displayToTextView(String providerId) {
+        DatabaseReference providerRef = FirebaseDatabase.getInstance().getReference().child("USERS").child("SERVICE-PROVIDERS").child(providerId);
+        providerRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    String name = childSnapshot.child("NAME").getValue(String.class);
-                    String email = childSnapshot.child("EMAIL").getValue(String.class);
-                    String latStr = childSnapshot.child("LOCATION").child("lat").getValue(String.class);
-                    String lngStr = childSnapshot.child("LOCATION").child("lng").getValue(String.class);
-                    double lat = latStr != null ? Double.parseDouble(latStr.trim()) : 0.0;
-                    double lng = lngStr != null ? Double.parseDouble(lngStr.trim()) : 0.0;
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String name = snapshot.child("NAME").getValue(String.class);
+                String email = snapshot.child("EMAIL").getValue(String.class);
+                String address = snapshot.child("ADDRESS").getValue(String.class);
 
-                    LatLng location = new LatLng(lat, lng);
 
-                    // Add a marker for each location
-                    mMarkers = new HashMap<>();
-                    Marker marker = mMarkers.get(name);
-                    if (marker != null) {
-                        marker.setPosition(location);
-                    } else {
-                        marker = Mmap.addMarker(new MarkerOptions()
-                                .position(location)
-                                .title(name)
-                                .snippet(email));
-                        mMarkers.put(name, marker);
-                    }
-                }
+                serviceProviderName.setText(name);
+                serviceProviderEmail.setText(email);
+                serviceProviderAddress.setText(address);
+
+                serviceProviderLayout.setVisibility(View.VISIBLE);
+
+                // display the data in TextViews
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
+
+
 
 }

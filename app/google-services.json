@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "521803306947",
+    "firebase_url": "https://ifixit-fac6e-default-rtdb.firebaseio.com",
     "project_id": "ifixit-fac6e",
     "storage_bucket": "ifixit-fac6e.appspot.com"
   },
