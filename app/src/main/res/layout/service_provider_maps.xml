@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CUSTOMER_FILES.CustomerMapsActivity">
+    tools:context=".SERVICE_PROVIDER_FILES.ServiceProviderMapsActivity">
 
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,12 +13,12 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".CUSTOMER_FILES.CustomerMapsActivity"
-        tools:layout="@layout/activity_customer_maps" />
+        tools:context=".SERVICE_PROVIDER_FILES.ServiceProviderMapsActivity"
+        tools:layout="@layout/service_provider_maps" />
 
 
     <LinearLayout
-        android:id="@+id/serviceProviderInfo"
+        android:id="@+id/customerInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -28,7 +28,7 @@
 
 
         <ImageView
-            android:id="@+id/serviceProviderProfileImage"
+            android:id="@+id/customerProfileImage"
             android:layout_width="100sp"
             android:layout_height="100sp"
             android:padding="20sp" />
@@ -41,21 +41,21 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/serviceProviderName"
+                android:id="@+id/customerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="10sp"
                 android:text="Service Provider Name" />
 
             <TextView
-                android:id="@+id/serviceProviderEmail"
+                android:id="@+id/customerEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="10sp"
                 android:text="" />
 
             <TextView
-                android:id="@+id/serviceProviderAddress"
+                android:id="@+id/customerAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="10sp"

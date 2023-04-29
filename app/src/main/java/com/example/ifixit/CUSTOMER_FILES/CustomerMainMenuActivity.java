@@ -1,6 +1,8 @@
 package com.example.ifixit.CUSTOMER_FILES;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,10 +19,10 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
-import com.example.ifixit.GLOBAL_ACTIVITIES.DashboardFragment;
-import com.example.ifixit.GLOBAL_ACTIVITIES.MessageFragment;
-import com.example.ifixit.GLOBAL_ACTIVITIES.NotificationFragment;
-import com.example.ifixit.GLOBAL_ACTIVITIES.ProfileFragment;
+import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerDashboardFragment;
+import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerMessageFragment;
+import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerNotificationFragment;
+import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerProfileFragment;
 import com.example.ifixit.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,17 +38,12 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
 
 
     //Variables
+    private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
     private DrawerLayout drawer;
-
     private TextView headerUserName;
     private TextView headerEmail;
-
     private View headerInfo;
-
-
-
-
-
+    private Uri resultUri;
     private FirebaseAuth mAuth;
     private DatabaseReference mCustomerDatabase;
     private String userID;
@@ -53,59 +51,38 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
     private String mEmail;
     private String mProfileImageUrl;
     private ImageView customerImage;
+
     //Profile Fragment
     //Variables
-
-
-
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menu);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+
+        setContentView(R.layout.customer_main_menu);
+        Toolbar toolbar = findViewById(R.id.CMtoolbar);
         setSupportActionBar(toolbar);
-
-
-        //Profile Fragment
-
-//
-//        customerName = (EditText) rootView.findViewById(R.id.customersName);
-//        customerEmail = (EditText) rootView.findViewById(R.id.customersEmail);
-//        customerAddress = (EditText) rootView.findViewById(R.id.customerAddress);
-
-
-        NavigationView navigationViews = findViewById(R.id.nav_view);
+        NavigationView navigationViews = findViewById(R.id.CMnav_view);
         headerInfo = navigationViews.getHeaderView(0);
-
         navigationViews.setNavigationItemSelectedListener(this);
 
-        customerImage = headerInfo.findViewById(R.id.headerImageView);
-        headerEmail =  headerInfo.findViewById(R.id.emailTV);
-        headerUserName = headerInfo.findViewById(R.id.userNameTV);
-
+        customerImage = headerInfo.findViewById(R.id.CMImage);
+        headerEmail = headerInfo.findViewById(R.id.CMemailTV);
+        headerUserName = headerInfo.findViewById(R.id.CMuserNameTV);
         mAuth = FirebaseAuth.getInstance();
         userID = mAuth.getCurrentUser().getUid();
 
+
         mCustomerDatabase = FirebaseDatabase.getInstance().getReference().child("USERS").child("CUSTOMERS").child(userID);
-        mCustomerDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                getHeaderInfo();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        getHeaderInfo();
 
 
-        drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+
+
+        drawer = findViewById(R.id.CMdrawer_layout);
+        NavigationView navigationView = findViewById(R.id.CMnav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -113,11 +90,9 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
         toggle.syncState();
 
 
-
-
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DashboardFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_dashboard);
+            getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerDashboardFragment()).commit();
+            navigationView.setCheckedItem(R.id.CMnav_dashboard);
 
         }
 
@@ -128,27 +103,27 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
         switch (item.getItemId()) {
 
 
-            case R.id.nav_profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+            case R.id.CMnav_profile:
+                getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerProfileFragment()).commit();
 
                 break;
-            case R.id.nav_dashboard:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DashboardFragment()).commit();
+            case R.id.CMnav_dashboard:
+                getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerDashboardFragment()).commit();
                 break;
-            case R.id.nav_map:
+            case R.id.CMnav_map:
                 Intent intent = new Intent(CustomerMainMenuActivity.this, CustomerMapsActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.nav_message:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MessageFragment()).commit();
+            case R.id.CMnav_message:
+                getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerMessageFragment()).commit();
                 break;
-            case R.id.nav_notification:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotificationFragment()).commit();
+            case R.id.CMnav_notification:
+                getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerNotificationFragment()).commit();
                 break;
-            case R.id.nav_share:
+            case R.id.CMnav_share:
                 Toast.makeText(this, "Shared", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.nav_logout:
+            case R.id.CMnav_logout:
                 FirebaseAuth.getInstance().signOut();
                 Intent intent1 = new Intent(CustomerMainMenuActivity.this, CustomerLoginActivity.class);
                 startActivity(intent1);
@@ -172,7 +147,7 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
     }
 
     public void getHeaderInfo() {
-        mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        mCustomerDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -182,21 +157,18 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
                         mUserName = map.get("NAME").toString();
                         headerUserName.setText(mUserName);
                     }
+
                     if (map.get("EMAIL") != null) {
                         mEmail = map.get("EMAIL").toString();
                         headerEmail.setText(mEmail);
                     }
-
                     if(map.get("profileImageUrl")!=null){
                         mProfileImageUrl = map.get("profileImageUrl").toString();
                         Glide.with(getApplication()).load(mProfileImageUrl).into(customerImage);
 
                     }
 
-
-
                 }
-
 
             }
 
@@ -205,6 +177,16 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
 
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            final Uri imageUri = data.getData();
+            resultUri = imageUri;
+            customerImage.setImageURI(resultUri);
+        }
     }
 
 

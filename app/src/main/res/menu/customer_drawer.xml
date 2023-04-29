@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="CMnavigation_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/CMnav_profile"
+            android:icon="@drawable/ic_profile"
+            android:title="Profile" />
+        <item
+            android:id="@+id/CMnav_dashboard"
+            android:icon="@drawable/ic_dashboard"
+            android:title="Dashboard" />
+        <item
+            android:id="@+id/CMnav_map"
+            android:icon="@drawable/ic_map"
+            android:title="Map" />
+
+
+        <item
+            android:id="@+id/CMnav_message"
+            android:icon="@drawable/ic_message"
+            android:title="Message" />
+        <item
+            android:id="@+id/CMnav_notification"
+            android:icon="@drawable/ic_notification"
+            android:title="Notification" />
+
+        <item android:title="Miscellaneous">
+                <!--Add more later-->
+            <menu>
+
+                <item
+                    android:id="@+id/CMnav_share"
+                    android:icon="@drawable/ic_share"
+                    android:title="Share" />
+
+                <item
+                    android:id="@+id/CMnav_logout"
+                    android:icon="@drawable/ic_logout"
+                    android:title="Logout" />
+            </menu>
+        </item>
+
+
+    </group>
+
+</menu>

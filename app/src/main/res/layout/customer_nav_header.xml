@@ -11,22 +11,22 @@
 
     >
 <ImageView
-    android:id="@+id/headerImageView"
+    android:id="@+id/CMheaderImageView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_image"
     android:src="@mipmap/ic_launcher_round"/>
     <TextView
-        android:id="@+id/userNameTV"
+        android:id="@+id/CMuserNameTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text=""
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
     <TextView
-        android:id="@+id/emailTV"
+        android:id="@+id/CMemailTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""/>
+        android:text="vinz lloyd"/>
 
 </LinearLayout>

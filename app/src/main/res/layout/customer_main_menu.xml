@@ -2,22 +2,22 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/CMdrawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".SERVICE_PROVIDER_FILES.ServiceProviderMainMenuActivity"
+    tools:context=".CUSTOMER_FILES.CustomerMainMenuActivity"
     tools:openDrawer="start">
-    >
+
 
     <FrameLayout
-        android:id="@+id/fragment_container"
+        android:id="@+id/CMfragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/CMtoolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/design_default_color_primary"
@@ -28,12 +28,16 @@
     </FrameLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
+        android:id="@+id/CMnav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer" />
+        app:headerLayout="@layout/customer_nav_header"
+        app:menu="@menu/customer_drawer" />
+
+
+
+
 </androidx.drawerlayout.widget.DrawerLayout>
 
 

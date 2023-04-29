@@ -1,4 +1,4 @@
-package com.example.ifixit.GLOBAL_ACTIVITIES;
+package com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -36,7 +36,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProfileFragment extends Fragment {
+public class CustomerProfileFragment extends Fragment {
 
     //Variables
     private EditText customerName;
@@ -44,7 +44,7 @@ public class ProfileFragment extends Fragment {
     private EditText customerAddress;
 
     private FirebaseAuth mAuth;
-    private DatabaseReference mCustomerDatabase;
+    private DatabaseReference DatabaseRef;
     private String userID;
     private String mUserName;
     private String mEmail;
@@ -57,19 +57,21 @@ public class ProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+        View rootView = inflater.inflate(R.layout.customer_fragment_profile, container, false);
 
-        customerName = (EditText) rootView.findViewById(R.id.customersName);
+        customerName = (EditText) rootView.findViewById(R.id.CMName);
 //        customerEmail = (EditText) rootView.findViewById(R.id.customersEmail);
-        customerAddress = (EditText) rootView.findViewById(R.id.customerAddress);
-        saveBtn = (Button) rootView.findViewById(R.id.saveUserInfoBtn);
-        customerImage = (ImageView) rootView.findViewById(R.id.customerImage);
+        customerAddress = (EditText) rootView.findViewById(R.id.CMAddress);
+        saveBtn = (Button) rootView.findViewById(R.id.CMsaveUserInfoBtn);
+        customerImage = (ImageView) rootView.findViewById(R.id.CMImage);
 
 
         mAuth = FirebaseAuth.getInstance();
         userID = mAuth.getCurrentUser().getUid();
-        mCustomerDatabase = FirebaseDatabase.getInstance().getReference().child("USERS").child("CUSTOMERS").child(userID);
-        mCustomerDatabase.addValueEventListener(new ValueEventListener() {
+
+
+        DatabaseRef = FirebaseDatabase.getInstance().getReference().child("USERS").child("CUSTOMERS").child(userID);
+        DatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 getHeaderInfo();
@@ -80,6 +82,9 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+
+
+
 
         customerImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +109,7 @@ public class ProfileFragment extends Fragment {
 
 
     public void getHeaderInfo() {
-        mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -152,7 +157,7 @@ public class ProfileFragment extends Fragment {
 //      userInfo.put("services",mService);
 
 
-        mCustomerDatabase.updateChildren(userInfo);
+        DatabaseRef.updateChildren(userInfo);
         if (resultUri != null) {
             StorageReference filePath = FirebaseStorage.getInstance().getReference().child("profile_images").child(userID);
             Bitmap bitmap = null;
@@ -179,7 +184,7 @@ public class ProfileFragment extends Fragment {
 
                             Map<String, Object> newImage = new HashMap<>();
                             newImage.put("profileImageUrl", downloadUrlStr);
-                            mCustomerDatabase.updateChildren(newImage).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            DatabaseRef.updateChildren(newImage).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
 //                                    finish();

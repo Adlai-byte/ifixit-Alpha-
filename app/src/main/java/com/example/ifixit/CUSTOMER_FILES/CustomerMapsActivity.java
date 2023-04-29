@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,13 +53,17 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
     LatLng latLng;
     private HashMap<String, Marker> mMarkers;
 
-    private Button scanService;
+    private Button hireButton;
     private TextView serviceProviderName;
     private TextView serviceProviderEmail;
     private TextView serviceProviderAddress;
     private LinearLayout serviceProviderLayout;
 
+    Marker markerzy;
+    DatabaseReference mDatabaseRef;
+    String serviceProviderUserId;
 
+    //Nofication
 
 
 
@@ -67,25 +72,23 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
 
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer_maps);
+        setContentView(R.layout.customer_maps);
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.CMmap);
         mapFragment.getMapAsync(this);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
+        hireButton = (Button) findViewById(R.id.serviceProviderRequest);
         serviceProviderName = (TextView) findViewById(R.id.serviceProviderName);
         serviceProviderAddress = (TextView) findViewById(R.id.serviceProviderAddress);
         serviceProviderEmail = (TextView) findViewById(R.id.serviceProviderEmail);
         serviceProviderLayout = (LinearLayout) findViewById(R.id.serviceProviderInfo);
 
 
-
-
 //        pushDataToDatabase();
-
 
 
     }
@@ -122,8 +125,7 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
 
             Query query = FirebaseDatabase.getInstance().getReference()
                     .child("USERS")
-                    .child("SERVICE-PROVIDERS")
-                    .orderByChild("NAME");
+                    .child("SERVICE-PROVIDERS");
             query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -140,21 +142,21 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
 
                         // Add a marker for each location
                         mMarkers = new HashMap<>();
-                        Marker marker = mMarkers.get(name);
-                        if (marker != null) {
-                            marker.setPosition(location);
+                        markerzy = mMarkers.get(name);
+                        if (markerzy != null) {
+                            markerzy.setPosition(location);
                         } else {
 
-                            marker = Mmap.addMarker(new MarkerOptions()
+                            markerzy = Mmap.addMarker(new MarkerOptions()
                                     .position(location)
                                     .title(userId)
                                     .snippet(email)
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                            mMarkers.put(name, marker);
+                            mMarkers.put(name, markerzy);
 
 
                             //Mao ni ang changes
-                            marker.setTag(userId);
+                            markerzy.setTag(userId);
                             //Pa load sa ko piste
                         }
                     }
@@ -170,11 +172,45 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
             });
 
 
+
+            //Hire Button Functionlitye
+            hireButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    String customerUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("USERS")
+                            .child("SERVICE-PROVIDERS").child(serviceProviderUserId).child("JOB-OFFERS");
+
+                    Toast.makeText(getApplicationContext(), serviceProviderUserId, Toast.LENGTH_LONG).show();
+
+                    mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            HashMap map = new HashMap();
+                            //Adding Fields
+                            map.put("PENDING",customerUserId);
+                            mDatabaseRef.updateChildren(map);
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+                }
+            });
+
             Mmap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(@NonNull Marker marker) {
 
+
                     displayToTextView(marker.getTag().toString());
+                    serviceProviderUserId = marker.getTag().toString();
                     return true;
                 }
             });
@@ -289,7 +325,6 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
             }
         });
     }
-
 
 
 }

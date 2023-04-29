@@ -17,7 +17,7 @@
 
 
         <ImageView
-            android:id="@+id/customerImage"
+            android:id="@+id/SPImage"
             android:src="@mipmap/ic_launcher_round"
             android:layout_width="100sp"
             android:layout_height="100sp"
@@ -34,7 +34,7 @@
             android:layout_margin="20sp"
             android:orientation="vertical">
             <EditText
-                android:id="@+id/customersName"
+                android:id="@+id/SPName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Juan Dela Cruz" />
@@ -45,13 +45,13 @@
 <!--                android:hint="name@mail.ocom" />-->
 
             <EditText
-                android:id="@+id/customerAddress"
+                android:id="@+id/SPAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="South Park" />
 
             <Button
-                android:id="@+id/saveUserInfoBtn"
+                android:id="@+id/SPsaveUserInfoBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Save" />

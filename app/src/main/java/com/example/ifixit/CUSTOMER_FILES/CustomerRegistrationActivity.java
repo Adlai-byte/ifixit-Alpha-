@@ -49,7 +49,7 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer_registration);
+        setContentView(R.layout.customer_registration);
 
         //---Layout Connecting
         etName = (EditText) findViewById(R.id.etFullName);

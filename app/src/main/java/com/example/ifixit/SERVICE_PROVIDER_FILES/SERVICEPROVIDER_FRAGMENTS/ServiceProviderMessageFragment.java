@@ -1,4 +1,4 @@
-package com.example.ifixit.GLOBAL_ACTIVITIES;
+package com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS;
 
 
 import android.os.Bundle;
@@ -12,10 +12,10 @@ import androidx.fragment.app.Fragment;
 
 import com.example.ifixit.R;
 
-public class MessageFragment extends Fragment {
+public class ServiceProviderMessageFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_message,container,false);
+        return inflater.inflate(R.layout.customer_fragment_message,container,false);
     }
 }

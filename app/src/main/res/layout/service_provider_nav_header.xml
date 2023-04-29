@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/design_default_color_primary_variant"
+    android:gravity="bottom"
+    android:layout_height="176dp"
+    android:padding="16dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+
+    >
+<ImageView
+    android:id="@+id/SPheaderImageView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_image"
+    android:src="@mipmap/ic_launcher_round"/>
+    <TextView
+        android:id="@+id/SPuserNameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="chikading"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+    <TextView
+        android:id="@+id/SPemailTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tanga mo"/>
+
+</LinearLayout>
