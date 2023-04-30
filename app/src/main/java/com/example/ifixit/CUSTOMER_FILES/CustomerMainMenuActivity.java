@@ -65,20 +65,20 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
         Toolbar toolbar = findViewById(R.id.CMtoolbar);
         setSupportActionBar(toolbar);
         NavigationView navigationViews = findViewById(R.id.CMnav_view);
+
         headerInfo = navigationViews.getHeaderView(0);
         navigationViews.setNavigationItemSelectedListener(this);
 
-        customerImage = headerInfo.findViewById(R.id.CMImage);
+        customerImage = headerInfo.findViewById(R.id.CMheaderImageView);
         headerEmail = headerInfo.findViewById(R.id.CMemailTV);
         headerUserName = headerInfo.findViewById(R.id.CMuserNameTV);
+
         mAuth = FirebaseAuth.getInstance();
         userID = mAuth.getCurrentUser().getUid();
 
 
         mCustomerDatabase = FirebaseDatabase.getInstance().getReference().child("USERS").child("CUSTOMERS").child(userID);
         getHeaderInfo();
-
-
 
 
         drawer = findViewById(R.id.CMdrawer_layout);
@@ -135,16 +135,6 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
         return true;
     }
 
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-
-
-    }
 
     public void getHeaderInfo() {
         mCustomerDatabase.addValueEventListener(new ValueEventListener() {
@@ -178,6 +168,19 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+
+
+    }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

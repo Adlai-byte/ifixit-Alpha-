@@ -84,8 +84,6 @@ public class CustomerProfileFragment extends Fragment {
         });
 
 
-
-
         customerImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,8 +105,9 @@ public class CustomerProfileFragment extends Fragment {
     }
 
 
-
     public void getHeaderInfo() {
+
+
         DatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -127,7 +126,7 @@ public class CustomerProfileFragment extends Fragment {
                         mAddress = map.get("ADDRESS").toString();
                         customerAddress.setText(mAddress);
                     }
-                    if(map.get("profileImageUrl")!=null){
+                    if (map.get("profileImageUrl") != null) {
                         mProfileImageUrl = map.get("profileImageUrl").toString();
 //                        Glide.with(getApplication()).load(mProfileImageUrl).into(customerImage);
                         Glide.with(getContext().getApplicationContext()).load(mProfileImageUrl).into(customerImage);
@@ -215,6 +214,7 @@ public class CustomerProfileFragment extends Fragment {
 
 
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

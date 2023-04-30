@@ -100,6 +100,7 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
                             userInfo.put("EMAIL", email);
                             userInfo.put("ADDRESS", address);
                             current_user_db.updateChildren(userInfo);
+
                         }
                     }
                 });

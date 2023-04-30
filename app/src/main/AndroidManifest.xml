@@ -15,9 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ifixit"
         tools:targetApi="31">
-        <activity
-            android:name=".ServiceProviderNotification"
-            android:exported="false" />
+
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -37,6 +35,11 @@
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderMainMenuActivity"
             android:exported="false"
             android:label="ServiceProviderMainMenuActivity" />
+        <activity
+            android:name=".SERVICE_PROVIDER_FILES.ServiceProviderNotification"
+            android:exported="false"
+            android:label="ServiceProviderNotification"
+            />
         <activity
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderRegistrationActivity"
             android:exported="false"

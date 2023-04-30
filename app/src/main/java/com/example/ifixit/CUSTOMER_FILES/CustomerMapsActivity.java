@@ -60,11 +60,10 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
     private LinearLayout serviceProviderLayout;
 
     Marker markerzy;
-    DatabaseReference mDatabaseRef;
+
     String serviceProviderUserId;
 
     //Nofication
-
 
 
     @Override
@@ -172,27 +171,42 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
             });
 
 
-
             //Hire Button Functionlitye
             hireButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    long timestamp = System.currentTimeMillis();
+//                    Date now = new Date(0);
+//                    timestamp = now.getTime();
+
+                    DatabaseReference mServiceProvidereRef;
+                    DatabaseReference mCustomerRef;
 
                     String customerUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("USERS")
-                            .child("SERVICE-PROVIDERS").child(serviceProviderUserId).child("JOB-OFFERS");
+                    mCustomerRef = FirebaseDatabase.getInstance().getReference().child("USERS").child("CUSTOMERS");
+
+                    mServiceProvidereRef = FirebaseDatabase.getInstance().getReference().child("USERS").child("SERVICE-PROVIDERS").child(serviceProviderUserId).child("JOB-OFFERS").child("PENDING").child(customerUserId);
+
+
 
                     Toast.makeText(getApplicationContext(), serviceProviderUserId, Toast.LENGTH_LONG).show();
 
-                    mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                    mCustomerRef.child(customerUserId).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            HashMap map = new HashMap();
-                            //Adding Fields
-                            map.put("PENDING",customerUserId);
-                            mDatabaseRef.updateChildren(map);
+                            if(snapshot.exists()){
+                                String name = snapshot.child("NAME").getValue(String.class);
+                                String address = snapshot.child("ADDRESS").getValue(String.class);
+                                String email = snapshot.child("EMAIL").getValue(String.class);
+                                // Create a new job offer HashMap with the customer's data
+                                HashMap<String, String> jobOffer = new HashMap<>();
+                                jobOffer.put("NAME", name);
+                                jobOffer.put("ADDRESS", address);
+                                jobOffer.put("EMAIL", email);
+                                jobOffer.put("TIMESTAMP",String.valueOf(timestamp));
+                                mServiceProvidereRef.setValue(jobOffer);
 
-
+                            }
                         }
 
                         @Override
@@ -201,7 +215,10 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                         }
                     });
 
+
                 }
+
+
             });
 
             Mmap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
