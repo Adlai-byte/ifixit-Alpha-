@@ -21,8 +21,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.bumptech.glide.Glide;
 import com.example.ifixit.R;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderDashboardFragment;
-import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderMessageFragment;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderProfileFragment;
+import com.example.ifixit.SERVICE_PROVIDER_FILES.ServiceProviderMessaging.ChatActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -111,7 +111,8 @@ public class ServiceProviderMainMenuActivity extends AppCompatActivity implement
                 startActivity(intent);
                 break;
             case R.id.SPnav_message:
-                getSupportFragmentManager().beginTransaction().replace(R.id.SPfragment_container, new ServiceProviderMessageFragment()).commit();
+                Intent intent3 = new Intent(ServiceProviderMainMenuActivity.this, ChatActivity.class);
+                startActivity(intent3);
                 break;
             case R.id.SPnav_notification:
                 Intent intent2 = new Intent(ServiceProviderMainMenuActivity.this, ServiceProviderNotification.class);

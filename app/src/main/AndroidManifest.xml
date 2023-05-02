@@ -30,6 +30,13 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDbm7rYA_28n5PpW1xQHBq-kScG4AbW2ug" />
+        <activity
+            android:name=".SERVICE_PROVIDER_FILES.ServiceProviderMessaging.ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SERVICE_PROVIDER_FILES.ServiceProviderMessaging.ServiceProviderMessaging"
+            android:exported="false" />
+
 
         <activity
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderMainMenuActivity"
@@ -38,8 +45,7 @@
         <activity
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderNotification"
             android:exported="false"
-            android:label="ServiceProviderNotification"
-            />
+            android:label="ServiceProviderNotification" />
         <activity
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderRegistrationActivity"
             android:exported="false"
