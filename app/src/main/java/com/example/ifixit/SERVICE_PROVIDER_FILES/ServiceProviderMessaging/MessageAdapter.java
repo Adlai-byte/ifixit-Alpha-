@@ -1,62 +1,95 @@
 package com.example.ifixit.SERVICE_PROVIDER_FILES.ServiceProviderMessaging;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.ifixit.R;
-import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class MessageAdapter extends ArrayAdapter<Message> {
+public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
+    public List<Message> getMessageList() {
+        return messageList;
+    }
 
-    private Context mContext;
-    private String mCurrentUserUid;
+    public void setMessageList(List<Message> messageList) {
+        this.messageList = messageList;
+    }
 
-    public MessageAdapter(Context context, ArrayList<Message> messages) {
-        super(context, 0, messages);
-        mContext = context;
-        mCurrentUserUid  = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    public String getCurrentUserId() {
+        return currentUserId;
+    }
+
+    public void setCurrentUserId(String currentUserId) {
+        this.currentUserId = currentUserId;
+    }
+
+    private List<Message> messageList;
+    private String currentUserId;
+
+    public MessageAdapter(List<Message> messageList, String currentUserId) {
+        this.messageList = messageList;
+        this.currentUserId = currentUserId;
+    }
+
+    @NonNull
+    @Override
+    public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(viewType, parent, false);
+
+        return new MessageViewHolder(view);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
-        if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.service_provider_message_item, parent, false);
-            viewHolder = new ViewHolder();
-            viewHolder.messageText = convertView.findViewById(R.id.message_text);
-            convertView.setTag(viewHolder);
+    public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
+        Message message = messageList.get(position);
+        holder.messageTextView.setText(message.getMessageText());
+
+        if (message.getSenderUid().equals(currentUserId)) {
+            // Set sender's message view properties
+            holder.messageTextView.setBackgroundResource(R.drawable.incoming_message_bg);
+            holder.messageTextView.setTextColor(Color.WHITE);
+            holder.messageLinearLayout.setGravity(Gravity.END);
         } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            // Set receiver's message view properties
+            holder.messageTextView.setBackgroundResource(R.drawable.message_bubble);
+            holder.messageTextView.setTextColor(Color.BLACK);
+            holder.messageLinearLayout.setGravity(Gravity.START);
         }
-
-        Message message = getItem(position);
-        viewHolder.messageText.setText(message.getMessageText());
-
-        if (message.getSenderUid().equals(mCurrentUserUid)) {
-            // Message sent by the current user
-            viewHolder.messageText.setBackgroundResource(R.drawable.outgoing_message_bg);
-            viewHolder.messageText.setTextColor(Color.WHITE);
-            ((LinearLayout.LayoutParams) viewHolder.messageText.getLayoutParams()).gravity = Gravity.END;
-        } else {
-            // Message received from the remote user
-            viewHolder.messageText.setBackgroundResource(R.drawable.incoming_message_bg);
-            viewHolder.messageText.setTextColor(Color.BLACK);
-            ((LinearLayout.LayoutParams) viewHolder.messageText.getLayoutParams()).gravity = Gravity.START;
-        }
-
-        return convertView;
     }
 
-    private static class ViewHolder {
-        TextView messageText;
+    @Override
+    public int getItemCount() {
+        return messageList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        Message message = messageList.get(position);
+        if (message.getSenderUid().equals(currentUserId)) {
+            return R.layout.sender_message_item;
+        } else {
+            return R.layout.receiver_message_item;
+        }
+    }
+
+    public static class MessageViewHolder extends RecyclerView.ViewHolder {
+        public TextView messageTextView;
+        public LinearLayout messageLinearLayout;
+
+        public MessageViewHolder(@NonNull View itemView) {
+            super(itemView);
+            messageTextView = itemView.findViewById(R.id.message_text_view);
+            messageLinearLayout = itemView.findViewById(R.id.message_text_view);
+        }
     }
 }

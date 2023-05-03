@@ -33,9 +33,6 @@
         <activity
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderMessaging.ChatActivity"
             android:exported="false" />
-        <activity
-            android:name=".SERVICE_PROVIDER_FILES.ServiceProviderMessaging.ServiceProviderMessaging"
-            android:exported="false" />
 
 
         <activity

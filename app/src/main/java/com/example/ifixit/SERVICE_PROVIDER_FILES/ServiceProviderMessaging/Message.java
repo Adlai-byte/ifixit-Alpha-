@@ -10,6 +10,7 @@ public class Message {
     private String receiverUid;
     private String messageText;
     private long timestamp;
+    private boolean isRead; // New field added
 
     public Message() {}
 
@@ -19,6 +20,7 @@ public class Message {
         this.receiverUid = receiverUid;
         this.messageText = messageText;
         this.timestamp = timestamp;
+        this.isRead = false; // Default value is false
     }
 
     public String getMessageId() {
@@ -60,6 +62,15 @@ public class Message {
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
+    }
+
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("messageId", messageId);
@@ -67,6 +78,7 @@ public class Message {
         result.put("receiverUid", receiverUid);
         result.put("messageText", messageText);
         result.put("timestamp", timestamp);
+        result.put("isRead", isRead); // Added to the map
         return result;
     }
 

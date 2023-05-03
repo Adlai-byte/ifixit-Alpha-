@@ -7,4 +7,16 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Chat Activity Colors -->
+    <color name="chatBackgroundColor">#F2F2F2</color>
+    <color name="senderMessageBackground">#AED6F1</color>
+    <color name="receiverMessageBackground">#E5E8E8</color>
+    <color name="messageBubbleColor">#FFFFFF</color>
+    <color name="chatTextColor">#000000</color>
+    <color name="message_bubble_background">#E5E5EA</color>
+    <color name="message_bubble_border">#BDBDBD</color>
+
+    <!-- Other Colors -->
+
 </resources>
