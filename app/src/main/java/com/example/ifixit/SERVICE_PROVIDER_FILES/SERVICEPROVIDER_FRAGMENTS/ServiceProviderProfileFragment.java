@@ -9,9 +9,13 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,11 +40,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ServiceProviderProfileFragment extends Fragment {
+public class ServiceProviderProfileFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     //Variables
     private EditText serviceProviderName;
-    private EditText customerEmail;
+    private TextView customerEmail;
     private EditText serviceProviderAddress;
 
     private FirebaseAuth mAuth;
@@ -53,20 +57,32 @@ public class ServiceProviderProfileFragment extends Fragment {
     private ImageView serviceProviderImage;
     private Uri resultUri;
     private String mProfileImageUrl;
-
+    private Spinner serviceSpinner;
+    private String mService;
+    ArrayAdapter<CharSequence> adapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View rootView = inflater.inflate(R.layout.service_provider_fragment_profile, container, false);
 
         serviceProviderName = (EditText) rootView.findViewById(R.id.SPName);
-//        customerEmail = (EditText) rootView.findViewById(R.id.customersEmail);
+        customerEmail = (TextView) rootView.findViewById(R.id.customersEmail);
         serviceProviderAddress = (EditText) rootView.findViewById(R.id.SPAddress);
         saveBtn = (Button) rootView.findViewById(R.id.SPsaveUserInfoBtn);
         serviceProviderImage = (ImageView) rootView.findViewById(R.id.SPImage);
-
-
         mAuth = FirebaseAuth.getInstance();
+        serviceSpinner = rootView.findViewById(R.id.spinner);
+         adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.service_options, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        serviceSpinner.setAdapter(adapter);
+        serviceSpinner.setOnItemSelectedListener(this);
+
+
+
+
+
         userID = mAuth.getCurrentUser().getUid();
 
 
@@ -82,8 +98,6 @@ public class ServiceProviderProfileFragment extends Fragment {
 
             }
         });
-
-
 
 
         serviceProviderImage.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +121,6 @@ public class ServiceProviderProfileFragment extends Fragment {
     }
 
 
-
     public void getHeaderInfo() {
         DatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -119,17 +132,21 @@ public class ServiceProviderProfileFragment extends Fragment {
                         mUserName = map.get("NAME").toString();
                         serviceProviderName.setText(mUserName);
                     }
-//                    if (map.get("EMAIL") != null) {
-//                        mEmail = map.get("EMAIL").toString();
-//                        customerEmail.setText(mEmail);
-//                    }
+                    if (map.get("EMAIL") != null) {
+                        mEmail = map.get("EMAIL").toString();
+                        customerEmail.setText(mEmail);
+                    }
                     if (map.get("ADDRESS") != null) {
                         mAddress = map.get("ADDRESS").toString();
                         serviceProviderAddress.setText(mAddress);
                     }
-                    if(map.get("profileImageUrl")!=null){
+                    if(map.get("SERVICE")!=null) {
+                        mService = map.get("SERVICE").toString();
+                        serviceSpinner.setSelection(adapter.getPosition(mService));
+
+                    }
+                    if (map.get("profileImageUrl") != null) {
                         mProfileImageUrl = map.get("profileImageUrl").toString();
-//                        Glide.with(getApplication()).load(mProfileImageUrl).into(customerImage);
                         Glide.with(getContext().getApplicationContext()).load(mProfileImageUrl).into(serviceProviderImage);
                     }
 
@@ -147,14 +164,14 @@ public class ServiceProviderProfileFragment extends Fragment {
 
     private void saveUserInformation() {
         mUserName = serviceProviderName.getText().toString();
-//        mEmail = customerEmail.getText().toString();
+        mEmail = customerEmail.getText().toString();
         mAddress = serviceProviderAddress.getText().toString();
 
 
         Map userInfo = new HashMap();
         userInfo.put("NAME", mUserName);
         userInfo.put("ADDRESS", mAddress);
-//      userInfo.put("services",mService);
+      userInfo.put("SERVICE",mService);
 
 
         DatabaseRef.updateChildren(userInfo);
@@ -215,6 +232,7 @@ public class ServiceProviderProfileFragment extends Fragment {
 
 
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -226,4 +244,14 @@ public class ServiceProviderProfileFragment extends Fragment {
     }
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        mService = serviceSpinner.getItemAtPosition(i).toString();
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        mService = "";
+    }
 }

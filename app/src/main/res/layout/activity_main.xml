@@ -19,14 +19,16 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="165dp"
-        android:layout_height="169dp"
+        android:layout_width="213dp"
+        android:layout_height="230dp"
+        android:contentDescription="@string/todo"
+        android:src="@mipmap/ic_app_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/splashTitle"
-        app:layout_constraintVertical_bias="0.17"
-        android:contentDescription="@string/todo" />
+        app:layout_constraintVertical_bias="0.17" />
 
     <ProgressBar
         android:id="@+id/progressBar"

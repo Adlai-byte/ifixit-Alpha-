@@ -16,7 +16,7 @@
         android:orientation="vertical">
 
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/CMImage"
             android:src="@mipmap/ic_launcher_round"
             android:layout_width="100sp"

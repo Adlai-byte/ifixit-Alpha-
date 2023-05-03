@@ -24,7 +24,7 @@
             android:text="Username" />
 
         <EditText
-            android:id="@+id/etUserName"
+            android:id="@+id/SPetUserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -37,7 +37,7 @@
             android:text="Fullname " />
 
         <EditText
-            android:id="@+id/etFullName"
+            android:id="@+id/SPetFullName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -50,46 +50,46 @@
             android:text="Address" />
 
         <EditText
-            android:id="@+id/etAddress"
+            android:id="@+id/SPetAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName" />
 
         <TextView
-            android:id="@+id/tvEmail"
+            android:id="@+id/SPtvEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Email" />
 
         <EditText
-            android:id="@+id/etEmail"
+            android:id="@+id/SPetEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName" />
 
         <TextView
-            android:id="@+id/tvPassword"
+            android:id="@+id/SPtvPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Password" />
 
         <EditText
-            android:id="@+id/etPassword"
+            android:id="@+id/SPetPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName" />
 
         <Button
-            android:id="@+id/btnRegister"
+            android:id="@+id/SPbtnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Sign-up" />
 
         <TextView
-            android:id="@+id/tvAlreadyHaveAnAccount"
+            android:id="@+id/SPtvAlreadyHaveAnAccount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Already have an accout? click here to Sign in" />

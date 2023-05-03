@@ -52,14 +52,14 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.service_provider_registration);
 
         //---Layout Connecting
-        etName = (EditText) findViewById(R.id.etFullName);
-        etAddress =(EditText) findViewById(R.id.etAddress);
-        etEmail = (EditText) findViewById(R.id.etEmail);
-        etPassword = (EditText)findViewById(R.id.etPassword);
+        etName = (EditText) findViewById(R.id.SPetFullName);
+        etAddress =(EditText) findViewById(R.id.SPetAddress);
+        etEmail = (EditText) findViewById(R.id.SPetEmail);
+        etPassword = (EditText)findViewById(R.id.SPetPassword);
 
-        btnRegister = (Button) findViewById(R.id.btnRegister);
+        btnRegister = (Button) findViewById(R.id.SPbtnRegister);
 
-        tvAlreadyHave = (TextView) findViewById(R.id.tvAlreadyHaveAnAccount);
+        tvAlreadyHave = (TextView) findViewById(R.id.SPtvAlreadyHaveAnAccount);
 
         mAuth = FirebaseAuth.getInstance();
         firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {

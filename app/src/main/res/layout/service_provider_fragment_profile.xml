@@ -16,7 +16,7 @@
         android:orientation="vertical">
 
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/SPImage"
             android:src="@mipmap/ic_launcher_round"
             android:layout_width="100sp"
@@ -38,11 +38,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Juan Dela Cruz" />
-<!--            <EditText-->
-<!--                android:id="@+id/customersEmail"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:hint="name@mail.ocom" />-->
+            <TextView
+                android:id="@+id/customersEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="name@mail.ocom" />
 
             <EditText
                 android:id="@+id/SPAddress"
@@ -50,11 +50,20 @@
                 android:layout_height="wrap_content"
                 android:hint="South Park" />
 
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/service_options" />
+
             <Button
                 android:id="@+id/SPsaveUserInfoBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Save" />
+
+
+
         </LinearLayout>
 
 

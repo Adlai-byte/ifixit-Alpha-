@@ -4,6 +4,9 @@ import static android.content.ContentValues.TAG;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,10 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.ifixit.R;
@@ -29,6 +34,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -58,7 +64,6 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
     private TextView serviceProviderEmail;
     private TextView serviceProviderAddress;
     private LinearLayout serviceProviderLayout;
-
     Marker markerzy;
 
     String serviceProviderUserId;
@@ -85,9 +90,6 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
         serviceProviderAddress = (TextView) findViewById(R.id.serviceProviderAddress);
         serviceProviderEmail = (TextView) findViewById(R.id.serviceProviderEmail);
         serviceProviderLayout = (LinearLayout) findViewById(R.id.serviceProviderInfo);
-
-
-//        pushDataToDatabase();
 
 
     }
@@ -132,6 +134,10 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                         String userId = childSnapshot.getKey();
                         String name = childSnapshot.child("NAME").getValue(String.class);
                         String email = childSnapshot.child("EMAIL").getValue(String.class);
+                        String service = childSnapshot.child("SERVICE").getValue(String.class);
+                        if (service == null) {
+                            service = "Plumber";
+                        }
                         String latStr = childSnapshot.child("LOCATION").child("lat").getValue(String.class);
                         String lngStr = childSnapshot.child("LOCATION").child("lng").getValue(String.class);
                         double lat = latStr != null ? Double.parseDouble(latStr.trim()) : 0.0;
@@ -146,17 +152,64 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                             markerzy.setPosition(location);
                         } else {
 
-                            markerzy = Mmap.addMarker(new MarkerOptions()
-                                    .position(location)
-                                    .title(userId)
-                                    .snippet(email)
-                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                            mMarkers.put(name, markerzy);
+                            switch (service) {
+                                case "Plumber":
+                                    markerzy = Mmap.addMarker(new MarkerOptions()
+                                            .position(location)
+                                            .title(userId)
+                                            .snippet(email)
+                                            .icon(vectorToBitmap(R.mipmap.ic_plumber_logo)));
+                                    mMarkers.put(name, markerzy);
+                                    markerzy.setTag(userId);
 
+                                    break;
+                                case "Electrician":
+                                    markerzy = Mmap.addMarker(new MarkerOptions()
+                                            .position(location)
+                                            .title(userId)
+                                            .snippet(email)
+                                            .icon(vectorToBitmap(R.mipmap.ic_electrician_logo)));
+                                    mMarkers.put(name, markerzy);
+                                    markerzy.setTag(userId);
+                                    break;
+                                case "Carpenter":
+                                    markerzy = Mmap.addMarker(new MarkerOptions()
+                                            .position(location)
+                                            .title(userId)
+                                            .snippet(email)
+                                            .icon(vectorToBitmap(R.mipmap.ic_carpentry_logo)));
+                                    mMarkers.put(name, markerzy);
+                                    markerzy.setTag(userId);
+                                    break;
+                                case "Computer Repair":
+                                    markerzy = Mmap.addMarker(new MarkerOptions()
+                                            .position(location)
+                                            .title(userId)
+                                            .snippet(email)
+                                            .icon(vectorToBitmap(R.mipmap.ic_computer_repair_logo)));
+                                    mMarkers.put(name, markerzy);
+                                    markerzy.setTag(userId);
+                                    break;
+                                case "Gardener":
+                                    markerzy = Mmap.addMarker(new MarkerOptions()
+                                            .position(location)
+                                            .title(userId)
+                                            .snippet(email)
+                                            .icon(vectorToBitmap(R.mipmap.ic_gardener_logo)));
+                                    mMarkers.put(name, markerzy);
+                                    markerzy.setTag(userId);
+                                    break;
+                                default:
+                                    markerzy = Mmap.addMarker(new MarkerOptions()
+                                            .position(location)
+                                            .title(userId)
+                                            .snippet(email)
+                                            .icon(vectorToBitmap(R.mipmap.ic_app_logo)));
+                                    mMarkers.put(name, markerzy);
+                                    markerzy.setTag(userId);
+                                    break;
+                            }
 
-                            //Mao ni ang changes
-                            markerzy.setTag(userId);
-                            //Pa load sa ko piste
                         }
                     }
 
@@ -176,8 +229,6 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                 @Override
                 public void onClick(View view) {
                     long timestamp = System.currentTimeMillis();
-//                    Date now = new Date(0);
-//                    timestamp = now.getTime();
 
                     DatabaseReference mServiceProvidereRef;
                     DatabaseReference mCustomerRef;
@@ -188,22 +239,22 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                     mServiceProvidereRef = FirebaseDatabase.getInstance().getReference().child("USERS").child("SERVICE-PROVIDERS").child(serviceProviderUserId).child("JOB-OFFERS").child("PENDING").child(customerUserId);
 
 
-
                     Toast.makeText(getApplicationContext(), serviceProviderUserId, Toast.LENGTH_LONG).show();
 
                     mCustomerRef.child(customerUserId).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(snapshot.exists()){
+                            if (snapshot.exists()) {
                                 String name = snapshot.child("NAME").getValue(String.class);
                                 String address = snapshot.child("ADDRESS").getValue(String.class);
                                 String email = snapshot.child("EMAIL").getValue(String.class);
                                 // Create a new job offer HashMap with the customer's data
+
                                 HashMap<String, String> jobOffer = new HashMap<>();
                                 jobOffer.put("NAME", name);
                                 jobOffer.put("ADDRESS", address);
                                 jobOffer.put("EMAIL", email);
-                                jobOffer.put("TIMESTAMP",String.valueOf(timestamp));
+                                jobOffer.put("TIMESTAMP", String.valueOf(timestamp));
                                 mServiceProvidereRef.setValue(jobOffer);
 
                             }
@@ -258,7 +309,8 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                     .addOnSuccessListener(this, location -> {
                         if (location != null) {
                             latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                            Mmap.addMarker(new MarkerOptions().position(latLng).title("Current Location"));
+                            // Hide sa nato ang atong Map Marker
+//                            Mmap.addMarker(new MarkerOptions().position(latLng).title("Current Location"));
                             Mmap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f));
 
                             pushDataToDatabase();
@@ -341,6 +393,26 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
 
             }
         });
+    }
+
+    //* Converts a vector asset icon to a BitmapDescriptor object for use as a marker icon.
+
+    private BitmapDescriptor vectorToBitmap(@DrawableRes int id) {
+        Drawable vectorDrawable = ResourcesCompat.getDrawable(getResources(), id, null);
+        if (vectorDrawable == null) {
+            Log.e(TAG, "vectorToBitmap: vector drawable is null.");
+            return BitmapDescriptorFactory.defaultMarker();
+        }
+
+        int width = vectorDrawable.getIntrinsicWidth();
+        int height = vectorDrawable.getIntrinsicHeight();
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        vectorDrawable.draw(canvas);
+
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
 

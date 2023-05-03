@@ -27,5 +27,13 @@
     <string name="title_activity_maps">MapsActivity</string>
     <string name="title_activity_service_provider_maps">ServiceProviderMapsActivity</string>
 
+    <string-array name="service_options">
+        <item>Plumber</item>
+        <item>Electrician</item>
+        <item>Masonry</item>
+        <item>Computer Repair</item>
+        <item>Gardener</item>
+        <item>Carpenter</item>
+    </string-array>
 
 </resources>
