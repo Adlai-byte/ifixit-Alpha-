@@ -28,7 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatActivity extends AppCompatActivity {
+public class ServiceProviderChatActivity extends AppCompatActivity {
 
     private String senderId;
     private String receiverId;
@@ -40,7 +40,7 @@ public class ChatActivity extends AppCompatActivity {
     private EditText messageEditText;
     private Button sendButton;
     private RecyclerView messageRecyclerView;
-    private MessageAdapter messageAdapter;
+    private ServiceProviderMessageAdapter serviceProviderMessageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +82,9 @@ public class ChatActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         messageRecyclerView.setLayoutManager(linearLayoutManager);
 
-        List<Message> messageList = new ArrayList<>();
-        messageAdapter = new MessageAdapter(messageList,senderId);
-        messageRecyclerView.setAdapter(messageAdapter);
+        List<ServiceProviderMessage> serviceProviderMessageList = new ArrayList<>();
+        serviceProviderMessageAdapter = new ServiceProviderMessageAdapter(serviceProviderMessageList,senderId);
+        messageRecyclerView.setAdapter(serviceProviderMessageAdapter);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +94,7 @@ public class ChatActivity extends AppCompatActivity {
                     sendMessage(senderId, receiverId, messageText);
                     messageEditText.setText("");
                 } else {
-                    Toast.makeText(ChatActivity.this, "Message cannot be empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ServiceProviderChatActivity.this, "ServiceProviderMessage cannot be empty", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -115,7 +115,7 @@ public class ChatActivity extends AppCompatActivity {
                                     jobOffersRef.child("ONGOING").child(receiverId).child("Messages").child(messagePushId).setValue(true);
                                     customerRef.child(customerUserId).child("JOB-OFFERS").child("ONGOING").child(senderId).child("Messages").child(messagePushId).setValue(true);
                                 } else {
-                                    Toast.makeText(ChatActivity.this, "Failed to send message", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ServiceProviderChatActivity.this, "Failed to send message", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
@@ -151,28 +151,28 @@ public class ChatActivity extends AppCompatActivity {
         String messagePushId = messagesRef.child(senderId).child(receiverId).push().getKey();
         if (messagePushId != null && !messagePushId.isEmpty()) {
             long timestamp = System.currentTimeMillis();
-            Message message = new Message(messagePushId, messageText, senderId, receiverId, timestamp);
-            messagesRef.child(senderId).child(receiverId).child(messagePushId).setValue(message).addOnCompleteListener(new OnCompleteListener<Void>() {
+            ServiceProviderMessage serviceProviderMessage = new ServiceProviderMessage(messagePushId, messageText, senderId, receiverId, timestamp);
+            messagesRef.child(senderId).child(receiverId).child(messagePushId).setValue(serviceProviderMessage).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
-                        messagesRef.child(receiverId).child(senderId).child(messagePushId).setValue(message).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        messagesRef.child(receiverId).child(senderId).child(messagePushId).setValue(serviceProviderMessage).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(ChatActivity.this, "Message sent successfully", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ServiceProviderChatActivity.this, "ServiceProviderMessage sent successfully", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Toast.makeText(ChatActivity.this, "Failed to send message", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ServiceProviderChatActivity.this, "Failed to send serviceProviderMessage", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
                     } else {
-                        Toast.makeText(ChatActivity.this, "Failed to send message", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ServiceProviderChatActivity.this, "Failed to send serviceProviderMessage", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         } else {
-            Toast.makeText(ChatActivity.this, "Failed to send message", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ServiceProviderChatActivity.this, "Failed to send message", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -183,20 +183,20 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    List<Message> messageList = new ArrayList<>();
+                    List<ServiceProviderMessage> serviceProviderMessageList = new ArrayList<>();
                     for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
-                        Message message = messageSnapshot.getValue(Message.class);
-                        if ((message.getSenderUid().equals(senderId) && message.getReceiverUid().equals(receiverId)) || (message.getSenderUid().equals(receiverId) && message.getReceiverUid().equals(senderId))) {
-                            messageList.add(message);
-                            // Mark the message as read by the receiver
-                            if (message.getReceiverUid().equals(senderId) && !message.isRead()) {
-                                message.setRead(true);
-                                messageSnapshot.getRef().setValue(message);
+                        ServiceProviderMessage serviceProviderMessage = messageSnapshot.getValue(ServiceProviderMessage.class);
+                        if ((serviceProviderMessage.getSenderUid().equals(senderId) && serviceProviderMessage.getReceiverUid().equals(receiverId)) || (serviceProviderMessage.getSenderUid().equals(receiverId) && serviceProviderMessage.getReceiverUid().equals(senderId))) {
+                            serviceProviderMessageList.add(serviceProviderMessage);
+                            // Mark the serviceProviderMessage as read by the receiver
+                            if (serviceProviderMessage.getReceiverUid().equals(senderId) && !serviceProviderMessage.isRead()) {
+                                serviceProviderMessage.setRead(true);
+                                messageSnapshot.getRef().setValue(serviceProviderMessage);
                             }
                         }
                     }
-                    messageAdapter.setMessageList(messageList);
-                    messageRecyclerView.scrollToPosition(messageList.size() - 1);
+                    serviceProviderMessageAdapter.setMessageList(serviceProviderMessageList);
+                    messageRecyclerView.scrollToPosition(serviceProviderMessageList.size() - 1);
                 }
             }
 

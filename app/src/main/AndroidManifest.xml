@@ -31,7 +31,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDbm7rYA_28n5PpW1xQHBq-kScG4AbW2ug" />
         <activity
-            android:name=".SERVICE_PROVIDER_FILES.ServiceProviderMessaging.ChatActivity"
+            android:name=".SERVICE_PROVIDER_FILES.ServiceProviderMessaging.ServiceProviderChatActivity"
             android:exported="false" />
 
 

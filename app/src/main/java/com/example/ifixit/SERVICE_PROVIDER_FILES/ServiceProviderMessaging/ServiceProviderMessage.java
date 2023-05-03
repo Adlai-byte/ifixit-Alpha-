@@ -3,7 +3,7 @@ package com.example.ifixit.SERVICE_PROVIDER_FILES.ServiceProviderMessaging;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Message {
+public class ServiceProviderMessage {
 
     private String messageId;
     private String senderUid;
@@ -12,9 +12,9 @@ public class Message {
     private long timestamp;
     private boolean isRead; // New field added
 
-    public Message() {}
+    public ServiceProviderMessage() {}
 
-    public Message(String messageId, String senderUid, String receiverUid, String messageText, long timestamp) {
+    public ServiceProviderMessage(String messageId, String senderUid, String receiverUid, String messageText, long timestamp) {
         this.messageId = messageId;
         this.senderUid = senderUid;
         this.receiverUid = receiverUid;

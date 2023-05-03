@@ -15,13 +15,13 @@ import com.example.ifixit.R;
 
 import java.util.List;
 
-public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
-    public List<Message> getMessageList() {
-        return messageList;
+public class ServiceProviderMessageAdapter extends RecyclerView.Adapter<ServiceProviderMessageAdapter.MessageViewHolder> {
+    public List<ServiceProviderMessage> getMessageList() {
+        return serviceProviderMessageList;
     }
 
-    public void setMessageList(List<Message> messageList) {
-        this.messageList = messageList;
+    public void setMessageList(List<ServiceProviderMessage> serviceProviderMessageList) {
+        this.serviceProviderMessageList = serviceProviderMessageList;
     }
 
     public String getCurrentUserId() {
@@ -32,11 +32,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         this.currentUserId = currentUserId;
     }
 
-    private List<Message> messageList;
+    private List<ServiceProviderMessage> serviceProviderMessageList;
     private String currentUserId;
 
-    public MessageAdapter(List<Message> messageList, String currentUserId) {
-        this.messageList = messageList;
+    public ServiceProviderMessageAdapter(List<ServiceProviderMessage> serviceProviderMessageList, String currentUserId) {
+        this.serviceProviderMessageList = serviceProviderMessageList;
         this.currentUserId = currentUserId;
     }
 
@@ -51,16 +51,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
-        Message message = messageList.get(position);
-        holder.messageTextView.setText(message.getMessageText());
+        ServiceProviderMessage serviceProviderMessage = serviceProviderMessageList.get(position);
+        holder.messageTextView.setText(serviceProviderMessage.getMessageText());
 
-        if (message.getSenderUid().equals(currentUserId)) {
-            // Set sender's message view properties
+        if (serviceProviderMessage.getSenderUid().equals(currentUserId)) {
+            // Set sender's serviceProviderMessage view properties
             holder.messageTextView.setBackgroundResource(R.drawable.incoming_message_bg);
             holder.messageTextView.setTextColor(Color.WHITE);
             holder.messageLinearLayout.setGravity(Gravity.END);
         } else {
-            // Set receiver's message view properties
+            // Set receiver's serviceProviderMessage view properties
             holder.messageTextView.setBackgroundResource(R.drawable.message_bubble);
             holder.messageTextView.setTextColor(Color.BLACK);
             holder.messageLinearLayout.setGravity(Gravity.START);
@@ -69,16 +69,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     @Override
     public int getItemCount() {
-        return messageList.size();
+        return serviceProviderMessageList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        Message message = messageList.get(position);
-        if (message.getSenderUid().equals(currentUserId)) {
-            return R.layout.sender_message_item;
+        ServiceProviderMessage serviceProviderMessage = serviceProviderMessageList.get(position);
+        if (serviceProviderMessage.getSenderUid().equals(currentUserId)) {
+            return R.layout.service_provider_sender_message_item;
         } else {
-            return R.layout.receiver_message_item;
+            return R.layout.service_provider_receiver_message_item;
         }
     }
 
