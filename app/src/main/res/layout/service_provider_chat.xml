@@ -3,7 +3,7 @@
     android:id="@+id/activity_chat"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.ifixit.SERVICE_PROVIDER_FILES.ServiceProviderMessaging.ServiceProviderChatActivity">
+    tools:context="com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.ServiceProviderMessaging.ServiceProviderChatActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/message_recycler_view"

@@ -22,7 +22,7 @@ import com.bumptech.glide.Glide;
 import com.example.ifixit.R;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderDashboardFragment;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderProfileFragment;
-import com.example.ifixit.SERVICE_PROVIDER_FILES.ServiceProviderMessaging.ServiceProviderChatActivity;
+import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.ServiceProviderMessaging.ServiceProviderChatActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;

@@ -1,4 +1,4 @@
-package com.example.ifixit.SERVICE_PROVIDER_FILES.ServiceProviderMessaging;
+package com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.ServiceProviderMessaging;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -62,6 +62,10 @@ public class ServiceProviderChatActivity extends AppCompatActivity {
                 }
                 // Do something with the first node here...
                 Log.d("TAG", "First node: " + receiverId);
+
+                if (!TextUtils.isEmpty(receiverId)) {
+                    loadMessages(senderId, receiverId);
+                }
             }
 
             @Override
@@ -70,8 +74,7 @@ public class ServiceProviderChatActivity extends AppCompatActivity {
             }
         });
 
-
-        messagesRef = FirebaseDatabase.getInstance().getReference().child("Messages");
+        messagesRef = FirebaseDatabase.getInstance().getReference().child("MESSAGES");
         jobOffersRef = FirebaseDatabase.getInstance().getReference().child("USERS").child("SERVICE-PROVIDERS").child(senderId).child("JOB-OFFERS");
         customerRef = FirebaseDatabase.getInstance().getReference().child("USERS").child("CUSTOMERS");
 
@@ -83,15 +86,16 @@ public class ServiceProviderChatActivity extends AppCompatActivity {
         messageRecyclerView.setLayoutManager(linearLayoutManager);
 
         List<ServiceProviderMessage> serviceProviderMessageList = new ArrayList<>();
-        serviceProviderMessageAdapter = new ServiceProviderMessageAdapter(serviceProviderMessageList,senderId);
+        serviceProviderMessageAdapter = new ServiceProviderMessageAdapter(serviceProviderMessageList, senderId);
         messageRecyclerView.setAdapter(serviceProviderMessageAdapter);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String messageText = messageEditText.getText().toString().trim();
-                if (!TextUtils.isEmpty(messageText)) {
+                String messageText = messageEditText.getText().toString();
+                if (!TextUtils.isEmpty(messageText) && !TextUtils.isEmpty(receiverId)) {
                     sendMessage(senderId, receiverId, messageText);
+
                     messageEditText.setText("");
                 } else {
                     Toast.makeText(ServiceProviderChatActivity.this, "ServiceProviderMessage cannot be empty", Toast.LENGTH_SHORT).show();
@@ -114,6 +118,9 @@ public class ServiceProviderChatActivity extends AppCompatActivity {
                                 if (messagePushId != null && !messagePushId.isEmpty()) {
                                     jobOffersRef.child("ONGOING").child(receiverId).child("Messages").child(messagePushId).setValue(true);
                                     customerRef.child(customerUserId).child("JOB-OFFERS").child("ONGOING").child(senderId).child("Messages").child(messagePushId).setValue(true);
+
+                                    // Load the messages between sender and receiver
+                                    loadMessages(senderId, receiverId);
                                 } else {
                                     Toast.makeText(ServiceProviderChatActivity.this, "Failed to send message", Toast.LENGTH_SHORT).show();
                                 }
@@ -131,6 +138,7 @@ public class ServiceProviderChatActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
             }
 
             @Override
@@ -145,6 +153,8 @@ public class ServiceProviderChatActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+
+
     }
 
     private void sendMessage(String senderId, String receiverId, String messageText) {
@@ -176,22 +186,31 @@ public class ServiceProviderChatActivity extends AppCompatActivity {
         }
     }
 
-
-
-    private void loadMessages(String senderId, String receiverId, String customerUserId) {
+    private void loadMessages(String senderId, String receiverId) {
         messagesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 if (snapshot.exists()) {
                     List<ServiceProviderMessage> serviceProviderMessageList = new ArrayList<>();
                     for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
+
+
                         ServiceProviderMessage serviceProviderMessage = messageSnapshot.getValue(ServiceProviderMessage.class);
-                        if ((serviceProviderMessage.getSenderUid().equals(senderId) && serviceProviderMessage.getReceiverUid().equals(receiverId)) || (serviceProviderMessage.getSenderUid().equals(receiverId) && serviceProviderMessage.getReceiverUid().equals(senderId))) {
-                            serviceProviderMessageList.add(serviceProviderMessage);
-                            // Mark the serviceProviderMessage as read by the receiver
-                            if (serviceProviderMessage.getReceiverUid().equals(senderId) && !serviceProviderMessage.isRead()) {
-                                serviceProviderMessage.setRead(true);
-                                messageSnapshot.getRef().setValue(serviceProviderMessage);
+
+                        if (serviceProviderMessage != null) {
+                            String messageSenderId = serviceProviderMessage.getSenderUid();
+                            String messageReceiverId = serviceProviderMessage.getReceiverUid();
+
+                            if ((senderId != null && messageSenderId != null && senderId.equals(messageSenderId) && receiverId != null && messageReceiverId != null && receiverId.equals(messageReceiverId)) ||
+                                    (senderId != null && messageReceiverId != null && senderId.equals(messageReceiverId) && receiverId != null && messageSenderId != null && receiverId.equals(messageSenderId))) {
+                                serviceProviderMessageList.add(serviceProviderMessage);
+
+                                // Mark the serviceProviderMessage as read by the receiver
+                                if (messageReceiverId != null && senderId != null && messageReceiverId.equals(senderId) && !serviceProviderMessage.isRead()) {
+                                    serviceProviderMessage.setRead(true);
+                                    messageSnapshot.getRef().setValue(serviceProviderMessage);
+                                }
                             }
                         }
                     }
@@ -207,4 +226,8 @@ public class ServiceProviderChatActivity extends AppCompatActivity {
         });
     }
 
+
+
 }
+
+

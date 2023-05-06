@@ -91,9 +91,8 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
 
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerDashboardFragment()).commit();
-            navigationView.setCheckedItem(R.id.CMnav_dashboard);
-
+            Intent intent = new Intent(CustomerMainMenuActivity.this, CustomerMapsActivity.class);
+            startActivity(intent);
         }
 
     }

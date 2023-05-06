@@ -83,13 +83,3 @@ public class ServiceProviderNotification extends AppCompatActivity {
     }
 }
 
-//
-//    @Override
-//    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-//
-//        holder.nameView.setText(items.get(position).getName());
-//        holder.template.setText(items.get(position).getTemplate());
-////            holder.imageView.setImageResource(items.get(position).getImage());
-//
-//
-//    }

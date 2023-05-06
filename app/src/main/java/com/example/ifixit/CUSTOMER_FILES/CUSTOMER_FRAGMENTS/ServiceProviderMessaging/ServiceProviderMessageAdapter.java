@@ -1,4 +1,4 @@
-package com.example.ifixit.SERVICE_PROVIDER_FILES.ServiceProviderMessaging;
+package com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.ServiceProviderMessaging;
 
 import android.graphics.Color;
 import android.view.Gravity;

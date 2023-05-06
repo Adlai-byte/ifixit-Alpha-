@@ -106,8 +106,6 @@ public class CustomerProfileFragment extends Fragment {
 
 
     public void getHeaderInfo() {
-
-
         DatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -185,7 +183,7 @@ public class CustomerProfileFragment extends Fragment {
                             newImage.put("profileImageUrl", downloadUrlStr);
                             DatabaseRef.updateChildren(newImage).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
-                                public void onSuccess(Void aVoid) {
+                                public void onSuccess(Void Void) {
 //                                    finish();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {

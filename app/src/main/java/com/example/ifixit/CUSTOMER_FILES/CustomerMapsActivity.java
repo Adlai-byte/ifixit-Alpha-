@@ -70,7 +70,6 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
 
     //Nofication
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 

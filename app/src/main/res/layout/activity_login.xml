@@ -15,14 +15,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:text="Welcome to IFIXIT"
+        android:layout_marginTop="20dp"
+        android:text="IFIXIT"
         android:textSize="30sp"
         android:textStyle="bold" />
 
     <TextView
 
         android:id="@+id/sub_title_view"
+        android:layout_marginBottom="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_view"
@@ -36,14 +37,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/sub_title_view"
-        android:layout_marginLeft="20dp"
-        android:text="Describe yourself"
-        android:textSize="20dp" />
+        android:layout_marginTop="23dp"
+        android:text="Describe Yourself"
+        android:layout_centerHorizontal="true"
+        android:textSize="14dp" />
 
     <GridLayout
         android:id="@+id/grid"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/intro_view"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
@@ -54,15 +56,16 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/btnServiceProvider"
-            android:layout_width="164dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_row="1"
-            android:layout_rowWeight="1"
-            android:layout_column="1"
+            android:layout_rowWeight="0"
+            android:layout_column="0"
+            android:layout_columnWeight="0"
             android:layout_gravity="fill"
             android:layout_margin="8dp"
             android:paddingTop="20dp"
-            app:cardCornerRadius="8dp"
+            app:cardCornerRadius="30dp"
             app:cardElevation="10dp">
 
             <LinearLayout
@@ -73,16 +76,25 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_app_logo" />
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@mipmap/ic_electrician_logo" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Service Provider"
+                    android:textColor="@color/teal_200"
                     android:textAlignment="center"
                     android:textStyle="bold" />
+                <TextView
+                    android:layout_margin="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="10dp"
+                    android:text="A service provider is a company or individual that offers services to clients or customers in exchange for payment."
+                    android:textAlignment="center"
+                     />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
@@ -91,12 +103,16 @@
             android:id="@+id/btnCustomer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_row="1"
-            android:layout_rowWeight="1"
+            android:layout_row="0"
+            android:layout_rowWeight="0"
             android:layout_column="0"
-            android:layout_columnWeight="1"
+            android:layout_columnWeight="0"
             android:layout_gravity="fill"
-            android:layout_margin="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="30dp"
             app:cardElevation="8dp">
 
             <LinearLayout
@@ -107,16 +123,27 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_app_logo" />
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@mipmap/ic_customer_logo" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Customer"
+                    android:textColor="@color/quantum_vanillablue200"
                     android:textAlignment="center"
                     android:textStyle="bold" />
+                <TextView
+                    android:layout_margin="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="10dp"
+                    android:text="
+A customer is an individual or entity who purchases goods or services from a business in exchange for payment."
+                    android:textAlignment="center"
+                    />
+
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
