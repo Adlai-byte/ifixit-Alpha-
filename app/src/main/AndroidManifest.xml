@@ -15,9 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ifixit"
         tools:targetApi="31">
-        <activity
-            android:name=".Customer_FILTERED_SERVICES"
-            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -30,10 +27,6 @@
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderMainMenuActivity"
             android:exported="false"
             android:label="ServiceProviderMainMenuActivity" />
-        <activity
-            android:name=".SERVICE_PROVIDER_FILES.ServiceProviderNotification"
-            android:exported="false"
-            android:label="ServiceProviderNotification" />
         <activity
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderRegistrationActivity"
             android:exported="false"

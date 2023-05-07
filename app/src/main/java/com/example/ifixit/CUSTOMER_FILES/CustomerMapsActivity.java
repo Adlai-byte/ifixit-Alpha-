@@ -260,6 +260,7 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                                 String name = snapshot.child("NAME").getValue(String.class);
                                 String address = snapshot.child("ADDRESS").getValue(String.class);
                                 String email = snapshot.child("EMAIL").getValue(String.class);
+                                String imgUrl = snapshot.child("profileImageUrl").getValue(String.class);
                                 // Create a new job offer HashMap with the customer's data
 
                                 HashMap<String, String> jobOffer = new HashMap<>();
@@ -267,6 +268,7 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                                 jobOffer.put("ADDRESS", address);
                                 jobOffer.put("EMAIL", email);
                                 jobOffer.put("TIMESTAMP", String.valueOf(timestamp));
+                                jobOffer.put("profileImageUrl",imgUrl);
                                 mServiceProvidereRef.setValue(jobOffer);
 
                             }

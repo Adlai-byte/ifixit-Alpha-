@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ifixit.R;
-import com.example.ifixit.SERVICE_PROVIDER_FILES.Item;
-import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.MyAdapter;
+import com.example.ifixit.SERVICE_PROVIDER_FILES.RequestItem;
+import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.RequestAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +18,8 @@ public class Customer_FILTERED_SERVICES extends AppCompatActivity {
 
     //Recycler View Variables
     private RecyclerView recyclerView;
-    private List<Item> items;
-    private MyAdapter adapter;
+    private List<RequestItem> requestItems;
+    private RequestAdapter adapter;
     //Recycler View
 
 
@@ -30,8 +30,8 @@ public class Customer_FILTERED_SERVICES extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerview);
 
-        items = new ArrayList<>();
-        adapter = new MyAdapter(this, items);
+        requestItems = new ArrayList<>();
+        adapter = new RequestAdapter(this, requestItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         //Recycler View

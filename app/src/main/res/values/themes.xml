@@ -12,10 +12,13 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item>
     </style>
     <style name="SplashScreen." parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:statusBarColor" >?attr/colorOnPrimary</item>
     </style>
+
+
     <style name="Theme.Ifixit.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

@@ -12,76 +12,94 @@
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="20dp"
+        android:layout_margin="30dp"
         android:orientation="vertical"
 
         >
 
-
-
+<TextView
+    android:layout_marginTop="20sp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Let's gets started"
+    android:textSize="35sp"
+    android:textStyle="bold"
+    android:textAlignment="center"
+    />
         <TextView
-            android:id="@+id/tvFullName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fullname " />
+            android:text="Please fill in the form below"
+
+            android:textAlignment="center"
+            />
+
+
+
 
         <EditText
             android:id="@+id/SPetFullName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="Name"
             android:inputType="textPersonName" />
 
-        <TextView
-            android:id="@+id/tvAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Address" />
+
 
         <EditText
             android:id="@+id/SPetAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="Address"
             android:inputType="textPersonName" />
 
-        <TextView
-            android:id="@+id/SPtvEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Email" />
+
 
         <EditText
             android:id="@+id/SPetEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="Email"
             android:inputType="textPersonName" />
+            <EditText
+                android:id="@+id/SPetPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="12"
+                android:hint="Phone"
+                android:inputType="phone" />
 
-        <TextView
-            android:id="@+id/Email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Service" />
-        <Spinner
+
+
+            <Spinner
             android:id="@+id/spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
+            android:textAlignment="center"
+            android:padding="18dp"
             android:entries="@array/service_options" />
 
-        <TextView
-            android:layout_marginTop="20dp"
-            android:id="@+id/SPtvPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Password" />
 
         <EditText
             android:id="@+id/SPetPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Password"
             android:ems="10"
             android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/SPetConfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Confirm Password"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
 
 
 

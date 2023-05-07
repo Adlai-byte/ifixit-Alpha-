@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ifixit.R;
 
-public class MyViewHolder extends RecyclerView.ViewHolder {
+public class RequestViewHolder extends RecyclerView.ViewHolder {
 
     public ImageView imageView;
     public TextView nameView;
@@ -18,7 +18,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
     public Button BtnAccept;
     public Button Btndecline;
 
-    public MyViewHolder(@NonNull View itemView) {
+    public RequestViewHolder(@NonNull View itemView) {
         super(itemView);
 
         imageView = itemView.findViewById(R.id.userProfile);

@@ -114,10 +114,10 @@ public class ServiceProviderMainMenuActivity extends AppCompatActivity implement
                 Intent intent3 = new Intent(ServiceProviderMainMenuActivity.this, ServiceProviderChatActivity.class);
                 startActivity(intent3);
                 break;
-            case R.id.SPnav_notification:
-                Intent intent2 = new Intent(ServiceProviderMainMenuActivity.this, ServiceProviderNotification.class);
-                startActivity(intent2);
-                break;
+//            case R.id.SPnav_notification:
+//                Intent intent2 = new Intent(ServiceProviderMainMenuActivity.this, ServiceProviderNotification.class);
+//                startActivity(intent2);
+//                break;
             case R.id.SPnav_share:
                 Toast.makeText(this, "Shared", Toast.LENGTH_SHORT).show();
                 break;

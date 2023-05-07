@@ -11,20 +11,101 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/white"
         android:layout_marginTop="50dp"
+        android:background="@color/white"
         android:orientation="vertical">
 
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/SPImage"
-            android:src="@mipmap/ic_launcher_round"
-            android:layout_width="100sp"
-            android:layout_height="100sp"
-            android:layout_gravity="center"
-            android:layout_marginTop="20sp"
-            android:layout_marginRight="20sp"
-            android:padding="20sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/SPNewImage"
+                android:layout_width="75sp"
+                android:layout_height="75sp"
+                android:layout_margin="15sp"
+                android:layout_marginRight="20sp"
+
+                android:src="@mipmap/ic_launcher_round" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvSPname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25sp"
+                    android:text="Vinz Lloyd Alferez"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvSPservice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:text="Plumber"
+
+                    />
+
+                <TextView
+                    android:id="@+id/tvSPemail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:text="vinzlloydalferez@gmail.com"
+
+                    />
+            </LinearLayout>
+
+            <ImageView
+
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="40dp"
+                android:src="@drawable/baseline_settings_24"
+
+                />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text=" Job Requests"
+
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/recyclerview"
+                />
+
+
+
+
+
+
+        </LinearLayout>
+
 
         <LinearLayout
 
@@ -32,12 +113,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="20sp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
+
             <EditText
                 android:id="@+id/SPName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Juan Dela Cruz" />
+
             <TextView
                 android:id="@+id/customersEmail"
                 android:layout_width="match_parent"
@@ -61,7 +145,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Save" />
-
 
 
         </LinearLayout>

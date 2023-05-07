@@ -2,6 +2,7 @@ package com.example.ifixit.SERVICE_PROVIDER_FILES;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,13 +36,15 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
 
 
-
     //------EditTexts
     private EditText etName;
     private EditText etAddress;
     private EditText etEmail;
     private EditText etPassword;
     private Spinner spService;
+    private EditText etConfirmPassword;
+    private EditText etPhone;
+
     ArrayAdapter<CharSequence> adapter;
 
     //------Buttons
@@ -82,20 +85,22 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
             }
         });
 
-
+        etPhone = (EditText) findViewById(R.id.SPetPhone);
+        etConfirmPassword = (EditText) findViewById(R.id.SPetConfirmPassword);
         etName = (EditText) findViewById(R.id.SPetFullName);
-        etAddress =(EditText) findViewById(R.id.SPetAddress);
+        etAddress = (EditText) findViewById(R.id.SPetAddress);
         etEmail = (EditText) findViewById(R.id.SPetEmail);
-        etPassword = (EditText)findViewById(R.id.SPetPassword);
+        etPassword = (EditText) findViewById(R.id.SPetPassword);
         btnRegister = (Button) findViewById(R.id.SPbtnRegister);
         tvAlreadyHave = (TextView) findViewById(R.id.SPtvAlreadyHaveAnAccount);
+
 
         mAuth = FirebaseAuth.getInstance();
         firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if(user!=null){
+                if (user != null) {
                     Intent intent = new Intent(ServiceProviderRegistrationActivity.this, ServiceProviderMainMenuActivity.class);
                     startActivity(intent);
                     finish();
@@ -114,32 +119,55 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
                 final String name = etName.getText().toString();
                 final String address = etAddress.getText().toString();
                 final String service = String.valueOf(spService.getSelectedItem());
+                final String phone = etAddress.getText().toString();
+                final String confirmPassword = etConfirmPassword.getText().toString();
 
-                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(ServiceProviderRegistrationActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            Toast.makeText(ServiceProviderRegistrationActivity.this, "Sign-up Error", Toast.LENGTH_SHORT).show();
-                        }else {
-                            String userID = mAuth.getCurrentUser().getUid();
-                            DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("USERS").child("SERVICE-PROVIDERS").child(userID);
-                            current_user_db.setValue(true);
+                //Validations
+                if (TextUtils.isEmpty(name)
+                        || TextUtils.isEmpty(email)
+                        || TextUtils.isEmpty(address)
+                        || TextUtils.isEmpty(password)
+                        || TextUtils.isEmpty(confirmPassword)
+                        || TextUtils.isEmpty(phone)
+                        || !password.equals(confirmPassword)
 
-                            Map userInfo = new HashMap();
-                            userInfo.put("NAME", name);
-                            userInfo.put("EMAIL", email);
-                            userInfo.put("ADDRESS", address);
-                            userInfo.put("PASSWORD",password);
-                            userInfo.put("SERVICE",service);
+                ) {
+                    Toast.makeText(getApplicationContext(), "Please fill in all fields or password doesn't match", Toast.LENGTH_SHORT).show();
+                }
+                
+                else {
 
-                            current_user_db.updateChildren(userInfo);
 
+                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(ServiceProviderRegistrationActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(ServiceProviderRegistrationActivity.this, "Sign-up Error", Toast.LENGTH_SHORT).show();
+                            } else {
+                                String userID = mAuth.getCurrentUser().getUid();
+                                DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("USERS").child("SERVICE-PROVIDERS").child(userID);
+                                current_user_db.setValue(true);
+
+                                Map userInfo = new HashMap();
+                                userInfo.put("NAME", name);
+                                userInfo.put("EMAIL", email);
+                                userInfo.put("ADDRESS", address);
+                                userInfo.put("PHONE", phone);
+                                userInfo.put("PASSWORD", password);
+                                userInfo.put("SERVICE", service);
+
+                                current_user_db.updateChildren(userInfo);
+
+                            }
                         }
-                    }
-                });
+                    });
+
+                }
+
 
             }
         });
+
         tvAlreadyHave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,12 +177,14 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(firebaseAuthStateListener);
 
     }
+
     @Override
     protected void onStop() {
         super.onStop();
