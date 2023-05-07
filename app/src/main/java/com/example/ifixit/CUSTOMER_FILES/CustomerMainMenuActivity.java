@@ -65,10 +65,8 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
         Toolbar toolbar = findViewById(R.id.CMtoolbar);
         setSupportActionBar(toolbar);
         NavigationView navigationViews = findViewById(R.id.CMnav_view);
-
         headerInfo = navigationViews.getHeaderView(0);
         navigationViews.setNavigationItemSelectedListener(this);
-
         customerImage = headerInfo.findViewById(R.id.CMheaderImageView);
         headerEmail = headerInfo.findViewById(R.id.CMemailTV);
         headerUserName = headerInfo.findViewById(R.id.CMuserNameTV);

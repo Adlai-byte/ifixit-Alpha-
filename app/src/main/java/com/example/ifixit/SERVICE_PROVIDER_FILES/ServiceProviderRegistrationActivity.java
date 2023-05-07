@@ -3,8 +3,11 @@ package com.example.ifixit.SERVICE_PROVIDER_FILES;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,12 +41,17 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
     private EditText etAddress;
     private EditText etEmail;
     private EditText etPassword;
+    private Spinner spService;
+    ArrayAdapter<CharSequence> adapter;
 
     //------Buttons
     private Button btnRegister;
 
     //------TextView
     private TextView tvAlreadyHave;
+
+    //------String
+    private String mService;
 
 
     @Override
@@ -52,13 +60,34 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.service_provider_registration);
 
         //---Layout Connecting
+
+        //Spinner
+        spService = findViewById(R.id.spinner);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.service_options, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spService.setAdapter(adapter);
+        spService.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // handle item selection
+                mService = spService.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // handle nothing selected
+
+                mService = "";
+            }
+        });
+
+
         etName = (EditText) findViewById(R.id.SPetFullName);
         etAddress =(EditText) findViewById(R.id.SPetAddress);
         etEmail = (EditText) findViewById(R.id.SPetEmail);
         etPassword = (EditText)findViewById(R.id.SPetPassword);
-
         btnRegister = (Button) findViewById(R.id.SPbtnRegister);
-
         tvAlreadyHave = (TextView) findViewById(R.id.SPtvAlreadyHaveAnAccount);
 
         mAuth = FirebaseAuth.getInstance();
@@ -84,6 +113,7 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
                 final String password = etPassword.getText().toString();
                 final String name = etName.getText().toString();
                 final String address = etAddress.getText().toString();
+                final String service = String.valueOf(spService.getSelectedItem());
 
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(ServiceProviderRegistrationActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -99,6 +129,9 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
                             userInfo.put("NAME", name);
                             userInfo.put("EMAIL", email);
                             userInfo.put("ADDRESS", address);
+                            userInfo.put("PASSWORD",password);
+                            userInfo.put("SERVICE",service);
+
                             current_user_db.updateChildren(userInfo);
 
                         }

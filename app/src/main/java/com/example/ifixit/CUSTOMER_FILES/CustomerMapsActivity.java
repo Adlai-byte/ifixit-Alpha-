@@ -3,15 +3,19 @@ package com.example.ifixit.CUSTOMER_FILES;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +28,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.ifixit.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -64,6 +69,11 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
     private TextView serviceProviderEmail;
     private TextView serviceProviderAddress;
     private LinearLayout serviceProviderLayout;
+    private ImageView serviceProviderImage;
+
+    private Uri resultUri;
+    private String mProfileImage;
+
     Marker markerzy;
 
     String serviceProviderUserId;
@@ -76,6 +86,7 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customer_maps);
+        //
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -84,11 +95,13 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
+
         hireButton = (Button) findViewById(R.id.serviceProviderRequest);
         serviceProviderName = (TextView) findViewById(R.id.serviceProviderName);
         serviceProviderAddress = (TextView) findViewById(R.id.serviceProviderAddress);
         serviceProviderEmail = (TextView) findViewById(R.id.serviceProviderEmail);
         serviceProviderLayout = (LinearLayout) findViewById(R.id.serviceProviderInfo);
+        serviceProviderImage = (ImageView) findViewById(R.id.serviceProviderProfileImage);
 
 
     }
@@ -135,7 +148,7 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                         String email = childSnapshot.child("EMAIL").getValue(String.class);
                         String service = childSnapshot.child("SERVICE").getValue(String.class);
                         if (service == null) {
-                            service = "Plumber";
+                            service = "None";
                         }
                         String latStr = childSnapshot.child("LOCATION").child("lat").getValue(String.class);
                         String lngStr = childSnapshot.child("LOCATION").child("lng").getValue(String.class);
@@ -156,7 +169,7 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                                     markerzy = Mmap.addMarker(new MarkerOptions()
                                             .position(location)
                                             .title(userId)
-                                            .snippet(email)
+                                            .snippet(service)
                                             .icon(vectorToBitmap(R.mipmap.ic_plumber_logo)));
                                     mMarkers.put(name, markerzy);
                                     markerzy.setTag(userId);
@@ -166,7 +179,7 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                                     markerzy = Mmap.addMarker(new MarkerOptions()
                                             .position(location)
                                             .title(userId)
-                                            .snippet(email)
+                                            .snippet(service)
                                             .icon(vectorToBitmap(R.mipmap.ic_electrician_logo)));
                                     mMarkers.put(name, markerzy);
                                     markerzy.setTag(userId);
@@ -175,7 +188,7 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                                     markerzy = Mmap.addMarker(new MarkerOptions()
                                             .position(location)
                                             .title(userId)
-                                            .snippet(email)
+                                            .snippet(service)
                                             .icon(vectorToBitmap(R.mipmap.ic_carpentry_logo)));
                                     mMarkers.put(name, markerzy);
                                     markerzy.setTag(userId);
@@ -184,7 +197,7 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                                     markerzy = Mmap.addMarker(new MarkerOptions()
                                             .position(location)
                                             .title(userId)
-                                            .snippet(email)
+                                            .snippet(service)
                                             .icon(vectorToBitmap(R.mipmap.ic_computer_repair_logo)));
                                     mMarkers.put(name, markerzy);
                                     markerzy.setTag(userId);
@@ -193,7 +206,7 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                                     markerzy = Mmap.addMarker(new MarkerOptions()
                                             .position(location)
                                             .title(userId)
-                                            .snippet(email)
+                                            .snippet(service)
                                             .icon(vectorToBitmap(R.mipmap.ic_gardener_logo)));
                                     mMarkers.put(name, markerzy);
                                     markerzy.setTag(userId);
@@ -202,7 +215,7 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                                     markerzy = Mmap.addMarker(new MarkerOptions()
                                             .position(location)
                                             .title(userId)
-                                            .snippet(email)
+                                            .snippet(service)
                                             .icon(vectorToBitmap(R.mipmap.ic_app_logo)));
                                     mMarkers.put(name, markerzy);
                                     markerzy.setTag(userId);
@@ -274,8 +287,6 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
             Mmap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(@NonNull Marker marker) {
-
-
                     displayToTextView(marker.getTag().toString());
                     serviceProviderUserId = marker.getTag().toString();
                     return true;
@@ -373,16 +384,18 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
         providerRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 String name = snapshot.child("NAME").getValue(String.class);
                 String email = snapshot.child("EMAIL").getValue(String.class);
                 String address = snapshot.child("ADDRESS").getValue(String.class);
+                String serviceProviderImageURL  = snapshot.child("profileImageUrl").getValue(String.class);
 
 
                 serviceProviderName.setText(name);
                 serviceProviderEmail.setText(email);
                 serviceProviderAddress.setText(address);
-
                 serviceProviderLayout.setVisibility(View.VISIBLE);
+                Glide.with(getApplication()).load(serviceProviderImageURL).into(serviceProviderImage);
 
                 // display the data in TextViews
             }
@@ -412,6 +425,16 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
         vectorDrawable.draw(canvas);
 
         return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            final Uri imageUri = data.getData();
+            resultUri = imageUri;
+            serviceProviderImage.setImageURI(resultUri);
+        }
     }
 
 
