@@ -66,7 +66,7 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
 
     private Button hireButton;
     private TextView serviceProviderName;
-    private TextView serviceProviderEmail;
+    private TextView serviceProviderJob;
     private TextView serviceProviderAddress;
     private LinearLayout serviceProviderLayout;
     private ImageView serviceProviderImage;
@@ -99,7 +99,7 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
         hireButton = (Button) findViewById(R.id.serviceProviderRequest);
         serviceProviderName = (TextView) findViewById(R.id.serviceProviderName);
         serviceProviderAddress = (TextView) findViewById(R.id.serviceProviderAddress);
-        serviceProviderEmail = (TextView) findViewById(R.id.serviceProviderEmail);
+        serviceProviderJob = (TextView) findViewById(R.id.serviceProviderJob);
         serviceProviderLayout = (LinearLayout) findViewById(R.id.serviceProviderInfo);
         serviceProviderImage = (ImageView) findViewById(R.id.serviceProviderProfileImage);
 
@@ -300,7 +300,7 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                 public void onMapClick(@NonNull LatLng latLng) {
                     serviceProviderName.setText("");
                     serviceProviderAddress.setText("");
-                    serviceProviderEmail.setText("");
+                    serviceProviderJob.setText("");
                     serviceProviderLayout.setVisibility(View.GONE);
                 }
             });
@@ -388,13 +388,13 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 String name = snapshot.child("NAME").getValue(String.class);
-                String email = snapshot.child("EMAIL").getValue(String.class);
+                String job = snapshot.child("SERVICE").getValue(String.class);
                 String address = snapshot.child("ADDRESS").getValue(String.class);
                 String serviceProviderImageURL  = snapshot.child("profileImageUrl").getValue(String.class);
 
 
                 serviceProviderName.setText(name);
-                serviceProviderEmail.setText(email);
+                serviceProviderJob.setText(job);
                 serviceProviderAddress.setText(address);
                 serviceProviderLayout.setVisibility(View.VISIBLE);
                 Glide.with(getApplication()).load(serviceProviderImageURL).into(serviceProviderImage);

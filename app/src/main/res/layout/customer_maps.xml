@@ -8,7 +8,6 @@
     tools:context=".CUSTOMER_FILES.CustomerMapsActivity">
 
 
-
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/CMmap"
@@ -25,59 +24,97 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@color/white"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:visibility="gone">
-
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/serviceProviderProfileImage"
-            android:layout_width="100sp"
-            android:layout_height="100sp"
-            android:background="@drawable/rounded_image"
-            android:padding="20sp"
-            android:src="@mipmap/ic_launcher_round" />
 
         <LinearLayout
 
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/serviceProviderProfileImage"
+                android:layout_width="100sp"
+                android:layout_height="100sp"
+                android:background="@drawable/rounded_image"
+                android:padding="20sp"
+                android:src="@mipmap/ic_launcher_round" />
+
+            <LinearLayout
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+
+                >
+
+                <TextView
+                    android:id="@+id/serviceProviderName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Service Provider Name" />
+                ]
+
+                <TextView
+                    android:id="@+id/serviceProviderJob"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+
+                <TextView
+                    android:id="@+id/serviceProviderAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="" />
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/serviceProviderRequest"
+                android:layout_width="wrap_content"
+                android:layout_height="60sp"
+                android:layout_marginLeft="30sp"
+                android:layout_marginTop="25sp"
+                android:text="HIRE" />
+
+
+        </LinearLayout>
+
+
+        <!--Reviews-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/serviceProviderName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="10sp"
-                android:text="Service Provider Name" />
+                android:text="Reviews"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/serviceProviderEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10sp"
-                android:text="" />
 
-            <TextView
-                android:id="@+id/serviceProviderAddress"
-                android:layout_width="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="10sp"
-                android:text="" />
+                android:id="@+id/reviewsRecyclerView"/>
+
+
 
 
 
         </LinearLayout>
 
-        <Button
-            android:layout_marginTop="25sp"
-            android:layout_marginLeft="30sp"
-            android:id="@+id/serviceProviderRequest"
-            android:layout_width="wrap_content"
-            android:layout_height="60sp"
-            android:text="HIRE" />
-
-
     </LinearLayout>
+
 
 </FrameLayout>
