@@ -8,13 +8,13 @@
             android:icon="@drawable/ic_profile"
             android:title="Profile" />
         <item
-            android:id="@+id/CMnav_dashboard"
-            android:icon="@drawable/ic_dashboard"
-            android:title="Dashboard" />
+            android:id="@+id/CMnav_listview"
+            android:icon="@drawable/ic_listview"
+            android:title="List View" />
         <item
             android:id="@+id/CMnav_map"
             android:icon="@drawable/ic_map"
-            android:title="Map" />
+            android:title="Map View" />
 
 
         <item

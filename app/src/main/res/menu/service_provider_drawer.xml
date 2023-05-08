@@ -9,7 +9,7 @@
             android:title="Profile" />
         <item
             android:id="@+id/SPnav_dashboard"
-            android:icon="@drawable/ic_dashboard"
+            android:icon="@drawable/ic_listview"
             android:title="Dashboard" />
         <item
             android:id="@+id/SPnav_map"

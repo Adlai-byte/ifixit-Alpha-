@@ -16,6 +16,6 @@ public class ServiceProviderDashboardFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.customer_fragment_dashboard,container,false);
+        return inflater.inflate(R.layout.customer_fragment_list_view,container,false);
     }
 }

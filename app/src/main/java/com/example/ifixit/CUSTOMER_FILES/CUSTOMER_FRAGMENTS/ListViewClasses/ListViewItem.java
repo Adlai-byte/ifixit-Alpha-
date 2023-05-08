@@ -1,0 +1,59 @@
+package com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.ListViewClasses;
+
+public class ListViewItem {
+    String NAME;
+    String profileImageUrl;
+    String SERVICE;
+    String ADDRESS;
+    float RATING;
+
+    public ListViewItem(String NAME, String profileImageUrl, String SERVICE, String ADDRESS, float RATING) {
+        this.NAME = NAME;
+        this.profileImageUrl = profileImageUrl;
+        this.SERVICE = SERVICE;
+        this.ADDRESS = ADDRESS;
+        this.RATING = RATING;
+    }
+    public float getRATING() {
+        return RATING;
+    }
+
+    public void setRATING(float RATING) {
+        this.RATING = RATING;
+    }
+
+    public String getNAME() {
+        return NAME;
+    }
+
+    public void setNAME(String NAME) {
+        this.NAME = NAME;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public String getSERVICE() {
+        return SERVICE;
+    }
+
+    public void setSERVICE(String SERVICE) {
+        this.SERVICE = SERVICE;
+    }
+
+    public String getADDRESS() {
+        return ADDRESS;
+    }
+
+    public void setADDRESS(String ADDRESS) {
+        this.ADDRESS = ADDRESS;
+    }
+
+
+
+}

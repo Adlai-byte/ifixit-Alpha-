@@ -19,7 +19,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
-import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerDashboardFragment;
+import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerListViewFragment;
 import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerMessageFragment;
 import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerNotificationFragment;
 import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerProfileFragment;
@@ -102,10 +102,9 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
 
             case R.id.CMnav_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerProfileFragment()).commit();
-
                 break;
-            case R.id.CMnav_dashboard:
-                getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerDashboardFragment()).commit();
+            case R.id.CMnav_listview:
+                getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerListViewFragment()).commit();
                 break;
             case R.id.CMnav_map:
                 Intent intent = new Intent(CustomerMainMenuActivity.this, CustomerMapsActivity.class);

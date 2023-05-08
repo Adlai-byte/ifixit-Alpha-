@@ -259,53 +259,6 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                     intent.putExtra("serviceProviderUserId",serviceProviderUserId);
 
                     startActivity(intent);
-//                    long timestamp = System.currentTimeMillis();
-//                    DatabaseReference mServiceProvidereRef;
-//                    DatabaseReference mCustomerRef;
-//
-//
-//
-//                    mCustomerRef = FirebaseDatabase.getInstance().getReference()
-//                            .child("USERS")
-//                            .child("CUSTOMERS");
-//
-//                    mServiceProvidereRef = FirebaseDatabase.getInstance().getReference()
-//                            .child("USERS")
-//                            .child("SERVICE-PROVIDERS")
-//                            .child(serviceProviderUserId)
-//                            .child("JOB-OFFERS")
-//                            .child("PENDING")
-//                            .child(customerUserId);
-//
-//
-//                    Toast.makeText(getApplicationContext(), serviceProviderUserId, Toast.LENGTH_LONG).show();
-//
-//                    mCustomerRef.child(customerUserId).addListenerForSingleValueEvent(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                            if (snapshot.exists()) {
-//                                String name = snapshot.child("NAME").getValue(String.class);
-//                                String address = snapshot.child("ADDRESS").getValue(String.class);
-//                                String email = snapshot.child("EMAIL").getValue(String.class);
-//                                String imgUrl = snapshot.child("profileImageUrl").getValue(String.class);
-//                                // Create a new job offer HashMap with the customer's data
-//
-//                                HashMap<String, String> jobOffer = new HashMap<>();
-//                                jobOffer.put("NAME", name);
-//                                jobOffer.put("ADDRESS", address);
-//                                jobOffer.put("EMAIL", email);
-//                                jobOffer.put("TIMESTAMP", String.valueOf(timestamp));
-//                                jobOffer.put("profileImageUrl", imgUrl);
-//                                mServiceProvidereRef.setValue(jobOffer);
-//
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError error) {
-//
-//                        }
-//                    });
 
 
                 }
