@@ -22,7 +22,6 @@ import com.bumptech.glide.Glide;
 import com.example.ifixit.R;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderDashboardFragment;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderProfileFragment;
-import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.ServiceProviderMessaging.ServiceProviderChatActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -110,10 +109,10 @@ public class ServiceProviderMainMenuActivity extends AppCompatActivity implement
                 Intent intent = new Intent(ServiceProviderMainMenuActivity.this, ServiceProviderMapsActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.SPnav_message:
-                Intent intent3 = new Intent(ServiceProviderMainMenuActivity.this, ServiceProviderChatActivity.class);
-                startActivity(intent3);
-                break;
+//            case R.id.SPnav_message:
+//                Intent intent3 = new Intent(ServiceProviderMainMenuActivity.this, ServiceProviderChatActivity.class);
+//                startActivity(intent3);
+//                break;
 //            case R.id.SPnav_notification:
 //                Intent intent2 = new Intent(ServiceProviderMainMenuActivity.this, ServiceProviderNotification.class);
 //                startActivity(intent2);

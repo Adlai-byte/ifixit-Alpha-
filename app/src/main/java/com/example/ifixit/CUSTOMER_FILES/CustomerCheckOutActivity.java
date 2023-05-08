@@ -1,0 +1,266 @@
+package com.example.ifixit.CUSTOMER_FILES;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.NumberPicker;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
+import com.example.ifixit.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class CustomerCheckOutActivity extends AppCompatActivity {
+
+    private ImageView profileImage;
+    private TextView name;
+    private TextView job;
+    private TextView address;
+    private NumberPicker picker1;
+    private TextView total;
+    private Button placeOrder;
+    private Spinner serviceType;
+    private EditText commentEditText;
+    //Use this as the key in the Hashmap
+
+    //*
+    private String service = "Installation";
+    private String comment;
+    double days = 1.0;
+    double finalPrice;
+    //*
+
+
+    double initialPrice;
+
+
+    // Variables from customer maps
+    long timestamp = System.currentTimeMillis();
+    DatabaseReference mServiceProviderRef;
+    DatabaseReference mCustomerRef;
+    DatabaseReference mServiceProviderRefForHeader;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_customer_check_out);
+        //------Spinner
+        Intent intent = getIntent();
+        HashMap<String, Double> servicePriceDictionary = new HashMap<>();
+
+        String installation = "Installation";
+        String maintenance = "Maintenance";
+        String repair = "Repair";
+
+        servicePriceDictionary.put(installation, 500.0);
+        servicePriceDictionary.put(maintenance, 600.0);
+        servicePriceDictionary.put(repair, 450.0);
+
+
+        serviceType = findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.service_type, android.R.layout.simple_spinner_item);
+        serviceType.setAdapter(adapter);
+
+
+        serviceType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                service = serviceType.getItemAtPosition(i).toString();
+//                Toast.makeText(CustomerCheckOutActivity.this, "Changed Here" +service, Toast.LENGTH_SHORT).show();
+
+                if (servicePriceDictionary.containsKey(service)) {
+
+                    initialPrice = servicePriceDictionary.get(service);
+
+                    Toast.makeText(CustomerCheckOutActivity.this, String.valueOf(initialPrice), Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(CustomerCheckOutActivity.this, "Not Found", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+        String customerUserId = intent.getStringExtra("customerUserId");
+        String serviceProviderUserId = intent.getStringExtra("serviceProviderUserId");
+        //Database References
+        mServiceProviderRefForHeader = FirebaseDatabase.getInstance().getReference()
+                .child("USERS")
+                .child("SERVICE-PROVIDERS")
+                .child(serviceProviderUserId);
+
+        mCustomerRef = FirebaseDatabase.getInstance().getReference()
+                .child("USERS")
+                .child("CUSTOMERS");
+
+        mServiceProviderRef = FirebaseDatabase.getInstance().getReference()
+                .child("USERS")
+                .child("SERVICE-PROVIDERS")
+                .child(serviceProviderUserId)
+                .child("JOB-OFFERS")
+                .child("PENDING")
+                .child(customerUserId);
+        //------------------
+
+
+        //Layputs
+        profileImage = (ImageView) findViewById(R.id.serviceProviderProfileImage);
+        name = (TextView) findViewById(R.id.serviceProviderName);
+        job = (TextView) findViewById(R.id.serviceProviderJob);
+        address = (TextView) findViewById(R.id.serviceProviderAddress);
+        total = (TextView) findViewById(R.id.tvTotal);
+        picker1 = (NumberPicker) findViewById(R.id.numberPicker1);
+        placeOrder = (Button) findViewById(R.id.placeOrderButton);
+        commentEditText = (EditText) findViewById(R.id.comment);
+        //Number Picker
+        picker1.setMinValue(0);
+        picker1.setMaxValue(31);
+
+
+        picker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                days = picker1.getValue();
+                finalPrice = days * initialPrice;
+                total.setText(String.valueOf(finalPrice));
+
+            }
+        });
+
+
+        getHeaderInfo();
+
+
+        //-------------------------------------------------------------------------------------------
+        //Variables From Customer Maps
+
+        placeOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mCustomerRef = FirebaseDatabase.getInstance().getReference()
+                        .child("USERS")
+                        .child("CUSTOMERS");
+                mServiceProviderRef = FirebaseDatabase.getInstance().getReference()
+                        .child("USERS")
+                        .child("SERVICE-PROVIDERS")
+                        .child(serviceProviderUserId)
+                        .child("JOB-OFFERS")
+                        .child("PENDING")
+                        .child(customerUserId);
+
+                Toast.makeText(getApplicationContext(), serviceProviderUserId, Toast.LENGTH_LONG).show();
+
+                mCustomerRef.child(customerUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            String name = snapshot.child("NAME").getValue(String.class);
+                            String address = snapshot.child("ADDRESS").getValue(String.class);
+                            String email = snapshot.child("EMAIL").getValue(String.class);
+                            String imgUrl = snapshot.child("profileImageUrl").getValue(String.class);
+
+                            String jobType = service;
+                            String commentReview = comment;
+                            String daysOfWork = String.valueOf(days);
+                            String totalPrice = String.valueOf(finalPrice);
+
+                            // Create a new job offer HashMap with the customer's data
+                            HashMap<String, String> jobOffer = new HashMap<>();
+                            jobOffer.put("NAME", name);
+                            jobOffer.put("ADDRESS", address);
+                            jobOffer.put("EMAIL", email);
+                            jobOffer.put("TIMESTAMP", String.valueOf(timestamp));
+                            jobOffer.put("profileImageUrl", imgUrl);
+                            jobOffer.put("JOB-TYPE", jobType);
+                            jobOffer.put("COMMENT", commentReview);
+                            jobOffer.put("DURATION", daysOfWork);
+                            jobOffer.put("TOTAL-PRICE",totalPrice);
+
+                            mServiceProviderRef.setValue(jobOffer);
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                Toast.makeText(CustomerCheckOutActivity.this, "Requested Succesfully", Toast.LENGTH_SHORT).show();
+                Intent intent1 = new Intent(CustomerCheckOutActivity.this,CustomerMapsActivity.class);
+                startActivity(intent1);
+
+
+            }
+        });
+
+        //-------------------------------------------------------------------------------------------
+    }
+
+    public void getHeaderInfo() {
+        mServiceProviderRefForHeader.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
+                    Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
+                    if (map.get("NAME") != null) {
+                        String mUserName;
+                        mUserName = map.get("NAME").toString();
+                        name.setText(mUserName);
+                    }
+                    if (map.get("EMAIL") != null) {
+                        String mAddress;
+                        mAddress = map.get("ADDRESS").toString();
+                        address.setText(mAddress);
+                    }
+
+                    if (map.get("SERVICE") != null) {
+                        String mService;
+                        mService = map.get("SERVICE").toString();
+                        job.setText(mService);
+
+                    }
+                    if (map.get("profileImageUrl") != null) {
+                        String mProfileImageUrl;
+                        mProfileImageUrl = map.get("profileImageUrl").toString();
+                        Glide.with(getApplication().getApplicationContext()).load(mProfileImageUrl).into(profileImage);
+                    }
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+}

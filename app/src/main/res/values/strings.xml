@@ -36,4 +36,12 @@
         <item>Carpenter</item>
     </string-array>
 
+    <string-array name="service_type">
+        <item>Installation</item>
+        <item>Maintenance</item>
+        <item>Repair</item>
+    </string-array>
+
+
+
 </resources>

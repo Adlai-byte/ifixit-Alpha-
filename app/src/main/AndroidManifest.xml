@@ -21,8 +21,12 @@
             android:value="AIzaSyDbm7rYA_28n5PpW1xQHBq-kScG4AbW2ug" />
 
         <activity
-            android:name=".CUSTOMER_FILES.CUSTOMER_FRAGMENTS.ServiceProviderMessaging.ServiceProviderChatActivity"
-            android:exported="false" />
+            android:name=".CUSTOMER_FILES.CustomerCheckOutActivity"
+            android:exported="false"
+            android:parentActivityName=".CUSTOMER_FILES.CustomerMapsActivity"
+            />
+
+
         <activity
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderMainMenuActivity"
             android:exported="false"
@@ -39,7 +43,7 @@
             android:name=".CUSTOMER_FILES.CustomerMapsActivity"
             android:exported="false"
             android:label="@string/title_activity_customer_maps"
-            android:parentActivityName=".CUSTOMER_FILES.CustomerMapsActivity" />
+            android:parentActivityName=".CUSTOMER_FILES.CustomerMainMenuActivity" />
         <activity
             android:name=".CUSTOMER_FILES.CustomerMainMenuActivity"
             android:exported="false" />

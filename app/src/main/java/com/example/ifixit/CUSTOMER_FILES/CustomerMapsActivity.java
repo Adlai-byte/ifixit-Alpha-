@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -27,6 +26,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.ifixit.R;
@@ -52,7 +53,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class CustomerMapsActivity extends FragmentActivity implements OnMapReadyCallback, com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -78,7 +81,12 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
 
     String serviceProviderUserId;
 
-    //Nofication
+    //------ Customer Reviews Variables----
+    private RecyclerView recyclerView;
+    private List<ReviewItem> reviewItems;
+    private ReviewAdapter reviewAdapter;
+    //------------------------
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,15 +94,19 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customer_maps);
-        //
-
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.CMmap);
         mapFragment.getMapAsync(this);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
+        //-------Review References------
+        recyclerView = findViewById(R.id.reviewsRecyclerView);
+        reviewItems = new ArrayList<>();
+        reviewAdapter = new ReviewAdapter(this, reviewItems);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(reviewAdapter);
+        //------------------------------
 
         hireButton = (Button) findViewById(R.id.serviceProviderRequest);
         serviceProviderName = (TextView) findViewById(R.id.serviceProviderName);
@@ -240,45 +252,60 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
             hireButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    long timestamp = System.currentTimeMillis();
-
-                    DatabaseReference mServiceProvidereRef;
-                    DatabaseReference mCustomerRef;
-
                     String customerUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    mCustomerRef = FirebaseDatabase.getInstance().getReference().child("USERS").child("CUSTOMERS");
 
-                    mServiceProvidereRef = FirebaseDatabase.getInstance().getReference().child("USERS").child("SERVICE-PROVIDERS").child(serviceProviderUserId).child("JOB-OFFERS").child("PENDING").child(customerUserId);
+                    Intent intent =new Intent(CustomerMapsActivity.this, CustomerCheckOutActivity.class);
+                    intent.putExtra("customerUserId",customerUserId );
+                    intent.putExtra("serviceProviderUserId",serviceProviderUserId);
 
-
-                    Toast.makeText(getApplicationContext(), serviceProviderUserId, Toast.LENGTH_LONG).show();
-
-                    mCustomerRef.child(customerUserId).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.exists()) {
-                                String name = snapshot.child("NAME").getValue(String.class);
-                                String address = snapshot.child("ADDRESS").getValue(String.class);
-                                String email = snapshot.child("EMAIL").getValue(String.class);
-                                String imgUrl = snapshot.child("profileImageUrl").getValue(String.class);
-                                // Create a new job offer HashMap with the customer's data
-
-                                HashMap<String, String> jobOffer = new HashMap<>();
-                                jobOffer.put("NAME", name);
-                                jobOffer.put("ADDRESS", address);
-                                jobOffer.put("EMAIL", email);
-                                jobOffer.put("TIMESTAMP", String.valueOf(timestamp));
-                                jobOffer.put("profileImageUrl",imgUrl);
-                                mServiceProvidereRef.setValue(jobOffer);
-
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
+                    startActivity(intent);
+//                    long timestamp = System.currentTimeMillis();
+//                    DatabaseReference mServiceProvidereRef;
+//                    DatabaseReference mCustomerRef;
+//
+//
+//
+//                    mCustomerRef = FirebaseDatabase.getInstance().getReference()
+//                            .child("USERS")
+//                            .child("CUSTOMERS");
+//
+//                    mServiceProvidereRef = FirebaseDatabase.getInstance().getReference()
+//                            .child("USERS")
+//                            .child("SERVICE-PROVIDERS")
+//                            .child(serviceProviderUserId)
+//                            .child("JOB-OFFERS")
+//                            .child("PENDING")
+//                            .child(customerUserId);
+//
+//
+//                    Toast.makeText(getApplicationContext(), serviceProviderUserId, Toast.LENGTH_LONG).show();
+//
+//                    mCustomerRef.child(customerUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                            if (snapshot.exists()) {
+//                                String name = snapshot.child("NAME").getValue(String.class);
+//                                String address = snapshot.child("ADDRESS").getValue(String.class);
+//                                String email = snapshot.child("EMAIL").getValue(String.class);
+//                                String imgUrl = snapshot.child("profileImageUrl").getValue(String.class);
+//                                // Create a new job offer HashMap with the customer's data
+//
+//                                HashMap<String, String> jobOffer = new HashMap<>();
+//                                jobOffer.put("NAME", name);
+//                                jobOffer.put("ADDRESS", address);
+//                                jobOffer.put("EMAIL", email);
+//                                jobOffer.put("TIMESTAMP", String.valueOf(timestamp));
+//                                jobOffer.put("profileImageUrl", imgUrl);
+//                                mServiceProvidereRef.setValue(jobOffer);
+//
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError error) {
+//
+//                        }
+//                    });
 
 
                 }
@@ -382,6 +409,42 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
 
 
     public void displayToTextView(String providerId) {
+
+        //------------REVIEW  FUNCTION-----------------
+        //Clear the Array
+        reviewItems.clear();
+
+        Query query = FirebaseDatabase.getInstance().getReference()
+                .child("USERS")
+                .child("SERVICE-PROVIDERS")
+                .child(providerId)
+                .child("REVIEWS");
+
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    String userId = childSnapshot.getKey();
+                    String name = childSnapshot.child("NAME").getValue(String.class);
+                    String imgUrl = childSnapshot.child("profileImageUrl").getValue(String.class);
+                    String reviews = childSnapshot.child("COMMENT").getValue(String.class);
+                        reviewItems.add(new ReviewItem(name,imgUrl,reviews));
+
+                }
+                reviewAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("ServiceProviderNotif", "Error: " + error.getMessage());
+            }
+        });
+
+        //------------------------------
+
         DatabaseReference providerRef = FirebaseDatabase.getInstance().getReference().child("USERS").child("SERVICE-PROVIDERS").child(providerId);
         providerRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -390,9 +453,7 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                 String name = snapshot.child("NAME").getValue(String.class);
                 String job = snapshot.child("SERVICE").getValue(String.class);
                 String address = snapshot.child("ADDRESS").getValue(String.class);
-                String serviceProviderImageURL  = snapshot.child("profileImageUrl").getValue(String.class);
-
-
+                String serviceProviderImageURL = snapshot.child("profileImageUrl").getValue(String.class);
                 serviceProviderName.setText(name);
                 serviceProviderJob.setText(job);
                 serviceProviderAddress.setText(address);

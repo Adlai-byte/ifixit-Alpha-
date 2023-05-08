@@ -1,4 +1,4 @@
-package com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS;
+package com.example.ifixit.SERVICE_PROVIDER_FILES;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.ifixit.R;
-import com.example.ifixit.SERVICE_PROVIDER_FILES.RequestItem;
-import com.example.ifixit.SERVICE_PROVIDER_FILES.RequestViewHolder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -43,8 +41,6 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestViewHolder> {
                         .into(holder.imageView);
 
         holder.nameView.setText(requestItem.getNAME());
-
-
         holder.BtnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,7 +69,6 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestViewHolder> {
                 notifyItemRangeChanged(itemPosition, requestItems.size());
             }
         });
-
         holder.Btndecline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

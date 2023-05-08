@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ifixit.R;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.RequestItem;
-import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.RequestAdapter;
+import com.example.ifixit.SERVICE_PROVIDER_FILES.RequestAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
