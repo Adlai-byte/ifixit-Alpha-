@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -27,13 +28,13 @@ import java.util.List;
 
 public class CustomerListViewFragment extends Fragment {
 
-
     //---------List View Variables--------
     private RecyclerView recyclerView;
     private List<ListViewItem> listViewItems;
     private ListViewAdapter listViewAdapter;
     private SearchView listSearchView;
-
+    private Query query;
+    private Button gardener,plumber,electrician,computerRepair,masonry,carpentry;
 
     //------------------------------------
 
@@ -51,16 +52,76 @@ public class CustomerListViewFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(listViewAdapter);
 
+        //--------Buttons---------
+        gardener = rootView.findViewById(R.id.filterGardener);
+        plumber = rootView.findViewById(R.id.filterPlumber);
+        electrician = rootView.findViewById(R.id.filterElectrician);
+        computerRepair = rootView.findViewById(R.id.filterComputerRepair);
+        masonry = rootView.findViewById(R.id.filterMasonry);
+        carpentry = rootView.findViewById(R.id.filterCarpentry);
+        //-----------------------
 
-        listSearchView.clearFocus();
+        gardener.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listViewAdapter.getFilter().filter("Gardener");
+            }
+        });
+        plumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listViewAdapter.getFilter().filter("Plumber");
+            }
+        });
+        electrician.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listViewAdapter.getFilter().filter("Electrician");
+            }
+        });
+        computerRepair.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listViewAdapter.getFilter().filter("Computer Repair");
+            }
+        });
+        masonry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listViewAdapter.getFilter().filter("Masonry");
+            }
+        });
+        carpentry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listViewAdapter.getFilter().filter("Carpenter");
+            }
+        });
 
-        Query query = FirebaseDatabase.getInstance().getReference()
+
+
+        listSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                listViewAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        query = FirebaseDatabase.getInstance().getReference()
                 .child("USERS")
-                .child("SERVICE-PROVIDERS");
+                .child("SERVICE-PROVIDERS")
+                .orderByChild("NAME");
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listViewItems.clear();
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
 
                     String userId = childSnapshot.getKey();
@@ -70,10 +131,10 @@ public class CustomerListViewFragment extends Fragment {
                     String imgURL = childSnapshot.child("profileImageUrl").getValue(String.class);
                     float rating = 5.0f;
 
-
-                    listViewItems.add(new ListViewItem(name, imgURL, service, address, rating));
-                    listViewAdapter.notifyDataSetChanged();
+                    ListViewItem item = new ListViewItem(name, imgURL, service, address, rating);
+                    listViewItems.add(item);
                 }
+                listViewAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -82,12 +143,8 @@ public class CustomerListViewFragment extends Fragment {
             }
         });
 
+        listSearchView.clearFocus();
 
         return rootView;
-
-
     }
-
-
-
 }

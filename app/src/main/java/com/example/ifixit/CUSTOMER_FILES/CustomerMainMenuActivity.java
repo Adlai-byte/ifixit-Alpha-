@@ -89,8 +89,7 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
 
 
         if (savedInstanceState == null) {
-            Intent intent = new Intent(CustomerMainMenuActivity.this, CustomerMapsActivity.class);
-            startActivity(intent);
+            getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerListViewFragment()).commit();
         }
 
     }
