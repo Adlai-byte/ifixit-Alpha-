@@ -107,6 +107,8 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
 
         String customerUserId = intent.getStringExtra("customerUserId");
         String serviceProviderUserId = intent.getStringExtra("serviceProviderUserId");
+
+
         //Database References
         mServiceProviderRefForHeader = FirebaseDatabase.getInstance().getReference()
                 .child("USERS")

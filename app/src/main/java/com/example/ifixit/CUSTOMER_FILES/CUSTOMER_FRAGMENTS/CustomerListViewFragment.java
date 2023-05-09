@@ -47,6 +47,7 @@ public class CustomerListViewFragment extends Fragment {
         //-------Recycler View-----------
         listSearchView = rootView.findViewById(R.id.listSearchView);
         recyclerView = rootView.findViewById(R.id.listRecyclerView);
+
         listViewItems = new ArrayList<>();
         listViewAdapter = new ListViewAdapter(getActivity(), listViewItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -131,7 +132,7 @@ public class CustomerListViewFragment extends Fragment {
                     String imgURL = childSnapshot.child("profileImageUrl").getValue(String.class);
                     float rating = 5.0f;
 
-                    ListViewItem item = new ListViewItem(name, imgURL, service, address, rating);
+                    ListViewItem item = new ListViewItem(name, imgURL, service, address, rating,userId);
                     listViewItems.add(item);
                 }
                 listViewAdapter.notifyDataSetChanged();

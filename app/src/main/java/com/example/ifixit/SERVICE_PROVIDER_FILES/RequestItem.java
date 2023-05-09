@@ -6,15 +6,22 @@ public class RequestItem {
     String ADDRESS;
     String USERID;
     String EMAIL;
+    String JOBTYPE;
+    String TOTALPRICE;
+    String LOCATION;
 
 
-    public RequestItem(String NAME, String address, String USERID, String profileImageUrl, String EMAIL) {
+
+
+    public RequestItem(String NAME, String address, String USERID, String profileImageUrl, String EMAIL, String JOBTYPE, String TOTALPRICE, String LOCATION) {
         this.NAME = NAME;
         this.ADDRESS = address;
         this.USERID = USERID;
         this.profileImageUrl = profileImageUrl;
         this.EMAIL = EMAIL;
-
+        this.JOBTYPE = JOBTYPE;
+        this.TOTALPRICE = TOTALPRICE;
+        this.LOCATION = LOCATION;
     }
 
     public String getADDRESS() {
@@ -47,6 +54,21 @@ public class RequestItem {
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
     }
+    public String getJOBTYPE() {
+        return JOBTYPE;
+    }
+
+    public void setJOBTYPE(String JOBTYPE) {
+        this.JOBTYPE = JOBTYPE;
+    }
+
+    public String getTOTALPRICE() {
+        return TOTALPRICE;
+    }
+
+    public void setTOTALPRICE(String TOTALPRICE) {
+        this.TOTALPRICE = TOTALPRICE;
+    }
 
     public String getEMAIL() {
         return EMAIL;
@@ -54,5 +76,12 @@ public class RequestItem {
 
     public void setEMAIL(String EMAIL) {
         this.EMAIL = EMAIL;
+    }
+    public String getLOCATION() {
+        return LOCATION;
+    }
+
+    public void setLOCATION(String LOCATION) {
+        this.LOCATION = LOCATION;
     }
 }

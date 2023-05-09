@@ -157,7 +157,9 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
                                 String address = snapshot.child("ADDRESS").getValue(String.class);
                                 String imgURL = snapshot.child("profileImageUrl").getValue(String.class);
 
-                                requestItems.add(new RequestItem(name, address,userId,imgURL,email));
+                                String jobtype = snapshot.child("JOB-TYPE").getValue(String.class);
+                                String totalPrice = snapshot.child("TOTAL-PRICE").getValue(String.class);
+                                requestItems.add(new RequestItem(name, address,userId,imgURL,email,jobtype,totalPrice,address));
                                 requestAdapter.notifyDataSetChanged();
                             }
                         }

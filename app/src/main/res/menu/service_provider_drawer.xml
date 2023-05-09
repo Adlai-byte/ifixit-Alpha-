@@ -8,9 +8,9 @@
             android:icon="@drawable/ic_profile"
             android:title="Profile" />
         <item
-            android:id="@+id/SPnav_dashboard"
+            android:id="@+id/SPnav_ongoing"
             android:icon="@drawable/ic_listview"
-            android:title="Dashboard" />
+            android:title="Ongoing Jobs" />
         <item
             android:id="@+id/SPnav_map"
             android:icon="@drawable/ic_map"

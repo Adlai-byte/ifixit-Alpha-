@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:orientation="horizontal">
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20sp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/ongoingName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vinz Lloyd Alferez"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+
+            android:id="@+id/ongoingLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mati City" />
+
+        <TextView
+
+            android:id="@+id/ongoingJobType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Installiation" />
+
+        <TextView
+
+            android:id="@+id/ongoingTotalPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1000" />
+
+        <Button
+            android:id="@+id/ongoingCompleteButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Job Completed"
+            />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

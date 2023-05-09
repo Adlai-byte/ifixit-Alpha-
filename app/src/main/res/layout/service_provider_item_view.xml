@@ -2,9 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:layout_marginTop="10dp"
-    >
+    android:orientation="horizontal">
 
 
     <androidx.cardview.widget.CardView
@@ -12,21 +11,22 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="85dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/userProfile"
-                android:layout_width="208dp"
-                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_margin="10dp"
                 android:layout_weight="1"
 
                 />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -34,34 +34,47 @@
                     android:id="@+id/notificationName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Vinz Lloyd Alferez" />
+                    android:text="Vinz Lloyd Alferez"
+                    android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/template"
+                    android:id="@+id/notificationLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Wants to hire you" />
-
-                <LinearLayout
+                    android:text="Mati Davao Oriental" />
+                <TextView
+                    android:id="@+id/notificationJobType"
                     android:layout_width="match_parent"
-                    android:layout_height="73dp"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:text="Installation" />
 
-                    <Button
-                        android:id="@+id/notificationAccept"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Accept" />
+                <TextView
+                    android:id="@+id/notificationTotalPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1000" />
 
-                    <Button
-                        android:id="@+id/notificationDecline"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Decline" />
-                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:orientation="vertical">
 
+                <Button
+                    android:id="@+id/notificationAccept"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:text="Accept" />
+
+                <Button
+                    android:id="@+id/notificationDecline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="Decline" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

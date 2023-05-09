@@ -36,9 +36,13 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull RequestViewHolder holder, int position) {
         RequestItem requestItem = requestItems.get(holder.getAdapterPosition());
+        holder.totalPrice.setText(requestItem.getTOTALPRICE());
+        holder.location.setText(requestItem.getLOCATION());;
+        holder.jobType.setText(requestItem.getJOBTYPE());
 
         Glide.with(context).load(requestItem.getProfileImageUrl())
                         .into(holder.imageView);
+
 
         holder.nameView.setText(requestItem.getNAME());
         holder.BtnAccept.setOnClickListener(new View.OnClickListener() {

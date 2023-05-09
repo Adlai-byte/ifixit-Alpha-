@@ -20,7 +20,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.ifixit.R;
-import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderDashboardFragment;
+import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderOngoingJob;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderProfileFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -86,8 +86,8 @@ public class ServiceProviderMainMenuActivity extends AppCompatActivity implement
         toggle.syncState();
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.SPfragment_container, new ServiceProviderDashboardFragment()).commit();
-            navigationView.setCheckedItem(R.id.SPnav_dashboard);
+            getSupportFragmentManager().beginTransaction().replace(R.id.SPfragment_container, new ServiceProviderOngoingJob()).commit();
+            navigationView.setCheckedItem(R.id.SPnav_ongoing);
         }
 
 
@@ -102,8 +102,8 @@ public class ServiceProviderMainMenuActivity extends AppCompatActivity implement
             case R.id.SPnav_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.SPfragment_container, new ServiceProviderProfileFragment()).commit();
                 break;
-            case R.id.SPnav_dashboard:
-                getSupportFragmentManager().beginTransaction().replace(R.id.SPfragment_container, new ServiceProviderDashboardFragment()).commit();
+            case R.id.SPnav_ongoing:
+                getSupportFragmentManager().beginTransaction().replace(R.id.SPfragment_container, new ServiceProviderOngoingJob()).commit();
                 break;
             case R.id.SPnav_map:
                 Intent intent = new Intent(ServiceProviderMainMenuActivity.this, ServiceProviderMapsActivity.class);

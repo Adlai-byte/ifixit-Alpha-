@@ -1,19 +1,32 @@
 package com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.ListViewClasses;
 
 public class ListViewItem {
+    String USERID;
     String NAME;
     String profileImageUrl;
     String SERVICE;
     String ADDRESS;
     float RATING;
 
-    public ListViewItem(String NAME, String profileImageUrl, String SERVICE, String ADDRESS, float RATING) {
+    public ListViewItem(String NAME, String profileImageUrl, String SERVICE, String ADDRESS, float RATING, String USERID) {
         this.NAME = NAME;
         this.profileImageUrl = profileImageUrl;
         this.SERVICE = SERVICE;
         this.ADDRESS = ADDRESS;
         this.RATING = RATING;
+        this.USERID = USERID;
     }
+
+
+
+    public void setUSERID(String USERID) {
+        this.USERID = USERID;
+    }
+
+    public String getUSERID() {
+        return USERID;
+    }
+
     public float getRATING() {
         return RATING;
     }

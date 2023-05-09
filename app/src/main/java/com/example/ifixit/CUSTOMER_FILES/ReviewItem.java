@@ -7,6 +7,7 @@ public class ReviewItem {
     String REVIEWS;
 
 
+
     public ReviewItem(String NAME, String profileImageUrl, String REVIEWS) {
         this.NAME = NAME;
         this.profileImageUrl = profileImageUrl;

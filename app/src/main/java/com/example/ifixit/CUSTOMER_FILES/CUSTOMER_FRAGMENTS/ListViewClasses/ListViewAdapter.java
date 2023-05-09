@@ -1,9 +1,11 @@
 package com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.ListViewClasses;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -14,7 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.ifixit.CUSTOMER_FILES.CustomerCheckOutActivity;
 import com.example.ifixit.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +47,30 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ListViewItem listViewItem = filteredList.get(position);
 
+
         holder.nameTextView.setText(listViewItem.getNAME());
         holder.serviceTextView.setText(listViewItem.getSERVICE());
         holder.addressTextView.setText(listViewItem.getADDRESS());
         holder.ratingBar.setRating(listViewItem.getRATING());
         Glide.with(context).load(listViewItem.getProfileImageUrl()).into(holder.profileImageView);
+
+        holder.hireButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String serviceProviderUserId = listViewItem.getUSERID();
+                String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();;
+
+
+                Intent intent  = new Intent(context, CustomerCheckOutActivity.class);
+                intent.putExtra("customerUserId",currentUserId );
+                intent.putExtra("serviceProviderUserId",serviceProviderUserId);
+
+                context.startActivity(intent);
+
+
+            }
+        });
     }
 
     @Override
@@ -70,9 +93,11 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
         TextView serviceTextView;
         TextView addressTextView;
         RatingBar ratingBar;
+        Button hireButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            hireButton = itemView.findViewById(R.id.hireButton);
             profileImageView = itemView.findViewById(R.id.list_view_imageView);
             nameTextView = itemView.findViewById(R.id.list_view_name);
             serviceTextView = itemView.findViewById(R.id.list_view_service);
