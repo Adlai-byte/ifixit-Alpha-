@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,12 +52,12 @@ public class ServiceProviderOngoingJob extends Fragment {
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
         query = FirebaseDatabase.getInstance().getReference()
-                .child("USERS")
-                .child("SERVICE-PROVIDERS")
+                .child("service-providers")
+                .child("verified")
                 .child(currentUserId)
-                .child("JOB-OFFERS")
-                .child("ONGOING")
-                        .orderByChild("name");
+                .child("joboffers")
+                .child("ongoing")
+                .orderByChild("name");
 
 
         query.addValueEventListener(new ValueEventListener() {
@@ -76,10 +75,10 @@ public class ServiceProviderOngoingJob extends Fragment {
                         OngoingViewItem item = new OngoingViewItem(name, address, jobtype, totalPrice, userId);
                         ongoingViewItems.add(item);
                         ongoingAdapter.notifyDataSetChanged();
-                        Toast.makeText(getContext(), "Snapshot is Found", Toast.LENGTH_SHORT).show();
+
                     }
                 }else {
-                    Toast.makeText(getContext(), "Snapshot not Found", Toast.LENGTH_SHORT).show();
+
                 }
 
 

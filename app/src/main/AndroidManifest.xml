@@ -16,17 +16,30 @@
         android:theme="@style/Theme.Ifixit"
         tools:targetApi="31">
 
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDbm7rYA_28n5PpW1xQHBq-kScG4AbW2ug" />
 
         <activity
+            android:name=".CUSTOMER_FILES.CustomerNewMapsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SUPER_ADMIN_FILES.AdminMainMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SUPER_ADMIN_FILES.AdminRegistrationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SUPER_ADMIN_FILES.AdminMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SUPER_ADMIN_FILES.AdminLoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".CUSTOMER_FILES.CustomerCheckOutActivity"
             android:exported="false"
-            android:parentActivityName=".CUSTOMER_FILES.CustomerMapsActivity"
-            />
-
-
+            android:parentActivityName=".CUSTOMER_FILES.CustomerMapsActivity" />
         <activity
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderMainMenuActivity"
             android:exported="false"

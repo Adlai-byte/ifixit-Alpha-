@@ -65,7 +65,7 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
         //---Layout Connecting
 
         //Spinner
-        spService = findViewById(R.id.spinner);
+        spService = findViewById(R.id.adminspinner);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.service_options, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -87,12 +87,12 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
 
         etPhone = (EditText) findViewById(R.id.SPetPhone);
         etConfirmPassword = (EditText) findViewById(R.id.SPetConfirmPassword);
-        etName = (EditText) findViewById(R.id.SPetFullName);
-        etAddress = (EditText) findViewById(R.id.SPetAddress);
-        etEmail = (EditText) findViewById(R.id.SPetEmail);
-        etPassword = (EditText) findViewById(R.id.SPetPassword);
-        btnRegister = (Button) findViewById(R.id.SPbtnRegister);
-        tvAlreadyHave = (TextView) findViewById(R.id.SPtvAlreadyHaveAnAccount);
+        etName = (EditText) findViewById(R.id.adminetFullName);
+        etAddress = (EditText) findViewById(R.id.adminetAddress);
+        etEmail = (EditText) findViewById(R.id.adminetEmail);
+        etPassword = (EditText) findViewById(R.id.adminetPassword);
+        btnRegister = (Button) findViewById(R.id.adminbtnRegister);
+        tvAlreadyHave = (TextView) findViewById(R.id.admintvAlreadyHaveAnAccount);
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -119,7 +119,7 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
                 final String name = etName.getText().toString();
                 final String address = etAddress.getText().toString();
                 final String service = String.valueOf(spService.getSelectedItem());
-                final String phone = etAddress.getText().toString();
+                final String phone = etPhone.getText().toString();
                 final String confirmPassword = etConfirmPassword.getText().toString();
 
                 //Validations
@@ -145,16 +145,20 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
                                 Toast.makeText(ServiceProviderRegistrationActivity.this, "Sign-up Error", Toast.LENGTH_SHORT).show();
                             } else {
                                 String userID = mAuth.getCurrentUser().getUid();
-                                DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("USERS").child("SERVICE-PROVIDERS").child(userID);
+                                DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference()
+                                        .child("service-providers")
+                                        .child("verified")
+//                                        .child("unverified")
+                                        .child(userID);
                                 current_user_db.setValue(true);
 
                                 Map userInfo = new HashMap();
-                                userInfo.put("NAME", name);
-                                userInfo.put("EMAIL", email);
-                                userInfo.put("ADDRESS", address);
-                                userInfo.put("PHONE", phone);
-                                userInfo.put("PASSWORD", password);
-                                userInfo.put("SERVICE", service);
+                                userInfo.put("name", name);
+                                userInfo.put("email", email);
+                                userInfo.put("address", address);
+                                userInfo.put("phone", phone);
+                                userInfo.put("password", password);
+                                userInfo.put("service", service);
 
                                 current_user_db.updateChildren(userInfo);
 

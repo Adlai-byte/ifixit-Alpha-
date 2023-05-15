@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="SPnavigation_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/adminProfile"
+            android:icon="@drawable/ic_profile"
+            android:title="Profile" />
+        <item
+            android:id="@+id/adminDashboard"
+            android:icon="@drawable/ic_listview"
+            android:title="Dashboard" />
+
+
+        <item
+            android:id="@+id/adminCMtList"
+            android:icon="@mipmap/ic_gardener_logo"
+            android:title="Customers"/>
+
+        <item
+            android:id="@+id/adminVerifiedSPList"
+            android:icon="@mipmap/ic_gardener_logo"
+            android:title="Verified Accounts"/>
+
+        <item
+            android:id="@+id/adminUnverifiedSPList"
+            android:icon="@mipmap/ic_gardener_logo"
+            android:title="Unverified Accounts"/>
+
+
+
+
+        <item android:title="Miscellaneous">
+                <!--Add more later-->
+            <menu>
+
+                <item
+                    android:id="@+id/adminlogout"
+                    android:icon="@drawable/ic_logout"
+                    android:title="Logout" />
+            </menu>
+        </item>
+
+
+    </group>
+
+</menu>

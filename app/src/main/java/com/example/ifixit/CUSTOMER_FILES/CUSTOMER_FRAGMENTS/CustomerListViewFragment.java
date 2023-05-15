@@ -34,7 +34,7 @@ public class CustomerListViewFragment extends Fragment {
     private ListViewAdapter listViewAdapter;
     private SearchView listSearchView;
     private Query query;
-    private Button gardener,plumber,electrician,computerRepair,masonry,carpentry;
+    private Button gardener, plumber, electrician, computerRepair, masonry, carpentry;
 
     //------------------------------------
 
@@ -47,6 +47,7 @@ public class CustomerListViewFragment extends Fragment {
         //-------Recycler View-----------
         listSearchView = rootView.findViewById(R.id.listSearchView);
         recyclerView = rootView.findViewById(R.id.listRecyclerView);
+        listSearchView.clearFocus();
 
         listViewItems = new ArrayList<>();
         listViewAdapter = new ListViewAdapter(getActivity(), listViewItems);
@@ -62,45 +63,46 @@ public class CustomerListViewFragment extends Fragment {
         carpentry = rootView.findViewById(R.id.filterCarpentry);
         //-----------------------
 
+
         gardener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listViewAdapter.getFilter().filter("Gardener");
+                filterList("Gardener");
             }
         });
         plumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listViewAdapter.getFilter().filter("Plumber");
+                filterList("Plumber");
             }
         });
         electrician.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listViewAdapter.getFilter().filter("Electrician");
+                filterList("Electrician");
             }
         });
         computerRepair.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listViewAdapter.getFilter().filter("Computer Repair");
+                filterList("Computer Repair");
+                ;
             }
         });
         masonry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listViewAdapter.getFilter().filter("Masonry");
+                filterList("Masonry");
             }
         });
         carpentry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listViewAdapter.getFilter().filter("Carpenter");
+                filterList("Carpentry");
             }
         });
 
-
-
+        //----------------Search ------------------------
         listSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -109,34 +111,36 @@ public class CustomerListViewFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                listViewAdapter.getFilter().filter(newText);
+                filterList(newText);
                 return false;
             }
         });
 
+
         query = FirebaseDatabase.getInstance().getReference()
-                .child("USERS")
-                .child("SERVICE-PROVIDERS")
-                .orderByChild("NAME");
+                .child("service-providers")
+                .child("verified")
+                .orderByChild("name");
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listViewItems.clear();
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-
                     String userId = childSnapshot.getKey();
-                    String name = childSnapshot.child("NAME").getValue(String.class);
-                    String address = childSnapshot.child("ADDRESS").getValue(String.class);
-                    String service = childSnapshot.child("SERVICE").getValue(String.class);
-                    String imgURL = childSnapshot.child("profileImageUrl").getValue(String.class);
+                    String name = childSnapshot.child("name").getValue(String.class);
+                    String address = childSnapshot.child("address").getValue(String.class);
+                    String service = childSnapshot.child("service").getValue(String.class);
+                    String imgURL = childSnapshot.child("profileimageurl").getValue(String.class);
                     float rating = 5.0f;
 
-                    ListViewItem item = new ListViewItem(name, imgURL, service, address, rating,userId);
+                    ListViewItem item = new ListViewItem(name, imgURL, service, address, rating, userId);
                     listViewItems.add(item);
+
                 }
                 listViewAdapter.notifyDataSetChanged();
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -144,8 +148,33 @@ public class CustomerListViewFragment extends Fragment {
             }
         });
 
-        listSearchView.clearFocus();
 
         return rootView;
     }
+
+
+    private void filterList(String text) {
+        List<ListViewItem> filteredList = new ArrayList<>();
+        for (ListViewItem item : listViewItems) {
+            if (item.getNAME() != null  &&
+                    item.getNAME().toLowerCase().contains(text.toLowerCase())
+            ) {
+                filteredList.add(item);
+            }
+            if(item.getADDRESS()!=null && item.getADDRESS().toLowerCase().contains(text.toLowerCase()))
+            {
+                filteredList.add(item);
+            }
+            if(item.getSERVICE()!=null && item.getSERVICE().toLowerCase().contains(text.toLowerCase()))
+            {
+                filteredList.add(item);
+            }
+        }
+        listViewAdapter.setFilteredList(filteredList);
+    }
+
+
 }
+
+
+

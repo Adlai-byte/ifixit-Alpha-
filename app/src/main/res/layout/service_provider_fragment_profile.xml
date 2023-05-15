@@ -2,8 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_green_dark"
+    android:layout_marginTop="50dp"
     android:orientation="vertical">
+
+
 
 
     <LinearLayout
@@ -11,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginTop="50dp"
         android:background="@color/white"
         android:orientation="vertical">
 
@@ -27,7 +28,6 @@
                 android:layout_height="75sp"
                 android:layout_margin="15sp"
                 android:layout_marginRight="20sp"
-
                 android:src="@mipmap/ic_launcher_round" />
 
 
@@ -65,6 +65,7 @@
 
             <ImageView
 
+                android:id="@+id/settingBtn"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_margin="40dp"
@@ -75,6 +76,62 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/SPeditLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20sp"
+            android:orientation="vertical"
+            android:visibility="gone"
+
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:layout_marginBottom="10sp"
+                android:text="Edit Profile"
+
+                />
+
+            <EditText
+                android:id="@+id/SPNameET"
+                android:hint="Enter New Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                />
+            <EditText
+                android:id="@+id/SPAddressET"
+                android:hint="Address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                />
+            <EditText
+                android:id="@+id/SPPhoneET"
+                android:hint="Enter Phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                />
+            <Spinner
+                android:id="@+id/adminspinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/service_options" />
+
+
+
+            <Button
+                android:id="@+id/SPsaveBtnNew"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -107,47 +164,7 @@
         </LinearLayout>
 
 
-        <LinearLayout
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="20sp"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <EditText
-                android:id="@+id/SPName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Juan Dela Cruz" />
-
-            <TextView
-                android:id="@+id/customersEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="name@mail.ocom" />
-
-            <EditText
-                android:id="@+id/SPAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="South Park" />
-
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/service_options" />
-
-            <Button
-                android:id="@+id/SPsaveUserInfoBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Save" />
-
-
-        </LinearLayout>
 
 
     </LinearLayout>

@@ -35,6 +35,7 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingHolder> {
     public void onBindViewHolder(@NonNull OngoingHolder holder, int position) {
 
         OngoingViewItem ongoingViewItem = ongoingViewItems.get(holder.getAdapterPosition());
+
         holder.nameView.setText(ongoingViewItem.getNAME());
         holder.totalPriceView.setText(ongoingViewItem.getTOTALPRICE());
         holder.locationView.setText(ongoingViewItem.getLOCATION());
@@ -45,11 +46,10 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingHolder> {
                 String customerUserId = ongoingViewItem.getUSERID();
                 String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 DatabaseReference ongoingRef = FirebaseDatabase.getInstance().getReference()
-                        .child("USERS")
-                        .child("SERVICE-PROVIDERS")
+                        .child("service-providers")
                         .child(customerUserId)
-                        .child("JOB-OFFERS")
-                        .child("ONGOING")
+                        .child("joboffers")
+                        .child("ongoing")
                         .child(customerUserId);
                 ongoingRef.removeValue();
 
@@ -60,10 +60,9 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingHolder> {
                 notifyItemRangeChanged(itemPosition,ongoingViewItems.size());
 
                 DatabaseReference customerRef = FirebaseDatabase.getInstance().getReference()
-                        .child("USERS")
-                        .child("CUSTOMERS")
+                        .child("customers")
                         .child(customerUserId)
-                        .child("NOTIFICATIONS")
+                        .child("notification")
                         .child(currentUserId);
                 customerRef.setValue("FINISHED");
 

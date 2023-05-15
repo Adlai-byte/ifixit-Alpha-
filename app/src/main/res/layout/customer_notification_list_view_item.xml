@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:layout_marginTop="50sp"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/notification_view_imageView"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_margin="15dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_profile" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/notification_view_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jessica Bustria"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/notification_view_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Plumber"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/notification_view_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Has finished the job!"
+            android:textSize="12sp" />
+        <TextView
+            android:layout_marginTop="10sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rate the service:"
+            android:textSize="15sp" />
+
+
+        <RatingBar
+            android:id="@+id/notification_view_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:isIndicator="false"
+            android:numStars="5"
+            />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Leave a review"
+            android:textSize="15sp" />
+        <EditText
+            android:hint="Leave a message here"
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:id="@+id/notificationReviewComment"
+
+            />
+        <Button
+            android:id="@+id/notificationConfirmButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Confirm" />
+
+    </LinearLayout>
+
+
+
+
+
+
+
+</LinearLayout>

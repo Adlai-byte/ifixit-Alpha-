@@ -75,7 +75,9 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
         userID = mAuth.getCurrentUser().getUid();
 
 
-        mCustomerDatabase = FirebaseDatabase.getInstance().getReference().child("USERS").child("CUSTOMERS").child(userID);
+        mCustomerDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("customers")
+                .child(userID);
         getHeaderInfo();
 
 
@@ -106,7 +108,7 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
                 getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerListViewFragment()).commit();
                 break;
             case R.id.CMnav_map:
-                Intent intent = new Intent(CustomerMainMenuActivity.this, CustomerMapsActivity.class);
+                Intent intent = new Intent(CustomerMainMenuActivity.this, CustomerNewMapsActivity.class);
                 startActivity(intent);
                 break;
             case R.id.CMnav_message:
@@ -138,17 +140,17 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
 
                 if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
                     Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
-                    if (map.get("NAME") != null) {
-                        mUserName = map.get("NAME").toString();
+                    if (map.get("name") != null) {
+                        mUserName = map.get("name").toString();
                         headerUserName.setText(mUserName);
                     }
 
-                    if (map.get("EMAIL") != null) {
-                        mEmail = map.get("EMAIL").toString();
+                    if (map.get("email") != null) {
+                        mEmail = map.get("email").toString();
                         headerEmail.setText(mEmail);
                     }
                     if(map.get("profileImageUrl")!=null){
-                        mProfileImageUrl = map.get("profileImageUrl").toString();
+                        mProfileImageUrl = map.get("profileimageurl").toString();
                         Glide.with(getApplication()).load(mProfileImageUrl).into(customerImage);
 
                     }

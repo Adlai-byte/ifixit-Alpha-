@@ -3,8 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="20dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="120sp"
+android:layout_marginStart="20sp"
+    android:layout_marginEnd="20sp"
     android:orientation="vertical"
     tools:context=".CUSTOMER_FILES.CustomerLoginActivity">
 
@@ -12,46 +14,38 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-android:layout_marginTop="50dp"
+        android:layout_marginTop="50dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Email" />
 
         <EditText
-            android:id="@+id/etEmail"
+            android:id="@+id/etadminEmail"
             android:layout_width="match_parent"
+            android:hint="Email"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
             android:text="" />
 
-        <TextView
-            android:id="@+id/tvPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Password" />
 
 
         <EditText
-            android:id="@+id/etPassword"
+            android:id="@+id/etadminPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Password"
             android:ems="10"
             android:inputType="textPersonName"
             android:text="" />
 
         <Button
-            android:id="@+id/btnLogin"
+            android:id="@+id/adminbtnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Log-in" />
 
         <TextView
-            android:id="@+id/tvNoAccout"
+            android:id="@+id/tvadminNoAccout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

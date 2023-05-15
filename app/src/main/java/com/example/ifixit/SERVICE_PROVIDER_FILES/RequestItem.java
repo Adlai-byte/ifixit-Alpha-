@@ -13,9 +13,9 @@ public class RequestItem {
 
 
 
-    public RequestItem(String NAME, String address, String USERID, String profileImageUrl, String EMAIL, String JOBTYPE, String TOTALPRICE, String LOCATION) {
+    public RequestItem(String NAME, String ADDRESS, String USERID, String profileImageUrl, String EMAIL, String JOBTYPE, String TOTALPRICE, String LOCATION) {
         this.NAME = NAME;
-        this.ADDRESS = address;
+        this.ADDRESS = ADDRESS;
         this.USERID = USERID;
         this.profileImageUrl = profileImageUrl;
         this.EMAIL = EMAIL;

@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,38 +42,53 @@ import java.util.Map;
 public class CustomerProfileFragment extends Fragment {
 
     //Variables
-    private EditText customerName;
-    private EditText customerEmail;
-    private EditText customerAddress;
+    private TextView customerName;
+    private TextView customerEmail;
+    private TextView customerAddress;
 
+    private LinearLayout editLayout;
     private FirebaseAuth mAuth;
     private DatabaseReference DatabaseRef;
     private String userID;
     private String mUserName;
     private String mEmail;
+    private String mPhone;
     private String mAddress;
+    private ImageView mSettings;
     private Button saveBtn;
     private ImageView customerImage;
     private Uri resultUri;
     private String mProfileImageUrl;
+
+    private EditText name, phone, address;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.customer_fragment_profile, container, false);
 
-        customerName = (EditText) rootView.findViewById(R.id.CMName);
-//        customerEmail = (EditText) rootView.findViewById(R.id.customersEmail);
-        customerAddress = (EditText) rootView.findViewById(R.id.CMAddress);
-        saveBtn = (Button) rootView.findViewById(R.id.CMsaveUserInfoBtn);
-        customerImage = (ImageView) rootView.findViewById(R.id.CMImage);
+        customerName = (TextView) rootView.findViewById(R.id.customerName);
+        customerEmail = (TextView) rootView.findViewById(R.id.customerEmail);
+        customerAddress = (TextView) rootView.findViewById(R.id.customerAddress);
+        mSettings = (ImageView) rootView.findViewById(R.id.customerSettingBtn);
 
+        saveBtn = (Button) rootView.findViewById(R.id.saveBtn);
+        customerImage = (ImageView) rootView.findViewById(R.id.customerProfileImage);
+
+        name = (EditText) rootView.findViewById(R.id.NameET);
+        phone = (EditText) rootView.findViewById(R.id.PhoneET);
+        address = (EditText) rootView.findViewById(R.id.AddressET);
 
         mAuth = FirebaseAuth.getInstance();
         userID = mAuth.getCurrentUser().getUid();
 
+        editLayout = (LinearLayout) rootView.findViewById(R.id.editLayout);
 
-        DatabaseRef = FirebaseDatabase.getInstance().getReference().child("USERS").child("CUSTOMERS").child(userID);
+        DatabaseRef = FirebaseDatabase.getInstance().getReference()
+                .child("customers")
+                .child(userID);
+
+
         DatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -97,12 +115,57 @@ public class CustomerProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 saveUserInformation();
+                editLayout.setVisibility(View.GONE);
             }
         });
+        mSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                DatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
+                            Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
+                            if (map.get("name") != null) {
+                                mUserName = map.get("name").toString();
+                                name.setText(mUserName);
+                            }
+
+                            if (map.get("address") != null) {
+                                mAddress = map.get("address").toString();
+                                address.setText(mAddress);
+                            }
+                            if(map.get("phone")!=null){
+                                mPhone = map.get("phone") .toString();
+                                phone.setText(mPhone);
+                            }
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+                editLayout.setVisibility(View.VISIBLE);
+
+
+
+            }
+        });
+
 
         return rootView;
 
     }
+
 
 
     public void getHeaderInfo() {
@@ -112,20 +175,18 @@ public class CustomerProfileFragment extends Fragment {
 
                 if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
                     Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
-                    if (map.get("NAME") != null) {
-                        mUserName = map.get("NAME").toString();
+                    if (map.get("name") != null) {
+                        mUserName = map.get("name").toString();
                         customerName.setText(mUserName);
                     }
-//                    if (map.get("EMAIL") != null) {
-//                        mEmail = map.get("EMAIL").toString();
-//                        customerEmail.setText(mEmail);
-//                    }
-                    if (map.get("ADDRESS") != null) {
-                        mAddress = map.get("ADDRESS").toString();
+
+
+                    if (map.get("address") != null) {
+                        mAddress = map.get("address").toString();
                         customerAddress.setText(mAddress);
                     }
-                    if (map.get("profileImageUrl") != null) {
-                        mProfileImageUrl = map.get("profileImageUrl").toString();
+                    if (map.get("profileimageurl") != null) {
+                        mProfileImageUrl = map.get("profileimageurl").toString();
 //                        Glide.with(getApplication()).load(mProfileImageUrl).into(customerImage);
                         Glide.with(getContext().getApplicationContext()).load(mProfileImageUrl).into(customerImage);
                     }
@@ -143,18 +204,22 @@ public class CustomerProfileFragment extends Fragment {
     }
 
     private void saveUserInformation() {
-        mUserName = customerName.getText().toString();
-//        mEmail = customerEmail.getText().toString();
-        mAddress = customerAddress.getText().toString();
 
 
-        Map userInfo = new HashMap();
-        userInfo.put("NAME", mUserName);
-        userInfo.put("ADDRESS", mAddress);
+        mUserName = name.getText().toString();
+        mAddress = address.getText().toString();
+        mPhone = phone.getText().toString();
+
+
+        Map <String,Object>userInfo = new HashMap();
+        userInfo.put("name", mUserName);
+        userInfo.put("phone", mPhone);
+        userInfo.put("address", mAddress);
 //      userInfo.put("services",mService);
-
-
         DatabaseRef.updateChildren(userInfo);
+
+
+
         if (resultUri != null) {
             StorageReference filePath = FirebaseStorage.getInstance().getReference().child("profile_images").child(userID);
             Bitmap bitmap = null;
@@ -180,11 +245,12 @@ public class CustomerProfileFragment extends Fragment {
                             String downloadUrlStr = downloadUrl.toString();
 
                             Map<String, Object> newImage = new HashMap<>();
-                            newImage.put("profileImageUrl", downloadUrlStr);
+                            newImage.put("profileimageurl", downloadUrlStr);
                             DatabaseRef.updateChildren(newImage).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void Void) {
-//                                    finish();
+
+                                    Toast.makeText(getContext(), "Profile Updated", Toast.LENGTH_SHORT).show();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -209,6 +275,8 @@ public class CustomerProfileFragment extends Fragment {
         } else {
 //            finish();
         }
+
+
 
 
     }

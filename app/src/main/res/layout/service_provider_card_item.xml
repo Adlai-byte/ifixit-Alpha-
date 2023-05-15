@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    cardBackgroundColor="#0F9D58"
+    cardCornerRadius="10dp"
+    cardElevation="8dp"
+    contentPadding="10p"
+    android:layout_marginTop="20dp"
+  android:layout_marginEnd="10dp"
+
+    android:layout_width="120dp"
+    android:layout_height="200dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/spCardProfile"
+            android:layout_marginTop="7dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_gardener_logo" />
+
+
+        <TextView
+            android:id="@+id/spCardName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vinz Lloyd Alferez"
+            android:textSize="10dp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+
+            />
+
+        <TextView
+
+            android:id="@+id/spCardService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Plumber"
+            android:textSize="10dp"
+
+            />
+        <RatingBar
+
+            android:id="@+id/spCardRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:isIndicator="true"
+            style="?android:attr/ratingBarStyleSmall"
+
+
+        />
+        <Button
+
+            android:id="@+id/spCardHireButton"
+            android:layout_gravity="center"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:textSize="10dp"
+            android:text="hire"
+
+
+            />
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>
+
+
+
+
+

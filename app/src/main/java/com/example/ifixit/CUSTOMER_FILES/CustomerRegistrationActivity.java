@@ -37,6 +37,7 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
     private EditText etName;
     private EditText etAddress;
     private EditText etEmail;
+    private EditText etPhone;
     private EditText etPassword;
 
     //------Buttons
@@ -54,9 +55,9 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
         //---Layout Connecting
         etName = (EditText) findViewById(R.id.etFullName);
         etAddress =(EditText) findViewById(R.id.etAddress);
-        etEmail = (EditText) findViewById(R.id.etEmail);
-        etPassword = (EditText)findViewById(R.id.etPassword);
-
+        etEmail = (EditText) findViewById(R.id.etadminEmail);
+        etPassword = (EditText)findViewById(R.id.etadminPassword);
+        etPhone = (EditText) findViewById(R.id.etPhone);
         btnRegister = (Button) findViewById(R.id.btnRegister);
 
         tvAlreadyHave = (TextView) findViewById(R.id.tvAlreadyHaveAnAccount);
@@ -84,6 +85,7 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
                 final String password = etPassword.getText().toString();
                 final String name = etName.getText().toString();
                 final String address = etAddress.getText().toString();
+                final String phone = etPhone.getText().toString();
 
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(CustomerRegistrationActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -92,13 +94,16 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
                             Toast.makeText(CustomerRegistrationActivity.this, "Sign-up Error", Toast.LENGTH_SHORT).show();
                         }else {
                             String userID = mAuth.getCurrentUser().getUid();
-                            DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("USERS").child("CUSTOMERS").child(userID);
+                            DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference()
+                                    .child("customers")
+                                    .child(userID);
                             current_user_db.setValue(true);
 
                             Map userInfo = new HashMap();
-                            userInfo.put("NAME", name);
-                            userInfo.put("EMAIL", email);
-                            userInfo.put("ADDRESS", address);
+                            userInfo.put("name", name);
+                            userInfo.put("email", email);
+                            userInfo.put("address", address);
+                            userInfo.put("phone",phone);
                             current_user_db.updateChildren(userInfo);
                         }
                     }

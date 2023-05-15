@@ -32,7 +32,6 @@
         android:textSize="15dp" />
 
     <TextView
-
         android:id="@+id/intro_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -153,14 +152,21 @@ A customer is an individual or entity who purchases goods or services from a bus
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_below="@id/grid">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-
+            android:layout_marginTop="10dp"
             android:text="Version 1.0.0" />
+
+        <Button
+            android:id="@+id/btnAdmin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin"/>
+
 
 
     </LinearLayout>

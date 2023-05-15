@@ -45,25 +45,26 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestViewHolder> {
 
 
         holder.nameView.setText(requestItem.getNAME());
+
         holder.BtnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String userId = requestItem.getUSERID();
                 DatabaseReference ongoingRef = FirebaseDatabase.getInstance().getReference()
-                        .child("USERS")
-                        .child("SERVICE-PROVIDERS")
+                        .child("service-providers")
+                        .child("verified")
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child("JOB-OFFERS")
-                        .child("ONGOING")
+                        .child("joboffers")
+                        .child("ongoing")
                         .child(userId);
                 ongoingRef.setValue(requestItem);
 
                 DatabaseReference pendingRef = FirebaseDatabase.getInstance().getReference()
-                        .child("USERS")
-                        .child("SERVICE-PROVIDERS")
+                        .child("service-providers")
+                        .child("verified")
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child("JOB-OFFERS")
-                        .child("PENDING")
+                        .child("joboffers")
+                        .child("pending")
                         .child(userId);
                 pendingRef.removeValue();
 
@@ -78,11 +79,11 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestViewHolder> {
             public void onClick(View view) {
                 String userId = requestItem.getUSERID();
                 DatabaseReference pendingRef = FirebaseDatabase.getInstance().getReference()
-                        .child("USERS")
-                        .child("SERVICE-PROVIDERS")
+                        .child("service-providers")
+                        .child("verified")
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child("JOB-OFFERS")
-                        .child("PENDING")
+                        .child("joboffers")
+                        .child("pending")
                         .child(userId);
                 pendingRef.removeValue();
 

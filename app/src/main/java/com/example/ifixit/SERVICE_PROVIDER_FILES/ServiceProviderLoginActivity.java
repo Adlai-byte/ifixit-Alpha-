@@ -43,12 +43,12 @@ public class ServiceProviderLoginActivity extends AppCompatActivity {
         setContentView(R.layout.service_provider_login);
 
         //-----Referencing
-        etEmail = (EditText) findViewById(R.id.etEmail);
-        etPassword = (EditText) findViewById(R.id.etPassword);
+        etEmail = (EditText) findViewById(R.id.etadminEmail);
+        etPassword = (EditText) findViewById(R.id.etadminPassword);
 
-        btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnLogin = (Button) findViewById(R.id.adminbtnLogin);
 
-        tvNoAccout = (TextView) findViewById(R.id.tvNoAccout);
+        tvNoAccout = (TextView) findViewById(R.id.tvadminNoAccout);
         mAuth = FirebaseAuth.getInstance();
         firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override

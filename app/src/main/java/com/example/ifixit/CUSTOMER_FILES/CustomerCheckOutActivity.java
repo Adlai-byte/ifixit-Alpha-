@@ -74,7 +74,7 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
         servicePriceDictionary.put(repair, 450.0);
 
 
-        serviceType = findViewById(R.id.spinner);
+        serviceType = findViewById(R.id.adminspinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.service_type, android.R.layout.simple_spinner_item);
         serviceType.setAdapter(adapter);
 
@@ -111,20 +111,19 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
 
         //Database References
         mServiceProviderRefForHeader = FirebaseDatabase.getInstance().getReference()
-                .child("USERS")
-                .child("SERVICE-PROVIDERS")
+                .child("service-providers")
+                .child("verified")
                 .child(serviceProviderUserId);
 
         mCustomerRef = FirebaseDatabase.getInstance().getReference()
-                .child("USERS")
-                .child("CUSTOMERS");
+                .child("customers");
 
         mServiceProviderRef = FirebaseDatabase.getInstance().getReference()
-                .child("USERS")
-                .child("SERVICE-PROVIDERS")
+                .child("service-providers")
+                .child("verified")
                 .child(serviceProviderUserId)
-                .child("JOB-OFFERS")
-                .child("PENDING")
+                .child("joboffers")
+                .child("pending")
                 .child(customerUserId);
         //------------------
 
@@ -165,14 +164,13 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 mCustomerRef = FirebaseDatabase.getInstance().getReference()
-                        .child("USERS")
-                        .child("CUSTOMERS");
+                        .child("customers");
                 mServiceProviderRef = FirebaseDatabase.getInstance().getReference()
-                        .child("USERS")
-                        .child("SERVICE-PROVIDERS")
+                        .child("service-providers")
+                        .child("verified")
                         .child(serviceProviderUserId)
-                        .child("JOB-OFFERS")
-                        .child("PENDING")
+                        .child("joboffers")
+                        .child("pending")
                         .child(customerUserId);
 
                 Toast.makeText(getApplicationContext(), serviceProviderUserId, Toast.LENGTH_LONG).show();
@@ -181,10 +179,10 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            String name = snapshot.child("NAME").getValue(String.class);
-                            String address = snapshot.child("ADDRESS").getValue(String.class);
-                            String email = snapshot.child("EMAIL").getValue(String.class);
-                            String imgUrl = snapshot.child("profileImageUrl").getValue(String.class);
+                            String name = snapshot.child("name").getValue(String.class);
+                            String address = snapshot.child("address").getValue(String.class);
+                            String email = snapshot.child("email").getValue(String.class);
+                            String imgUrl = snapshot.child("profileimageurl").getValue(String.class);
 
                             String jobType = service;
                             String commentReview = comment;
@@ -193,15 +191,15 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
 
                             // Create a new job offer HashMap with the customer's data
                             HashMap<String, String> jobOffer = new HashMap<>();
-                            jobOffer.put("NAME", name);
-                            jobOffer.put("ADDRESS", address);
-                            jobOffer.put("EMAIL", email);
-                            jobOffer.put("TIMESTAMP", String.valueOf(timestamp));
-                            jobOffer.put("profileImageUrl", imgUrl);
-                            jobOffer.put("JOB-TYPE", jobType);
-                            jobOffer.put("COMMENT", commentReview);
-                            jobOffer.put("DURATION", daysOfWork);
-                            jobOffer.put("TOTAL-PRICE",totalPrice);
+                            jobOffer.put("name", name);
+                            jobOffer.put("address", address);
+                            jobOffer.put("email", email);
+                            jobOffer.put("timestamp", String.valueOf(timestamp));
+                            jobOffer.put("profileimageurl", imgUrl);
+                            jobOffer.put("jobtype", jobType);
+                            jobOffer.put("comment", commentReview);
+                            jobOffer.put("duration", daysOfWork);
+                            jobOffer.put("totalprice",totalPrice);
 
                             mServiceProviderRef.setValue(jobOffer);
 
@@ -231,26 +229,26 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
 
                 if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
                     Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
-                    if (map.get("NAME") != null) {
+                    if (map.get("name") != null) {
                         String mUserName;
-                        mUserName = map.get("NAME").toString();
+                        mUserName = map.get("name").toString();
                         name.setText(mUserName);
                     }
-                    if (map.get("EMAIL") != null) {
+                    if (map.get("address") != null) {
                         String mAddress;
-                        mAddress = map.get("ADDRESS").toString();
+                        mAddress = map.get("address").toString();
                         address.setText(mAddress);
                     }
 
-                    if (map.get("SERVICE") != null) {
+                    if (map.get("service") != null) {
                         String mService;
-                        mService = map.get("SERVICE").toString();
+                        mService = map.get("service").toString();
                         job.setText(mService);
 
                     }
-                    if (map.get("profileImageUrl") != null) {
+                    if (map.get("profileimageurl") != null) {
                         String mProfileImageUrl;
-                        mProfileImageUrl = map.get("profileImageUrl").toString();
+                        mProfileImageUrl = map.get("profileimageurl").toString();
                         Glide.with(getApplication().getApplicationContext()).load(mProfileImageUrl).into(profileImage);
                     }
 

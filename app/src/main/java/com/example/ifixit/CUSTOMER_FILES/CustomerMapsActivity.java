@@ -149,21 +149,23 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
 
 
             Query query = FirebaseDatabase.getInstance().getReference()
-                    .child("USERS")
-                    .child("SERVICE-PROVIDERS");
+                    .child("service-providers")
+                    .child("verified");
+
             query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                         String userId = childSnapshot.getKey();
-                        String name = childSnapshot.child("NAME").getValue(String.class);
-                        String email = childSnapshot.child("EMAIL").getValue(String.class);
-                        String service = childSnapshot.child("SERVICE").getValue(String.class);
+
+                        String name = childSnapshot.child("name").getValue(String.class);
+                        String email = childSnapshot.child("email").getValue(String.class);
+                        String service = childSnapshot.child("service").getValue(String.class);
                         if (service == null) {
-                            service = "None";
+                            service = "none";
                         }
-                        String latStr = childSnapshot.child("LOCATION").child("lat").getValue(String.class);
-                        String lngStr = childSnapshot.child("LOCATION").child("lng").getValue(String.class);
+                        String latStr = childSnapshot.child("location").child("lat").getValue(String.class);
+                        String lngStr = childSnapshot.child("location").child("lng").getValue(String.class);
                         double lat = latStr != null ? Double.parseDouble(latStr.trim()) : 0.0;
                         double lng = lngStr != null ? Double.parseDouble(lngStr.trim()) : 0.0;
 
@@ -254,9 +256,9 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
                 public void onClick(View view) {
                     String customerUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                    Intent intent =new Intent(CustomerMapsActivity.this, CustomerCheckOutActivity.class);
-                    intent.putExtra("customerUserId",customerUserId );
-                    intent.putExtra("serviceProviderUserId",serviceProviderUserId);
+                    Intent intent = new Intent(CustomerMapsActivity.this, CustomerCheckOutActivity.class);
+                    intent.putExtra("customeruserid", customerUserId);
+                    intent.putExtra("serviceprovideruserid", serviceProviderUserId);
 
                     startActivity(intent);
 
@@ -317,7 +319,10 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
 
     private void pushDataToDatabase() {
         String customerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        customerRef = FirebaseDatabase.getInstance().getReference().child("USERS").child("CUSTOMERS").child(customerId).child("LOCATION");
+        customerRef = FirebaseDatabase.getInstance().getReference()
+                .child("customers")
+                .child(customerId)
+                .child("location");
         customerLocationRefListener = customerRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -361,6 +366,7 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
     }
 
 
+    // Use this for rating functionality
     public void displayToTextView(String providerId) {
 
         //------------REVIEW  FUNCTION-----------------
@@ -368,22 +374,28 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
         reviewItems.clear();
 
         Query query = FirebaseDatabase.getInstance().getReference()
-                .child("USERS")
-                .child("SERVICE-PROVIDERS")
+                .child("service-providers")
+                .child("verified")
                 .child(providerId)
-                .child("REVIEWS");
+                .child("reviews");
+
 
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                     String userId = childSnapshot.getKey();
-                    String name = childSnapshot.child("NAME").getValue(String.class);
-                    String imgUrl = childSnapshot.child("profileImageUrl").getValue(String.class);
-                    String reviews = childSnapshot.child("COMMENT").getValue(String.class);
-                        reviewItems.add(new ReviewItem(name,imgUrl,reviews));
+
+
+                    String name = childSnapshot.child("name").getValue(String.class);
+                    String imgUrl = childSnapshot.child("profileimageurl").getValue(String.class);
+                    String reviews = childSnapshot.child("comment").getValue(String.class);
+
+
+                    reviewItems.add(new ReviewItem(name, imgUrl, reviews));
 
                 }
                 reviewAdapter.notifyDataSetChanged();
@@ -398,15 +410,19 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
 
         //------------------------------
 
-        DatabaseReference providerRef = FirebaseDatabase.getInstance().getReference().child("USERS").child("SERVICE-PROVIDERS").child(providerId);
+        DatabaseReference providerRef = FirebaseDatabase.getInstance().getReference()
+                .child("service-providers")
+                .child("verified")
+                .child(providerId);
+
         providerRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                String name = snapshot.child("NAME").getValue(String.class);
-                String job = snapshot.child("SERVICE").getValue(String.class);
-                String address = snapshot.child("ADDRESS").getValue(String.class);
-                String serviceProviderImageURL = snapshot.child("profileImageUrl").getValue(String.class);
+                String name = snapshot.child("name").getValue(String.class);
+                String job = snapshot.child("service").getValue(String.class);
+                String address = snapshot.child("address").getValue(String.class);
+                String serviceProviderImageURL = snapshot.child("profileimageurl").getValue(String.class);
                 serviceProviderName.setText(name);
                 serviceProviderJob.setText(job);
                 serviceProviderAddress.setText(address);

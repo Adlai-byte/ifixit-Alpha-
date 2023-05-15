@@ -17,28 +17,25 @@
 
         >
 
-<TextView
-    android:layout_marginTop="20sp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Let's gets started"
-    android:textSize="35sp"
-    android:textStyle="bold"
-    android:textAlignment="center"
-    />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:text="Let's gets started"
+            android:textAlignment="center"
+            android:textSize="35sp"
+            android:textStyle="bold" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Please fill in the form below"
 
-            android:textAlignment="center"
-            />
-
-
+            android:textAlignment="center" />
 
 
         <EditText
-            android:id="@+id/SPetFullName"
+            android:id="@+id/adminetFullName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -46,9 +43,8 @@
             android:inputType="textPersonName" />
 
 
-
         <EditText
-            android:id="@+id/SPetAddress"
+            android:id="@+id/adminetAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -56,61 +52,58 @@
             android:inputType="textPersonName" />
 
 
-
         <EditText
-            android:id="@+id/SPetEmail"
+            android:id="@+id/adminetEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Email"
             android:inputType="textPersonName" />
-            <EditText
-                android:id="@+id/SPetPhone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="12"
-                android:hint="Phone"
-                android:inputType="phone" />
 
-
-
-            <Spinner
-            android:id="@+id/spinner"
+        <EditText
+            android:id="@+id/SPetPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
+            android:ems="12"
+            android:hint="Phone"
+            android:inputType="phone" />
+
+
+        <Spinner
+            android:id="@+id/adminspinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/service_options"
             android:padding="18dp"
-            android:entries="@array/service_options" />
+            android:textAlignment="center" />
 
 
         <EditText
-            android:id="@+id/SPetPassword"
+            android:id="@+id/adminetPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
             android:ems="10"
+            android:hint="Password"
             android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/SPetConfirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Confirm Password"
             android:ems="10"
+            android:hint="Confirm Password"
             android:inputType="textPersonName" />
-
-
 
 
         <Button
 
-            android:id="@+id/SPbtnRegister"
+            android:id="@+id/adminbtnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Sign-up" />
 
         <TextView
-            android:id="@+id/SPtvAlreadyHaveAnAccount"
+            android:id="@+id/admintvAlreadyHaveAnAccount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Already have an accout? click here to Sign in" />

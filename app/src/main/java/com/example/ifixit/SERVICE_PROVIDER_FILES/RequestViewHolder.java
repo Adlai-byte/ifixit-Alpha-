@@ -22,8 +22,8 @@ public class RequestViewHolder extends RecyclerView.ViewHolder {
     public Button Btndecline;
 
     public RequestViewHolder(@NonNull View itemView) {
-        super(itemView);
 
+        super(itemView);
         imageView = itemView.findViewById(R.id.userProfile);
         nameView = itemView.findViewById(R.id.notificationName);
         location = itemView.findViewById(R.id.notificationLocation);
@@ -31,6 +31,7 @@ public class RequestViewHolder extends RecyclerView.ViewHolder {
         totalPrice = itemView.findViewById(R.id.notificationTotalPrice);
         BtnAccept = itemView.findViewById(R.id.notificationAccept);
         Btndecline = itemView.findViewById(R.id.notificationDecline);
+
 
     }
 }

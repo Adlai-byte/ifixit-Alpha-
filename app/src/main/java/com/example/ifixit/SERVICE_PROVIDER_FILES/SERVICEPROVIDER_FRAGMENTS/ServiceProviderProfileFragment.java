@@ -15,8 +15,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,16 +55,18 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
     private EditText serviceProviderName;
     private TextView customerEmail;
     private EditText serviceProviderAddress;
-//    private ImageView serviceProviderImage;
-    //
+    private ImageView serviceProviderImage;
+
 
 
     private FirebaseAuth mAuth;
     private DatabaseReference DatabaseRef;
+
     private String userID;
     private String mUserName;
     private String mEmail;
     private String mAddress;
+    private String mPhone;
     private Button saveBtn;
 
     private Uri resultUri;
@@ -78,6 +82,7 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
     private TextView SPemail;
     //ImageView
     private ImageView SPnewimage;
+    private ImageView settingsImg;
     //------------------------
 
     //------Request Variables----
@@ -86,6 +91,10 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
     private RequestAdapter requestAdapter;
     //------------------------
 
+    //------Profile Edit Variables
+    private EditText name,phone,address;
+    private Button saveBtnNew;
+    private LinearLayout SPeditLayout;
 
     ArrayAdapter<CharSequence> adapter;
 
@@ -96,13 +105,14 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
         View rootView = inflater.inflate(R.layout.service_provider_fragment_profile, container, false);
 
         //------------------------
-        serviceProviderName = (EditText) rootView.findViewById(R.id.SPName);
-        customerEmail = (TextView) rootView.findViewById(R.id.customersEmail);
-        serviceProviderAddress = (EditText) rootView.findViewById(R.id.SPAddress);
-//        serviceProviderImage = (ImageView) rootView.findViewById(R.id.SPImage);
+
+
+        settingsImg = (ImageView) rootView.findViewById(R.id.settingBtn);
+
+        serviceProviderImage = (ImageView) rootView.findViewById(R.id.SPNewImage);
 
         //Drop Down
-        serviceSpinner = rootView.findViewById(R.id.spinner);
+        serviceSpinner = rootView.findViewById(R.id.adminspinner);
         adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.service_options, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -118,7 +128,14 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
         SPnewimage = (ImageView)rootView.findViewById(R.id.SPNewImage) ;
         //------------------------
 
-        saveBtn = (Button) rootView.findViewById(R.id.SPsaveUserInfoBtn);
+        //------Edit Details Reference--------
+        name = (EditText) rootView.findViewById(R.id.SPNameET);
+        phone = (EditText) rootView.findViewById(R.id.SPPhoneET);
+        address = (EditText)rootView.findViewById(R.id.SPAddressET);
+        saveBtnNew=(Button)rootView.findViewById(R.id.SPsaveBtnNew);
+        SPeditLayout = (LinearLayout)rootView.findViewById(R.id.SPeditLayout);
+
+
         mAuth = FirebaseAuth.getInstance();
         userID = mAuth.getCurrentUser().getUid();
 
@@ -133,11 +150,11 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
         String serviceProviderID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         DatabaseReference serviceProviderRef = FirebaseDatabase.getInstance().getReference()
-                .child("USERS")
-                .child("SERVICE-PROVIDERS")
+                .child("service-providers")
+                .child("verified")
                 .child(serviceProviderID)
-                .child("JOB-OFFERS")
-                .child("PENDING");
+                .child("joboffers")
+                .child("pending");
 
         serviceProviderRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -152,13 +169,13 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (snapshot.exists()) {
                                 String userId = snapshot.getKey();
-                                String name = snapshot.child("NAME").getValue(String.class);
-                                String email = snapshot.child("EMAIL").getValue(String.class);
-                                String address = snapshot.child("ADDRESS").getValue(String.class);
-                                String imgURL = snapshot.child("profileImageUrl").getValue(String.class);
+                                String name = snapshot.child("name").getValue(String.class);
+                                String email = snapshot.child("email").getValue(String.class);
+                                String address = snapshot.child("address").getValue(String.class);
+                                String imgURL = snapshot.child("profileimageurl").getValue(String.class);
 
-                                String jobtype = snapshot.child("JOB-TYPE").getValue(String.class);
-                                String totalPrice = snapshot.child("TOTAL-PRICE").getValue(String.class);
+                                String jobtype = snapshot.child("jobtype").getValue(String.class);
+                                String totalPrice = snapshot.child("totalprice").getValue(String.class);
                                 requestItems.add(new RequestItem(name, address,userId,imgURL,email,jobtype,totalPrice,address));
                                 requestAdapter.notifyDataSetChanged();
                             }
@@ -183,35 +200,84 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
 
 
 
-        DatabaseRef = FirebaseDatabase.getInstance().getReference().child("USERS").child("SERVICE-PROVIDERS").child(userID);
-        DatabaseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                getHeaderInfo();
-            }
+        DatabaseRef = FirebaseDatabase.getInstance().getReference()
+                .child("service-providers")
+                .child("verified")
+                .child(userID);
+            DatabaseRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    getHeaderInfo();
+                }
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+
+
+
+        serviceProviderImage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, 1);
+            }
+        });
+
+        settingsImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                DatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
+                            Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
+                            if (map.get("name") != null) {
+                                mUserName = map.get("name").toString();
+                                name.setText(mUserName);
+                            }
+
+                            if (map.get("address") != null) {
+                                mAddress = map.get("address").toString();
+                                address.setText(mAddress);
+                            }
+                            if(map.get("phone")!=null){
+                                mPhone = map.get("phone") .toString();
+                                phone.setText(mPhone);
+                            }
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+                SPeditLayout.setVisibility(View.VISIBLE);
 
             }
         });
 
-        //SETTING IMAGE
-//        serviceProviderImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(Intent.ACTION_PICK);
-//                intent.setType("image/*");
-//                startActivityForResult(intent, 1);
-//            }
-//        });
-
-        saveBtn.setOnClickListener(new View.OnClickListener() {
+        saveBtnNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 saveUserInformation();
+                SPeditLayout.setVisibility(View.GONE);
             }
         });
+
+
+
+
 
         return rootView;
 
@@ -225,25 +291,22 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
 
                 if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
                     Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
-                    if (map.get("NAME") != null) {
-                        mUserName = map.get("NAME").toString();
+                    if (map.get("name") != null) {
+                        mUserName = map.get("name").toString();
                         SPname.setText(mUserName);
                     }
-                    if (map.get("EMAIL") != null) {
-                        mEmail = map.get("EMAIL").toString();
+                    if (map.get("email") != null) {
+                        mEmail = map.get("email").toString();
                         SPemail.setText(mEmail);
                     }
-//                    if (map.get("ADDRESS") != null) {
-//                        mAddress = map.get("ADDRESS").toString();
-//                        serviceProviderAddress.setText(mAddress);
-//                    }
-                    if (map.get("SERVICE") != null) {
-                        mService = map.get("SERVICE").toString();
+
+                    if (map.get("service") != null) {
+                        mService = map.get("service").toString();
                         SPservice.setText(mService);
 
                     }
-                    if (map.get("profileImageUrl") != null) {
-                        mProfileImageUrl = map.get("profileImageUrl").toString();
+                    if (map.get("profileimageurl") != null) {
+                        mProfileImageUrl = map.get("profileimageurl").toString();
                         Glide.with(getContext().getApplicationContext()).load(mProfileImageUrl).into(SPnewimage);
                     }
 
@@ -259,16 +322,23 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
         });
     }
 
+
+
+
+
+
+
+
     private void saveUserInformation() {
-        mUserName = serviceProviderName.getText().toString();
-        mEmail = customerEmail.getText().toString();
-        mAddress = serviceProviderAddress.getText().toString();
+        mUserName = name.getText().toString();
+        mPhone = phone.getText().toString();
+        mAddress = address.getText().toString();
 
 
         Map userInfo = new HashMap();
-        userInfo.put("NAME", mUserName);
-        userInfo.put("ADDRESS", mAddress);
-        userInfo.put("SERVICE", mService);
+        userInfo.put("name", mUserName);
+        userInfo.put("address", mAddress);
+        userInfo.put("service", mService);
 
 
         DatabaseRef.updateChildren(userInfo);
@@ -297,11 +367,11 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
                             String downloadUrlStr = downloadUrl.toString();
 
                             Map<String, Object> newImage = new HashMap<>();
-                            newImage.put("profileImageUrl", downloadUrlStr);
+                            newImage.put("profileimageurl", downloadUrlStr);
                             DatabaseRef.updateChildren(newImage).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-//                                    finish();
+                                    Toast.makeText(getContext(), "Profile Updated", Toast.LENGTH_SHORT).show();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override

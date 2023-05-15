@@ -2,62 +2,127 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_green_dark"
+    android:layout_marginTop="50sp"
     android:orientation="vertical">
 
 
+    <!--H-->
     <LinearLayout
-        android:id="@+id/CMcustomerInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
         android:background="@color/white"
-        android:layout_marginTop="50dp"
-        android:orientation="vertical">
-
+        android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/CMImage"
-            android:src="@mipmap/ic_launcher_round"
-            android:layout_width="100sp"
-            android:layout_height="100sp"
-            android:layout_gravity="center"
-            android:layout_marginTop="20sp"
+            android:id="@+id/customerProfileImage"
+            android:layout_width="75sp"
+            android:layout_height="75sp"
+            android:layout_margin="15sp"
             android:layout_marginRight="20sp"
-            android:padding="20sp" />
+            android:src="@mipmap/ic_launcher_round" />
+
 
         <LinearLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
-            <EditText
-                android:id="@+id/CMName"
+
+            <TextView
+                android:id="@+id/customerName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Juan Dela Cruz" />
+                android:layout_marginTop="25sp"
+                android:text="Vinz Lloyd Alferez"
+                android:textStyle="bold" />
 
-<!--            <EditText-->
-<!--                android:id="@+id/customersEmail"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:hint="name@mail.ocom" />-->
-
-            <EditText
-                android:id="@+id/CMAddress"
+            <TextView
+                android:id="@+id/customerAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="South Park" />
+                android:layout_margin="0dp"
+                android:text="Lupon Vocational"
 
-            <Button
-                android:id="@+id/CMsaveUserInfoBtn"
+                />
+
+            <TextView
+                android:id="@+id/customerEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Save" />
+                android:layout_margin="0dp"
+                android:text="vinzlloydalferez@gmail.com"
+
+                />
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/customerSettingBtn"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="40dp"
+            android:src="@drawable/baseline_settings_24"
+
+            />
 
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/editLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20sp"
+        android:orientation="vertical"
+        android:visibility="gone"
+
+    >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:layout_marginBottom="10sp"
+            android:text="Edit Profile"
+
+            />
+
+
+
+        <EditText
+            android:id="@+id/NameET"
+            android:hint="Enter New Name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+        />
+        <EditText
+            android:id="@+id/AddressET"
+            android:hint="Address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            />
+        <EditText
+            android:id="@+id/PhoneET"
+            android:hint="Enter Phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            />
+
+
+        <Button
+            android:id="@+id/saveBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save"/>
+
+    </LinearLayout>
+
+
+
+
+
+
+
 </LinearLayout>

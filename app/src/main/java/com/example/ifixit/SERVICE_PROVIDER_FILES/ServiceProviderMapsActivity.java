@@ -121,18 +121,20 @@ public class ServiceProviderMapsActivity extends FragmentActivity implements OnM
 
 
             Query query = FirebaseDatabase.getInstance().getReference()
-                    .child("USERS")
-                    .child("CUSTOMERS")
-                    .orderByChild("NAME");
+                    .child("customers")
+                    .orderByChild("name");
+
+
+
             query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                         String userId = childSnapshot.getKey();
-                        String name = childSnapshot.child("NAME").getValue(String.class);
-                        String email = childSnapshot.child("EMAIL").getValue(String.class);
-                        String latStr = childSnapshot.child("LOCATION").child("lat").getValue(String.class);
-                        String lngStr = childSnapshot.child("LOCATION").child("lng").getValue(String.class);
+                        String name = childSnapshot.child("name").getValue(String.class);
+                        String email = childSnapshot.child("email").getValue(String.class);
+                        String latStr = childSnapshot.child("location").child("lat").getValue(String.class);
+                        String lngStr = childSnapshot.child("location").child("lng").getValue(String.class);
                         double lat = latStr != null ? Double.parseDouble(latStr.trim()) : 0.0;
                         double lng = lngStr != null ? Double.parseDouble(lngStr.trim()) : 0.0;
 
@@ -220,7 +222,11 @@ public class ServiceProviderMapsActivity extends FragmentActivity implements OnM
 
     private void pushDataToDatabase() {
         String customerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        customerRef = FirebaseDatabase.getInstance().getReference().child("USERS").child("SERVICE-PROVIDERS").child(customerId).child("LOCATION");
+        customerRef = FirebaseDatabase.getInstance().getReference()
+                .child("service-providers")
+                .child("verified")
+                .child(customerId)
+                .child("location");
         customerLocationRefListener = customerRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -265,13 +271,16 @@ public class ServiceProviderMapsActivity extends FragmentActivity implements OnM
 
 
     public void displayToTextView(String providerId) {
-        DatabaseReference providerRef = FirebaseDatabase.getInstance().getReference().child("USERS").child("CUSTOMERS").child(providerId);
+        DatabaseReference providerRef = FirebaseDatabase.getInstance().getReference()
+                .child("customers")
+                .child(providerId);
+
         providerRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String name = snapshot.child("NAME").getValue(String.class);
-                String email = snapshot.child("EMAIL").getValue(String.class);
-                String address = snapshot.child("ADDRESS").getValue(String.class);
+                String name = snapshot.child("name").getValue(String.class);
+                String email = snapshot.child("email").getValue(String.class);
+                String address = snapshot.child("address").getValue(String.class);
 
 
                 customerName.setText(name);
