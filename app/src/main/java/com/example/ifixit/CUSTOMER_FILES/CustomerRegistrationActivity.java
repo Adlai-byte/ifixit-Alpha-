@@ -39,7 +39,6 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
     private EditText etEmail;
     private EditText etPhone;
     private EditText etPassword;
-
     //------Buttons
     private Button btnRegister;
 

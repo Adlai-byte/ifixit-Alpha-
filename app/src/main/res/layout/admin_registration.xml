@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginTop="120sp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="120sp"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".SUPER_ADMIN_FILES.AdminRegistrationActivity">
 
@@ -12,14 +13,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:layout_margin="20dp"
         android:orientation="vertical">
 
         <EditText
             android:id="@+id/etadminUserName"
+            style="@style/Widget.AppCompat.EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:ems="10"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
+
             android:hint="Username"
             android:inputType="textPersonName" />
 
@@ -27,23 +35,39 @@
             android:id="@+id/etadminEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:ems="10"
             android:hint="Email"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
             android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/etadminPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
             android:ems="10"
             android:hint="Password"
             android:inputType="textPersonName" />
 
         <Button
             android:id="@+id/adminbtnRegister"
+            style="@android:style/Widget.DeviceDefault.Button.Toggle"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sign-up" />
+            android:elevation="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:padding="15dp"
+            android:textSize="15dp"
+            android:text="Sign-up"
+            />
 
         <TextView
             android:id="@+id/admintvAlreadyHaveAnAccount"

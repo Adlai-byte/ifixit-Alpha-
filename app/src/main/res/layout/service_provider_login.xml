@@ -18,31 +18,33 @@
         android:orientation="vertical">
 
 
-        <TextView
-            android:id="@+id/tvadminEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Email" />
 
         <EditText
             android:id="@+id/etadminEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.EditText"
+            android:hint="Email"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
             android:ems="10"
             android:inputType="textPersonName"
             android:text="" />
 
-        <TextView
-            android:id="@+id/tvadminPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Password" />
 
 
         <EditText
             android:id="@+id/etadminPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Password"
+            style="@style/Widget.AppCompat.EditText"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
             android:ems="10"
             android:inputType="textPersonName"
             android:text="" />
@@ -51,12 +53,20 @@
             android:id="@+id/adminbtnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
+            android:elevation="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:padding="15dp"
+            android:textSize="15dp"
+
             android:text="Log-in" />
 
         <TextView
             android:id="@+id/tvadminNoAccout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_gravity="center"
             android:text="Doesn't have an account yet?" />
     </LinearLayout>

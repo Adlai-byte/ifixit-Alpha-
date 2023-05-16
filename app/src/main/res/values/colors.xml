@@ -18,5 +18,23 @@
     <color name="message_bubble_border">#BDBDBD</color>
 
     <!-- Other Colors -->
+    <!-- res/values/colors.xml -->
+
+        <color name="colorPrimary">#FFA500</color> <!-- Purple 500 -->
+        <color name="colorPrimaryDark">#E91E63</color> <!-- Purple 700 -->
+        <color name="colorAccent">#303030</color> <!-- Teal 200 -->
+        <color name="colorBackground">#FFFFFF</color> <!-- White -->
+        <color name="colorText">#333333</color> <!-- Black -->
+
+
+
+    <!-- res/values/colors.xml -->
+
+<!--        <color name="primaryColor">#FFA500</color> &lt;!&ndash; Orange &ndash;&gt;-->
+<!--        <color name="accentColor">#303030</color> &lt;!&ndash; Dark Gray &ndash;&gt;-->
+<!--        <color name="backgroundColor">#FFFFFF</color> &lt;!&ndash; White &ndash;&gt;-->
+<!--        <color name="textColor">#333333</color> &lt;!&ndash; Dark Gray &ndash;&gt;-->
+
+
 
 </resources>

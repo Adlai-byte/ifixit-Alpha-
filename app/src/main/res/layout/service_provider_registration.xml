@@ -39,6 +39,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+
+            style="@style/Widget.AppCompat.EditText"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
             android:hint="Name"
             android:inputType="textPersonName" />
 
@@ -48,6 +54,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+
+            style="@style/Widget.AppCompat.EditText"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
             android:hint="Address"
             android:inputType="textPersonName" />
 
@@ -57,6 +69,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+
+            style="@style/Widget.AppCompat.EditText"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
             android:hint="Email"
             android:inputType="textPersonName" />
 
@@ -65,6 +83,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="12"
+
+            style="@style/Widget.AppCompat.EditText"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
             android:hint="Phone"
             android:inputType="phone" />
 
@@ -74,7 +98,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:entries="@array/service_options"
-            android:padding="18dp"
+
+
+            style="@style/Widget.AppCompat.EditText"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
             android:textAlignment="center" />
 
 
@@ -83,6 +113,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+
+            style="@style/Widget.AppCompat.EditText"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
             android:hint="Password"
             android:inputType="textPersonName" />
 
@@ -91,6 +127,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+
+            style="@style/Widget.AppCompat.EditText"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
             android:hint="Confirm Password"
             android:inputType="textPersonName" />
 
@@ -100,6 +142,12 @@
             android:id="@+id/adminbtnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:elevation="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:padding="15dp"
+            android:textSize="15dp"
+
             android:text="Sign-up" />
 
         <TextView

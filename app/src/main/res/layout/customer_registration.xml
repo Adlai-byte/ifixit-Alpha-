@@ -39,6 +39,12 @@
             android:id="@+id/etFullName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
+            style="@style/Widget.AppCompat.EditText"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
             android:ems="10"
             android:hint="Name"
             android:inputType="textPersonName" />
@@ -47,6 +53,12 @@
             android:id="@+id/etPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
+            style="@style/Widget.AppCompat.EditText"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
             android:ems="10"
             android:hint="Phone"
             android:inputType="phone" />
@@ -55,6 +67,12 @@
             android:id="@+id/etAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
+            style="@style/Widget.AppCompat.EditText"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
             android:ems="10"
             android:hint="Address"
             android:inputType="textPersonName" />
@@ -64,6 +82,12 @@
             android:id="@+id/etadminEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
+            style="@style/Widget.AppCompat.EditText"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
             android:ems="10"
             android:hint="Email"
             android:inputType="textPersonName" />
@@ -73,6 +97,12 @@
             android:id="@+id/etadminPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
+            style="@style/Widget.AppCompat.EditText"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
             android:ems="10"
             android:hint="Password"
             android:inputType="textPersonName" />
@@ -81,6 +111,12 @@
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:elevation="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:padding="15dp"
+            android:textSize="15dp"
+
             android:text="Sign-up" />
 
         <TextView

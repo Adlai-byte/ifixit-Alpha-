@@ -4,7 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".CUSTOMER_FILES.CustomerMapsActivity">
+
+
+
+<!--    <FrameLayout-->
+<!--        android:id="@+id/CMMapfragment_container"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="vertical">-->
+
+
+<!--    </FrameLayout>-->
+
 
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,6 +28,18 @@
         android:layout_height="match_parent"
         tools:context=".CUSTOMER_FILES.CustomerMapsActivity"
         tools:layout="@layout/customer_maps" />
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/CMMaptoolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:title="Map"
+        app:navigationIcon="@drawable/ic_back_arrow"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        />
 
 
     <LinearLayout
@@ -56,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Service Provider Name" />
-                ]
+
 
                 <TextView
                     android:id="@+id/serviceProviderJob"

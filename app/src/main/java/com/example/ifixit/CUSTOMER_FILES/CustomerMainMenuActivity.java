@@ -64,6 +64,8 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
         setContentView(R.layout.customer_main_menu);
         Toolbar toolbar = findViewById(R.id.CMtoolbar);
         setSupportActionBar(toolbar);
+
+
         NavigationView navigationViews = findViewById(R.id.CMnav_view);
         headerInfo = navigationViews.getHeaderView(0);
         navigationViews.setNavigationItemSelectedListener(this);
@@ -108,7 +110,7 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
                 getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerListViewFragment()).commit();
                 break;
             case R.id.CMnav_map:
-                Intent intent = new Intent(CustomerMainMenuActivity.this, CustomerNewMapsActivity.class);
+                Intent intent = new Intent(CustomerMainMenuActivity.this, CustomerMapsActivity.class);
                 startActivity(intent);
                 break;
             case R.id.CMnav_message:
