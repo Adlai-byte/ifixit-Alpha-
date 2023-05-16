@@ -18,6 +18,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
+import com.example.ifixit.Messaging.ChatActivity;
 import com.example.ifixit.R;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderOngoingJob;
 import com.example.ifixit.SUPER_ADMIN_FILES.Fragments.ADMAdminProfileFragment;
@@ -123,6 +124,13 @@ public class AdminMainMenuActivity extends AppCompatActivity implements Navigati
 
             case R.id.adminUnverifiedSPList:
                 getSupportFragmentManager().beginTransaction().replace(R.id.ADMfragment_container, new ADMUnverifiedSPListFragment()).commit();
+                break;
+            case R.id.adminMessaging:
+
+                Intent intent = new Intent(AdminMainMenuActivity.this, ChatActivity.class);
+                startActivity(intent);
+                finish();
+//                getSupportFragmentManager().beginTransaction().replace(R.id.ADMfragment_container, new ADMMessagingFragment()).commit();
                 break;
 
             case R.id.SPnav_logout:

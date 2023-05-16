@@ -19,6 +19,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
+import com.example.ifixit.Messaging.ChatActivity;
 import com.example.ifixit.R;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderOngoingJob;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderProfileFragment;
@@ -112,10 +113,11 @@ public class ServiceProviderMainMenuActivity extends AppCompatActivity implement
                 Intent intent = new Intent(ServiceProviderMainMenuActivity.this, ServiceProviderMapsActivity.class);
                 startActivity(intent);
                 break;
-//            case R.id.SPnav_message:
-//                Intent intent3 = new Intent(ServiceProviderMainMenuActivity.this, ServiceProviderChatActivity.class);
-//                startActivity(intent3);
-//                break;
+            case R.id.SPnav_message:
+                Intent intent1 = new Intent(ServiceProviderMainMenuActivity.this, ChatActivity.class);
+                startActivity(intent1);
+                finish();
+                break;
 //            case R.id.SPnav_notification:
 //                Intent intent2 = new Intent(ServiceProviderMainMenuActivity.this, ServiceProviderNotification.class);
 //                startActivity(intent2);
@@ -125,8 +127,8 @@ public class ServiceProviderMainMenuActivity extends AppCompatActivity implement
                 break;
             case R.id.SPnav_logout:
                 FirebaseAuth.getInstance().signOut();
-                Intent intent1 = new Intent(ServiceProviderMainMenuActivity.this, ServiceProviderLoginActivity.class);
-                startActivity(intent1);
+                Intent intent2 = new Intent(ServiceProviderMainMenuActivity.this, ServiceProviderLoginActivity.class);
+                startActivity(intent2);
                 finish();
                 break;
 

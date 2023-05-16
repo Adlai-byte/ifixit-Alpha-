@@ -28,6 +28,12 @@
             android:icon="@mipmap/ic_gardener_logo"
             android:title="Unverified Accounts"/>
 
+        <item
+            android:id="@+id/adminMessaging"
+            android:icon="@mipmap/ic_gardener_logo"
+            android:title="Messaging"/>
+
+
 
 
 

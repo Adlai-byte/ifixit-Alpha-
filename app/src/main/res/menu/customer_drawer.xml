@@ -26,6 +26,8 @@
             android:icon="@drawable/ic_notification"
             android:title="Notification" />
 
+
+
         <item android:title="Miscellaneous">
                 <!--Add more later-->
             <menu>

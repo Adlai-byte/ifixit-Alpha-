@@ -10,7 +10,7 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_app_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ifixit"
@@ -20,11 +20,15 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDbm7rYA_28n5PpW1xQHBq-kScG4AbW2ug" />
+        <activity
+            android:name=".Messaging.ChatActivity"
+            android:exported="false" />
 
         <activity
             android:name=".CUSTOMER_FILES.CustomerNewMapsActivity"
             android:exported="false" />
         <activity
+
             android:name=".SUPER_ADMIN_FILES.AdminMainMenuActivity"
             android:exported="false" />
         <activity

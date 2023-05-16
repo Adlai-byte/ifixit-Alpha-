@@ -61,6 +61,7 @@ public class AdminRegistrationActivity extends AppCompatActivity {
         etName = (EditText) findViewById(R.id.etadminUserName);
         etEmail = (EditText) findViewById(R.id.etadminEmail);
         etPassword = (EditText) findViewById(R.id.etadminPassword);
+
         btnRegister = (Button) findViewById(R.id.adminbtnRegister);
         tvAlreadyHave = (TextView) findViewById(R.id.admintvAlreadyHaveAnAccount);
 
@@ -107,13 +108,13 @@ public class AdminRegistrationActivity extends AppCompatActivity {
                                 Toast.makeText(AdminRegistrationActivity.this, "Sign-up Error", Toast.LENGTH_SHORT).show();
                             } else {
                                 String userID = mAuth.getCurrentUser().getUid();
-                                DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("USERS").child("ADMINS").child(userID);
+                                DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("admins").child(userID);
                                 current_user_db.setValue(true);
 
                                 Map userInfo = new HashMap();
-                                userInfo.put("NAME", name);
-                                userInfo.put("EMAIL", email);
-                                userInfo.put("PASSWORD", password);
+                                userInfo.put("name", name);
+                                userInfo.put("email", email);
+                                userInfo.put("password", password);
 
                                 current_user_db.updateChildren(userInfo);
 
@@ -130,7 +131,7 @@ public class AdminRegistrationActivity extends AppCompatActivity {
         tvAlreadyHave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AdminRegistrationActivity.this, AdminRegistrationActivity.class);
+                Intent intent = new Intent(AdminRegistrationActivity.this, AdminLoginActivity.class);
                 startActivity(intent);
                 return;
             }
