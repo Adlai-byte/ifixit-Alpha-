@@ -48,9 +48,8 @@ public class ADMVerifiedSPListFragment extends Fragment {
 
 
         DatabaseReference customerRef = FirebaseDatabase.getInstance().getReference()
-                .child("USERS")
-                .child("SERVICE-PROVIDERS")
-                .child("VERIFIED");
+                .child("service-providers")
+                .child("verified");
 
         customerRef.addValueEventListener(new ValueEventListener() {
             @Override

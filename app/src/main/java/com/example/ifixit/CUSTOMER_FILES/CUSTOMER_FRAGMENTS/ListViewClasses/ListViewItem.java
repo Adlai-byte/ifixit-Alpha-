@@ -6,7 +6,8 @@ public class ListViewItem {
     String profileImageUrl;
     String SERVICE;
     String ADDRESS;
-
+    float MAXPRICE;
+    float RATING;
     public float getMAXPRICE() {
         return MAXPRICE;
     }
@@ -15,8 +16,7 @@ public class ListViewItem {
         this.MAXPRICE = MAXPRICE;
     }
 
-    float MAXPRICE;
-    float RATING;
+
 
     public ListViewItem(String NAME, String profileImageUrl, String SERVICE, String ADDRESS, float RATING, String USERID,float MAXPRICE) {
         this.NAME = NAME;

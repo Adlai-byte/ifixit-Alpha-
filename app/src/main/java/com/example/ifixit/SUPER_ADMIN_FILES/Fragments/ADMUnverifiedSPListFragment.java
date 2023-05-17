@@ -48,9 +48,8 @@ public class ADMUnverifiedSPListFragment extends Fragment {
 
 
         DatabaseReference customerRef = FirebaseDatabase.getInstance().getReference()
-                .child("USERS")
-                .child("SERVICE-PROVIDERS")
-                .child("UNVERIFIED");
+                .child("service-providers")
+                .child("unverified");
 
         customerRef.addValueEventListener(new ValueEventListener() {
             @Override

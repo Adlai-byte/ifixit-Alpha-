@@ -14,23 +14,46 @@ import com.example.ifixit.CUSTOMER_FILES.CustomerCheckOutActivity;
 import com.example.ifixit.R;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ListViewAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
     private List<ListViewItem> listViewItems;
+    private List<ListViewItem> originalList;
     private Context context;
-
 
     public ListViewAdapter(Context context, List<ListViewItem> listViewItems) {
         this.context = context;
         this.listViewItems = listViewItems;
-
+        this.originalList = new ArrayList<>(listViewItems);
     }
 
-
     public void setFilteredList(List<ListViewItem> newfilteredList) {
-        this.listViewItems = newfilteredList;
+        this.listViewItems.clear();
+        this.listViewItems.addAll(newfilteredList);
+        notifyDataSetChanged();
+    }
+
+    public void sortItemsByPriceAscending() {
+        Collections.sort(listViewItems, new Comparator<ListViewItem>() {
+            @Override
+            public int compare(ListViewItem item1, ListViewItem item2) {
+                return Float.compare(item1.getMAXPRICE(), item2.getMAXPRICE());
+            }
+        });
+        notifyDataSetChanged();
+    }
+
+    public void sortItemsByPriceDescending() {
+        Collections.sort(listViewItems, new Comparator<ListViewItem>() {
+            @Override
+            public int compare(ListViewItem item1, ListViewItem item2) {
+                return Float.compare(item2.getMAXPRICE(), item1.getMAXPRICE());
+            }
+        });
         notifyDataSetChanged();
     }
 
@@ -42,7 +65,6 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
-
         ListViewItem listViewItem = listViewItems.get(position);
 
         holder.nameView.setText(listViewItem.getNAME());
@@ -56,18 +78,13 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewHolder> {
         holder.hireButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String serviceProviderUserId = listViewItem.getUSERID();
                 String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
-
-
 
                 Intent intent = new Intent(context, CustomerCheckOutActivity.class);
                 intent.putExtra("customerUserId", currentUserId);
                 intent.putExtra("serviceProviderUserId", serviceProviderUserId);
                 context.startActivity(intent);
-
-
             }
         });
     }
@@ -76,8 +93,4 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewHolder> {
     public int getItemCount() {
         return listViewItems.size();
     }
-
-
-    //----------------------------------------------------------------------------------
-
 }

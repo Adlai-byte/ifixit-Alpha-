@@ -11,18 +11,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        android:elevation="10dp"
         android:orientation="vertical">
 
         <LinearLayout
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            android:elevation="10dp"
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/serviceProviderProfileImage"
-                android:layout_width="100sp"
-                android:layout_height="100sp"
+                android:layout_width="110sp"
+                android:layout_height="110sp"
                 android:background="@drawable/rounded_image"
                 android:padding="20sp"
                 android:src="@mipmap/ic_launcher_round" />
@@ -36,6 +39,8 @@
 
                 <TextView
                     android:id="@+id/serviceProviderName"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Service Provider Name" />
@@ -63,31 +68,43 @@
             android:orientation="vertical">
 
             <TextView
-
+                android:padding="5sp"
+                android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10sp"
+                android:background="@color/white"
+                android:elevation="10dp"
                 android:text="Service Type"
                 android:textSize="20sp" />
             <Spinner
+                android:layout_margin="10dp"
                 android:id="@+id/adminspinner"
+                android:background="@color/white"
+                android:elevation="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:entries="@array/service_type"
-                android:padding="18dp"
+                android:padding="15dp"
                 android:textAlignment="center" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10sp"
+                android:padding="10sp"
+                android:layout_margin="6dp"
                 android:text="Days of Work"
+                android:background="@color/white"
+                android:elevation="10dp"
                 android:textSize="20sp" />
 
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:background="@color/white"
+                android:elevation="10dp"
                 android:orientation="horizontal">
 
                 <NumberPicker
@@ -101,22 +118,14 @@
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="Comment"/>
-            <EditText
-                android:layout_margin="10sp"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:id="@+id/comment"
-                />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20sp"
+        android:layout_margin="5dp"
+                android:background="@color/white"
+
+                android:elevation="10dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -124,6 +133,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="50sp"
+                    android:padding="10sp"
                     android:text="Total:"
                     android:textSize="25sp"
 
@@ -141,15 +151,13 @@
                     />
             </LinearLayout>
 
-
-
-
             <Button
                 android:id="@+id/placeOrderButton"
-                android:layout_margin="20sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Place Order"/>
+                android:layout_margin="20sp"
+                android:padding="15dp"
+                android:text="Place Order" />
 
 
         </LinearLayout>

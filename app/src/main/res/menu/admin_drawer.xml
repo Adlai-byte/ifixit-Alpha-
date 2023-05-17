@@ -7,10 +7,7 @@
             android:id="@+id/adminProfile"
             android:icon="@drawable/ic_profile"
             android:title="Profile" />
-        <item
-            android:id="@+id/adminDashboard"
-            android:icon="@drawable/ic_listview"
-            android:title="Dashboard" />
+
 
 
         <item

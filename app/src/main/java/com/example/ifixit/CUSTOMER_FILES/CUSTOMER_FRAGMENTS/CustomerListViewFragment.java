@@ -39,6 +39,9 @@ public class CustomerListViewFragment extends Fragment {
     private Spinner spService;
     private String mService = "";
 
+    private String Ascending="Ascending";
+    private String Descending ="Descending";
+
     private Spinner spPrice;
     //------------------------------------
 
@@ -64,13 +67,30 @@ public class CustomerListViewFragment extends Fragment {
         spService = rootView.findViewById(R.id.adminspinner);
         spPrice = rootView.findViewById(R.id.adminspinner2);
 
-        ArrayAdapter<CharSequence>adapter1 = ArrayAdapter.createFromResource(getContext(),R.array.price_options, android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence>adapter1 = ArrayAdapter.createFromResource(getContext(),R.array.price_options, android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.service_options, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+
+        spPrice.setAdapter(adapter1);
+        spPrice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (Ascending.equals(spPrice.getItemAtPosition(i).toString())){
+                    listViewAdapter.sortItemsByPriceAscending();
+                }else {
+                    listViewAdapter.sortItemsByPriceDescending();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
 
         spService.setAdapter(adapter);
@@ -122,7 +142,7 @@ public class CustomerListViewFragment extends Fragment {
                     String service = childSnapshot.child("service").getValue(String.class);
                     String imgURL = childSnapshot.child("profileimageurl").getValue(String.class);
                     float rating = childSnapshot.child("rating").getValue(Float.class);
-                    float maxPrice = childSnapshot.child("maxPrice").getValue(Integer.class);
+                    float maxPrice = childSnapshot.child("maxPrice").getValue(Float.class);
 
                     ListViewItem item = new ListViewItem(name, imgURL, service, address, rating, userId,maxPrice);
 

@@ -39,8 +39,8 @@
     </string-array>
 
     <string-array name="price_options">
-        <item>Expensive - Cheapest</item>
-        <item>Cheapest - Expensive</item>
+        <item>Ascending</item>
+        <item>Descending</item>
     </string-array>
 
     <string-array name="service_type">

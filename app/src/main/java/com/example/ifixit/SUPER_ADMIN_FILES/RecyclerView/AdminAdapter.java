@@ -46,16 +46,15 @@ public class AdminAdapter extends RecyclerView.Adapter<AdminViewHolder> {
 
                 String serviceProviderId = adminItemView.getUSERID();
                 DatabaseReference verifiedServiceProvider = FirebaseDatabase.getInstance().getReference()
-                        .child("USERS")
-                        .child("SERVICE-PROVIDERS")
-                        .child("VERIFIED")
+
+                        .child("service-providers")
+                        .child("verified")
                         .child(serviceProviderId);
                 verifiedServiceProvider.setValue(adminItemView);
 
                 DatabaseReference unverifiedServiceProvider = FirebaseDatabase.getInstance().getReference()
-                        .child("USERS")
-                        .child("SERVICE-PROVIDERS")
-                        .child("UNVERIFIED")
+                        .child("service-providers")
+                        .child("unverified")
                         .child(serviceProviderId);
                 unverifiedServiceProvider.removeValue();
 
@@ -73,9 +72,8 @@ public class AdminAdapter extends RecyclerView.Adapter<AdminViewHolder> {
 
                 String serviceProviderId = adminItemView.getUSERID();
                 DatabaseReference unverifiedServiceProvider = FirebaseDatabase.getInstance().getReference()
-                        .child("USER")
-                        .child("SERVICE-PROVIDER")
-                        .child("UNVERIFIED")
+                        .child("service-providers")
+                        .child("unverified")
                         .child(serviceProviderId);
                 unverifiedServiceProvider.removeValue();
 

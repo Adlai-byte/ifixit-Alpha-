@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
@@ -37,7 +36,7 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
     private TextView total;
     private Button placeOrder;
     private Spinner serviceType;
-    private EditText commentEditText;
+
     //Use this as the key in the Hashmap
 
     //*
@@ -90,7 +89,7 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
 
                     initialPrice = servicePriceDictionary.get(service);
 
-                    Toast.makeText(CustomerCheckOutActivity.this, String.valueOf(initialPrice), Toast.LENGTH_SHORT).show();
+
 
                 } else {
                     Toast.makeText(CustomerCheckOutActivity.this, "Not Found", Toast.LENGTH_SHORT).show();
@@ -136,7 +135,7 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
         total = (TextView) findViewById(R.id.tvTotal);
         picker1 = (NumberPicker) findViewById(R.id.numberPicker1);
         placeOrder = (Button) findViewById(R.id.placeOrderButton);
-        commentEditText = (EditText) findViewById(R.id.comment);
+
         //Number Picker
         picker1.setMinValue(0);
         picker1.setMaxValue(31);
@@ -173,7 +172,6 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                         .child("pending")
                         .child(customerUserId);
 
-                Toast.makeText(getApplicationContext(), serviceProviderUserId, Toast.LENGTH_LONG).show();
 
                 mCustomerRef.child(customerUserId).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

@@ -20,7 +20,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.bumptech.glide.Glide;
 import com.example.ifixit.Messaging.ChatActivity;
 import com.example.ifixit.R;
-import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderOngoingJob;
 import com.example.ifixit.SUPER_ADMIN_FILES.Fragments.ADMAdminProfileFragment;
 import com.example.ifixit.SUPER_ADMIN_FILES.Fragments.ADMCustomerListFragment;
 import com.example.ifixit.SUPER_ADMIN_FILES.Fragments.ADMUnverifiedSPListFragment;
@@ -45,7 +44,7 @@ public class AdminMainMenuActivity extends AppCompatActivity implements Navigati
     private View headerInfo;
     private View notificationFragment;
     private FirebaseAuth mAuth;
-    private DatabaseReference mServiceProviderDatabase;
+    private DatabaseReference mAdminRef;
     private String userID;
     private String mUserName;
     private String mEmail;
@@ -79,7 +78,7 @@ public class AdminMainMenuActivity extends AppCompatActivity implements Navigati
 
 
 
-        mServiceProviderDatabase = FirebaseDatabase.getInstance().getReference().child("USERS").child("ADMINS").child(userID);
+        mAdminRef = FirebaseDatabase.getInstance().getReference().child("admins").child(userID);
         getHeaderInfo();
 
 
@@ -93,7 +92,7 @@ public class AdminMainMenuActivity extends AppCompatActivity implements Navigati
         toggle.syncState();
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.ADMfragment_container, new ServiceProviderOngoingJob()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.ADMfragment_container, new ADMUnverifiedSPListFragment()).commit();
             navigationView.setCheckedItem(R.id.SPnav_ongoing);
         }
 
@@ -108,10 +107,6 @@ public class AdminMainMenuActivity extends AppCompatActivity implements Navigati
             //Ciao
             case R.id.adminProfile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.ADMfragment_container, new ADMAdminProfileFragment()).commit();
-                break;
-
-            case R.id.adminDashboard:
-                getSupportFragmentManager().beginTransaction().replace(R.id.ADMfragment_container, new ServiceProviderOngoingJob()).commit();
                 break;
 
             case R.id.adminCMtList:
@@ -147,7 +142,7 @@ public class AdminMainMenuActivity extends AppCompatActivity implements Navigati
 
 
     public void getHeaderInfo() {
-        mServiceProviderDatabase.addValueEventListener(new ValueEventListener() {
+        mAdminRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
