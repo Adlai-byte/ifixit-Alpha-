@@ -27,6 +27,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.ifixit.CUSTOMER_FILES.ReviewAdapter;
+import com.example.ifixit.CUSTOMER_FILES.ReviewItem;
 import com.example.ifixit.R;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.RequestAdapter;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.RequestItem;
@@ -37,6 +39,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -58,7 +61,6 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
     private ImageView serviceProviderImage;
 
 
-
     private FirebaseAuth mAuth;
     private DatabaseReference DatabaseRef;
 
@@ -73,6 +75,8 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
     private String mProfileImageUrl;
     private Spinner serviceSpinner;
     private String mService;
+    private String min;
+    private String max;
 
 
     //------------------------
@@ -85,18 +89,31 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
     private ImageView settingsImg;
     //------------------------
 
-    //------Request Variables----
-    private RecyclerView recyclerView;
+    //------Request Variables-----
+    private RecyclerView requestRecyclerView;
     private List<RequestItem> requestItems;
     private RequestAdapter requestAdapter;
-    //------------------------
+    //----------------------------
 
     //------Profile Edit Variables
-    private EditText name,phone,address;
+    private EditText name, phone, address;
     private Button saveBtnNew;
     private LinearLayout SPeditLayout;
 
+    //------- Additional Variables
+
+    private TextView minPrice, maxPrice;
+    private EditText MaxPrice, MinPrice;
     ArrayAdapter<CharSequence> adapter;
+
+
+    //------- Reviews Recycler View--
+    private RecyclerView reviewsRecyclerView;
+    private List<ReviewItem> reviewItems;
+    private ReviewAdapter reviewAdapter;
+    private Button reviewBtn;
+    private Button requestBtn;
+
 
     @Nullable
     @Override
@@ -104,9 +121,21 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
 
         View rootView = inflater.inflate(R.layout.service_provider_fragment_profile, container, false);
 
+        //--------Reviews--------------
+        reviewsRecyclerView = rootView.findViewById(R.id.reviewsRecyclerView);
+        reviewItems = new ArrayList<>();
+        reviewAdapter = new ReviewAdapter(getContext(), reviewItems);
+
+        reviewsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        reviewsRecyclerView.setAdapter(reviewAdapter);
+
+        reviewBtn  = rootView.findViewById(R.id.reviewsBtn);
+
+        //----------------------------
+        requestBtn = rootView.findViewById(R.id.requestBtn);
+
+
         //------------------------
-
-
         settingsImg = (ImageView) rootView.findViewById(R.id.settingBtn);
 
         serviceProviderImage = (ImageView) rootView.findViewById(R.id.SPNewImage);
@@ -122,18 +151,23 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
 
 
         //--------Header-----------
-        SPname = (TextView)rootView.findViewById(R.id.tvSPname);
-        SPemail = (TextView)rootView.findViewById(R.id.tvSPemail);
-        SPservice = (TextView)rootView.findViewById(R.id.tvSPservice);
-        SPnewimage = (ImageView)rootView.findViewById(R.id.SPNewImage) ;
+        SPname = (TextView) rootView.findViewById(R.id.tvSPname);
+        SPemail = (TextView) rootView.findViewById(R.id.tvSPemail);
+        SPservice = (TextView) rootView.findViewById(R.id.tvSPservice);
+        SPnewimage = (ImageView) rootView.findViewById(R.id.SPNewImage);
+
+        minPrice = (TextView) rootView.findViewById(R.id.tvSPbasepricingLOW);
+        maxPrice = (TextView) rootView.findViewById(R.id.tvSPbasepricingHIGH);
+        MaxPrice = (EditText) rootView.findViewById(R.id.ETpriceHIGH);
+        MinPrice = (EditText) rootView.findViewById(R.id.ETpriceLOW);
         //------------------------
 
         //------Edit Details Reference--------
         name = (EditText) rootView.findViewById(R.id.SPNameET);
         phone = (EditText) rootView.findViewById(R.id.SPPhoneET);
-        address = (EditText)rootView.findViewById(R.id.SPAddressET);
-        saveBtnNew=(Button)rootView.findViewById(R.id.SPsaveBtnNew);
-        SPeditLayout = (LinearLayout)rootView.findViewById(R.id.SPeditLayout);
+        address = (EditText) rootView.findViewById(R.id.SPAddressET);
+        saveBtnNew = (Button) rootView.findViewById(R.id.SPsaveBtnNew);
+        SPeditLayout = (LinearLayout) rootView.findViewById(R.id.SPeditLayout);
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -141,11 +175,12 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
 
 
         //---Request References-----
-        recyclerView = rootView.findViewById(R.id.recyclerview);
+        requestRecyclerView = rootView.findViewById(R.id.requestsRecyclerview);
         requestItems = new ArrayList<>();
         requestAdapter = new RequestAdapter(getActivity(), requestItems);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(requestAdapter);
+        requestRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        requestRecyclerView.setAdapter(requestAdapter);
+
 
         String serviceProviderID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -156,6 +191,7 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
                 .child("joboffers")
                 .child("pending");
 
+        //Request
         serviceProviderRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -173,10 +209,10 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
                                 String email = snapshot.child("email").getValue(String.class);
                                 String address = snapshot.child("address").getValue(String.class);
                                 String imgURL = snapshot.child("profileimageurl").getValue(String.class);
-
                                 String jobtype = snapshot.child("jobtype").getValue(String.class);
                                 String totalPrice = snapshot.child("totalprice").getValue(String.class);
-                                requestItems.add(new RequestItem(name, address,userId,imgURL,email,jobtype,totalPrice,address));
+
+                                requestItems.add(new RequestItem(name, address, userId, imgURL, email, jobtype, totalPrice, address));
                                 requestAdapter.notifyDataSetChanged();
                             }
                         }
@@ -194,30 +230,58 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
                 Log.e("ServiceProviderNotif", "Error: " + error.getMessage());
             }
         });
-
-
-        //------------------------
-
-
-
-        DatabaseRef = FirebaseDatabase.getInstance().getReference()
+        //Review
+        reviewItems.clear();
+        Query query = FirebaseDatabase.getInstance().getReference()
                 .child("service-providers")
                 .child("verified")
-                .child(userID);
-            DatabaseRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    getHeaderInfo();
+                .child(serviceProviderID)
+                .child("reviews");
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    String userId = childSnapshot.getKey();
+                    String name = childSnapshot.child("name").getValue(String.class);
+                    String imgUrl = childSnapshot.child("profileimageurl").getValue(String.class);
+                    String reviews = childSnapshot.child("comment").getValue(String.class);
+
+
+                    reviewItems.add(new ReviewItem(name, imgUrl, reviews));
+
                 }
+                reviewAdapter.notifyDataSetChanged();
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+            }
 
-                }
-            });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("ServiceProviderNotif", "Error: " + error.getMessage());
+            }
+        });
 
 
+      //-------Review Button-------------
+        reviewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    reviewsRecyclerView.setVisibility(View.VISIBLE);
+                    requestRecyclerView.setVisibility(View.GONE);
+            }
+        });
 
+        //-------Request Button-----------
+        requestBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestRecyclerView.setVisibility(View.VISIBLE);
+                reviewsRecyclerView.setVisibility(View.GONE);
+
+            }
+        });
 
         serviceProviderImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,6 +291,13 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
                 startActivityForResult(intent, 1);
             }
         });
+
+
+        DatabaseRef = FirebaseDatabase.getInstance().getReference()
+                .child("service-providers")
+                .child("verified")
+                .child(serviceProviderID);
+
 
         settingsImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -247,9 +318,17 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
                                 mAddress = map.get("address").toString();
                                 address.setText(mAddress);
                             }
-                            if(map.get("phone")!=null){
-                                mPhone = map.get("phone") .toString();
+                            if (map.get("phone") != null) {
+                                mPhone = map.get("phone").toString();
                                 phone.setText(mPhone);
+                            }
+                            if (map.get("minPrice") != null) {
+                                min = map.get("minPrice").toString();
+                                MinPrice.setText(min);
+                            }
+                            if (map.get("maxPrice") != null) {
+                                max = map.get("maxPrice").toString();
+                                MaxPrice.setText(max);
                             }
 
                         }
@@ -262,6 +341,7 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
                     }
                 });
 
+
                 SPeditLayout.setVisibility(View.VISIBLE);
 
             }
@@ -272,13 +352,12 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
             public void onClick(View view) {
                 saveUserInformation();
                 SPeditLayout.setVisibility(View.GONE);
+                getHeaderInfo();
             }
         });
 
 
-
-
-
+        getHeaderInfo();
         return rootView;
 
     }
@@ -305,6 +384,14 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
                         SPservice.setText(mService);
 
                     }
+                    if (map.get("minPrice") != null) {
+                        min = map.get("minPrice").toString();
+                        minPrice.setText(min);
+                    }
+                    if (map.get("maxPrice") != null) {
+                        max = map.get("maxPrice").toString();
+                        maxPrice.setText(max);
+                    }
                     if (map.get("profileimageurl") != null) {
                         mProfileImageUrl = map.get("profileimageurl").toString();
                         Glide.with(getContext().getApplicationContext()).load(mProfileImageUrl).into(SPnewimage);
@@ -323,22 +410,23 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
     }
 
 
-
-
-
-
-
-
     private void saveUserInformation() {
         mUserName = name.getText().toString();
         mPhone = phone.getText().toString();
         mAddress = address.getText().toString();
+        min = MinPrice.getText().toString();
+        max = MaxPrice.getText().toString();
+
+        Integer newMin = Integer.valueOf(min);
+        Integer newMax = Integer.valueOf(max);
 
 
         Map userInfo = new HashMap();
         userInfo.put("name", mUserName);
         userInfo.put("address", mAddress);
         userInfo.put("service", mService);
+        userInfo.put("minPrice", newMin);
+        userInfo.put("maxPrice", newMax);
 
 
         DatabaseRef.updateChildren(userInfo);
@@ -421,4 +509,6 @@ public class ServiceProviderProfileFragment extends Fragment implements AdapterV
     public void onNothingSelected(AdapterView<?> adapterView) {
         mService = "";
     }
+
+
 }

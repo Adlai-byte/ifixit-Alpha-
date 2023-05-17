@@ -2,6 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:background="@color/white"
+    android:elevation="10dp"
     android:orientation="horizontal"
     android:padding="16dp">
 
@@ -31,7 +34,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Plumber"
+
             android:textSize="15sp" />
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:id="@+id/rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rate:"
+
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_toEndOf="@+id/rate"
+                android:id="@+id/list_view_maxPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1000"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+
 
         <TextView
             android:id="@+id/list_view_address"
@@ -42,12 +71,13 @@
 
         <RatingBar
             android:id="@+id/list_view_rating"
+            style="@android:style/Widget.Holo.Light.RatingBar.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:isIndicator="true"
-            android:numStars="5"
 
-            />
+            android:numStars="5" />
+
         <Button
             android:id="@+id/hireButton"
             android:layout_width="wrap_content"
@@ -55,11 +85,6 @@
             android:text="Hire" />
 
     </LinearLayout>
-
-
-
-
-
 
 
 </LinearLayout>

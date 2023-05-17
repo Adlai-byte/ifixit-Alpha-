@@ -44,11 +44,13 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewHolder> {
     public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
 
         ListViewItem listViewItem = listViewItems.get(position);
-        holder.nameView.setText(listViewItem.getNAME());
 
+        holder.nameView.setText(listViewItem.getNAME());
         holder.serviceView.setText(listViewItem.getSERVICE());
         holder.addressView.setText(listViewItem.getADDRESS());
         holder.ratingBar.setRating(listViewItem.getRATING());
+        holder.maxPrice.setText(String.valueOf(listViewItem.getMAXPRICE()));
+
         Glide.with(context).load(listViewItem.getProfileImageUrl()).into(holder.imageView);
 
         holder.hireButton.setOnClickListener(new View.OnClickListener() {

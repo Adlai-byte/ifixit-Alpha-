@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="50dp"
     android:gravity="center_horizontal"
     android:orientation="vertical">
@@ -11,31 +12,33 @@
         android:id="@+id/customerInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:layout_gravity="bottom"
         android:background="@color/white"
         android:orientation="vertical">
 
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@color/white"
-            android:elevation="10dp"
+
             android:orientation="horizontal">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/SPNewImage"
-                android:layout_width="75sp"
-                android:layout_height="75sp"
-                android:layout_margin="15sp"
-                android:layout_marginRight="20sp"
-                android:src="@mipmap/ic_launcher_round" />
 
+            <de.hdodenhof.circleimageview.CircleImageView
+               android:layout_marginTop="20sp"
+                android:id="@+id/SPNewImage"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
+
+                android:layout_marginRight="10sp"
+                android:src="@mipmap/ic_launcher_round" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
@@ -43,6 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25sp"
+                    android:textSize="20dp"
                     android:text="Vinz Lloyd Alferez"
                     android:textStyle="bold" />
 
@@ -54,6 +58,51 @@
                     android:text="Plumber"
 
                     />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
+                        android:text="Pricing Range:"
+                        android:textStyle="bold"
+
+                        />
+                    <TextView
+                        android:id="@+id/tvSPbasepricingLOW"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/quantum_googgreen"
+                        android:text=" 500 "
+
+
+                        />
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
+                        android:text="-"
+
+                        />
+                    <TextView
+                        android:id="@+id/tvSPbasepricingHIGH"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
+                        android:textColor="@color/quantum_googred"
+                        android:text=" 1000"
+
+                        />
+
+
+                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/tvSPemail"
@@ -68,9 +117,9 @@
             <ImageView
 
                 android:id="@+id/settingBtn"
-                android:layout_width="24dp"
+                android:layout_width="wrap_content"
                 android:layout_height="24dp"
-                android:layout_margin="40dp"
+                android:layout_margin="20dp"
                 android:src="@drawable/baseline_settings_24"
 
                 />
@@ -122,6 +171,33 @@
 
                 />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/ETpriceLOW"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="Minimum Pricing"
+
+                    />
+                <EditText
+                    android:id="@+id/ETpriceHIGH"
+                    android:layout_marginStart="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="Maximum Pricing"/>
+
+
+            </LinearLayout>
+
+
+
+
             <Spinner
                 android:id="@+id/adminspinner"
                 android:layout_width="match_parent"
@@ -143,6 +219,7 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/requestBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -151,10 +228,11 @@
                 android:text="Request" />
 
             <Button
+                android:id="@+id/reviewsBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:layout_marginLeft="70dp"
+                android:layout_marginLeft="50dp"
                 android:paddingStart="30dp"
                 android:paddingEnd="30dp"
                 android:text="Reviews" />
@@ -166,13 +244,25 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
+        android:id="@+id/requestsRecyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:background="@color/white"
         android:elevation="10dp"
         android:padding="10dp"
+
+
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/reviewsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:background="@color/white"
+        android:elevation="10dp"
+        android:padding="10dp"
+        android:visibility="gone"
 
         />
 

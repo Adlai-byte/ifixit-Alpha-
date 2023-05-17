@@ -18,10 +18,11 @@ public class ListViewHolder extends  RecyclerView.ViewHolder {
     public TextView serviceView;
     public RatingBar ratingBar;
     public Button hireButton;
-
+    public TextView maxPrice;
 
     public ListViewHolder(@NonNull View itemView) {
         super(itemView);
+        maxPrice = itemView.findViewById(R.id.list_view_maxPrice);
         imageView = itemView.findViewById(R.id.list_view_imageView);
         nameView = itemView.findViewById(R.id.list_view_name);
         addressView = itemView.findViewById(R.id.list_view_address);

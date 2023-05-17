@@ -155,23 +155,14 @@ A customer is an individual or entity who purchases goods or services from a bus
         android:orientation="vertical"
         android:layout_below="@id/grid">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Version 1.0.0" />
+
 
         <Button
+            android:layout_gravity="center"
             android:id="@+id/btnAdmin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Admin" />
-
-        <Button
-            android:id="@+id/btnChat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Chat" />
+            android:text=" Login as Admin" />
 
 
     </LinearLayout>

@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.SearchView;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,8 +36,10 @@ public class CustomerListViewFragment extends Fragment {
     private ListViewAdapter listViewAdapter;
     private SearchView listSearchView;
     private Query query;
-    private Button gardener, plumber, electrician, computerRepair, masonry, carpentry;
+    private Spinner spService;
+    private String mService = "";
 
+    private Spinner spPrice;
     //------------------------------------
 
     @Nullable
@@ -51,56 +55,41 @@ public class CustomerListViewFragment extends Fragment {
 
         listViewItems = new ArrayList<>();
         listViewAdapter = new ListViewAdapter(getActivity(), listViewItems);
+
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(listViewAdapter);
 
-        //--------Buttons---------
-        gardener = rootView.findViewById(R.id.filterGardener);
-        plumber = rootView.findViewById(R.id.filterPlumber);
-        electrician = rootView.findViewById(R.id.filterElectrician);
-        computerRepair = rootView.findViewById(R.id.filterComputerRepair);
-        masonry = rootView.findViewById(R.id.filterMasonry);
-        carpentry = rootView.findViewById(R.id.filterCarpentry);
-        //-----------------------
+
+        spService = rootView.findViewById(R.id.adminspinner);
+        spPrice = rootView.findViewById(R.id.adminspinner2);
+
+        ArrayAdapter<CharSequence>adapter1 = ArrayAdapter.createFromResource(getContext(),R.array.price_options, android.R.layout.simple_spinner_dropdown_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 
-        gardener.setOnClickListener(new View.OnClickListener() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.service_options, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+
+        spService.setAdapter(adapter);
+        spService.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                filterList("Gardener");
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // handle item selection
+                mService = spService.getItemAtPosition(position).toString();
+                filterList(mService);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                mService = "";
+              filterList(mService);
+
             }
         });
-        plumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                filterList("Plumber");
-            }
-        });
-        electrician.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                filterList("Electrician");
-            }
-        });
-        computerRepair.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                filterList("Computer Repair");
-                ;
-            }
-        });
-        masonry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                filterList("Masonry");
-            }
-        });
-        carpentry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                filterList("Carpentry");
-            }
-        });
+
 
         //----------------Search ------------------------
         listSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -132,12 +121,15 @@ public class CustomerListViewFragment extends Fragment {
                     String address = childSnapshot.child("address").getValue(String.class);
                     String service = childSnapshot.child("service").getValue(String.class);
                     String imgURL = childSnapshot.child("profileimageurl").getValue(String.class);
-                    float rating = 5.0f;
+                    float rating = childSnapshot.child("rating").getValue(Float.class);
+                    float maxPrice = childSnapshot.child("maxPrice").getValue(Integer.class);
 
-                    ListViewItem item = new ListViewItem(name, imgURL, service, address, rating, userId);
+                    ListViewItem item = new ListViewItem(name, imgURL, service, address, rating, userId,maxPrice);
+
                     listViewItems.add(item);
 
                 }
+
                 listViewAdapter.notifyDataSetChanged();
             }
 
@@ -156,17 +148,15 @@ public class CustomerListViewFragment extends Fragment {
     private void filterList(String text) {
         List<ListViewItem> filteredList = new ArrayList<>();
         for (ListViewItem item : listViewItems) {
-            if (item.getNAME() != null  &&
+            if (item.getNAME() != null &&
                     item.getNAME().toLowerCase().contains(text.toLowerCase())
             ) {
                 filteredList.add(item);
             }
-            if(item.getADDRESS()!=null && item.getADDRESS().toLowerCase().contains(text.toLowerCase()))
-            {
+            if (item.getADDRESS() != null && item.getADDRESS().toLowerCase().contains(text.toLowerCase())) {
                 filteredList.add(item);
             }
-            if(item.getSERVICE()!=null && item.getSERVICE().toLowerCase().contains(text.toLowerCase()))
-            {
+            if (item.getSERVICE() != null && item.getSERVICE().toLowerCase().contains(text.toLowerCase())) {
                 filteredList.add(item);
             }
         }

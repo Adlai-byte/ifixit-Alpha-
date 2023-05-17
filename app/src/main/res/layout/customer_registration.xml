@@ -107,6 +107,20 @@
             android:hint="Password"
             android:inputType="textPersonName" />
 
+        <EditText
+            android:id="@+id/etadminPassword2"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:ems="10"
+            android:hint="Confirm Passwrd"
+            android:inputType="textPersonName"
+            android:padding="10dp" />
+
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"

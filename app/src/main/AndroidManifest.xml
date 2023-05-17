@@ -47,15 +47,16 @@
         <activity
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderMainMenuActivity"
             android:exported="false"
-            android:label="ServiceProviderMainMenuActivity" />
+            />
         <activity
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderRegistrationActivity"
             android:exported="false"
-            android:label="ServiceProviderMainMenuActivity" />
+         />
         <activity
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderMapsActivity"
             android:exported="false"
-            android:label="@string/title_activity_service_provider_maps" />
+            android:parentActivityName=".SERVICE_PROVIDER_FILES.ServiceProviderMainMenuActivity"
+   />
         <activity
             android:name=".CUSTOMER_FILES.CustomerMapsActivity"
             android:exported="false"

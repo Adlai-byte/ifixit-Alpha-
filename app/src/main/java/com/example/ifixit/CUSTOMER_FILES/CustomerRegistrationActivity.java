@@ -2,6 +2,7 @@ package com.example.ifixit.CUSTOMER_FILES;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,7 +39,8 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
     private EditText etAddress;
     private EditText etEmail;
     private EditText etPhone;
-    private EditText etPassword;
+    private EditText etPassword, etConfirmPassword;
+
     //------Buttons
     private Button btnRegister;
 
@@ -52,6 +54,7 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.customer_registration);
 
         //---Layout Connecting
+        etConfirmPassword = (EditText)findViewById(R.id.etadminPassword2);
         etName = (EditText) findViewById(R.id.etFullName);
         etAddress =(EditText) findViewById(R.id.etAddress);
         etEmail = (EditText) findViewById(R.id.etadminEmail);
@@ -85,28 +88,45 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
                 final String name = etName.getText().toString();
                 final String address = etAddress.getText().toString();
                 final String phone = etPhone.getText().toString();
+                final String confirmPassword = etConfirmPassword.getText().toString();
 
-                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(CustomerRegistrationActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            Toast.makeText(CustomerRegistrationActivity.this, "Sign-up Error", Toast.LENGTH_SHORT).show();
-                        }else {
-                            String userID = mAuth.getCurrentUser().getUid();
-                            DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference()
-                                    .child("customers")
-                                    .child(userID);
-                            current_user_db.setValue(true);
 
-                            Map userInfo = new HashMap();
-                            userInfo.put("name", name);
-                            userInfo.put("email", email);
-                            userInfo.put("address", address);
-                            userInfo.put("phone",phone);
-                            current_user_db.updateChildren(userInfo);
+                if (TextUtils.isEmpty(name)
+                        || TextUtils.isEmpty(email)
+                        || TextUtils.isEmpty(address)
+                        || TextUtils.isEmpty(password)
+                        || TextUtils.isEmpty(confirmPassword)
+                        || TextUtils.isEmpty(phone)
+                        || !password.equals(confirmPassword)
+
+                ) {
+                    Toast.makeText(getApplicationContext(), "Please fill in all fields or password doesn't match", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(CustomerRegistrationActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(!task.isSuccessful()){
+                                Toast.makeText(CustomerRegistrationActivity.this, "Sign-up Error", Toast.LENGTH_SHORT).show();
+                            }else {
+                                String userID = mAuth.getCurrentUser().getUid();
+                                DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference()
+                                        .child("customers")
+                                        .child(userID);
+                                current_user_db.setValue(true);
+
+                                Map userInfo = new HashMap();
+                                userInfo.put("name", name);
+                                userInfo.put("email", email);
+                                userInfo.put("address", address);
+                                userInfo.put("phone",phone);
+                                current_user_db.updateChildren(userInfo);
+                            }
                         }
-                    }
-                });
+                    });
+
+                }
+
 
             }
         });

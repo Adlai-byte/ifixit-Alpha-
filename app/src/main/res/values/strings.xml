@@ -28,12 +28,19 @@
     <string name="title_activity_service_provider_maps">ServiceProviderMapsActivity</string>
 
     <string-array name="service_options">
+
         <item>Plumber</item>
         <item>Electrician</item>
         <item>Masonry</item>
         <item>Computer Repair</item>
         <item>Gardener</item>
         <item>Carpenter</item>
+
+    </string-array>
+
+    <string-array name="price_options">
+        <item>Expensive - Cheapest</item>
+        <item>Cheapest - Expensive</item>
     </string-array>
 
     <string-array name="service_type">

@@ -95,7 +95,7 @@ public class AdminRegistrationActivity extends AppCompatActivity {
                         || TextUtils.isEmpty(password)
 
                 ) {
-                    Toast.makeText(getApplicationContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdminRegistrationActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 }
                 
                 else {

@@ -19,7 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     private CardView btnCustomer;
     private CardView btnServiceProvider;
     private Button btnAdmin;
-    private Button btnChat;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,6 @@ public class LoginActivity extends AppCompatActivity {
         btnCustomer = (CardView) findViewById(R.id.btnCustomer);
         btnServiceProvider = (CardView) findViewById (R.id.btnServiceProvider);
         btnAdmin =(Button)findViewById(R.id.btnAdmin);
-        btnChat = (Button)findViewById(R.id.btnChat);
 
 
         //On Click Listeners

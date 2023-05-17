@@ -11,63 +11,50 @@
         android:id="@+id/listSearchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:layout_marginTop="70sp"
         android:queryHint="Search Here....." />
 
-    <HorizontalScrollView
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <Spinner
+            android:layout_centerVertical="true"
+            android:id="@+id/adminspinner"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:entries="@array/service_options"
+            android:padding="10dp"
+            android:textAlignment="center" />
 
-            <Button
-                android:id="@+id/filterGardener"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10sp"
-                android:text="Gardener" />
-
-            <Button
-                android:id="@+id/filterPlumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10sp"
-                android:text="Plumber" />
-
-            <Button
-                android:id="@+id/filterComputerRepair"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10sp"
-                android:text="Computer Repair" />
-
-            <Button
-                android:id="@+id/filterMasonry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10sp"
-                android:text="Masonry" />
-
-            <Button
-                android:id="@+id/filterCarpentry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10sp"
-                android:text="Carpentry" />
-            <Button
-                android:id="@+id/filterElectrician"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10sp"
-                android:text="Electrician" />
-
-        </LinearLayout>
+        <Spinner
+            android:id="@+id/adminspinner2"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:entries="@array/price_options"
+            android:padding="10dp"
+            android:textAlignment="center" />
 
 
-    </HorizontalScrollView>
+    </RelativeLayout>
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listRecyclerView"

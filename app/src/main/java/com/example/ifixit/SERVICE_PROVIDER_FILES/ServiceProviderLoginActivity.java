@@ -2,6 +2,7 @@ package com.example.ifixit.SERVICE_PROVIDER_FILES;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,7 +55,7 @@ public class ServiceProviderLoginActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if(user!=null){
+                if (user != null) {
                     Intent intent = new Intent(ServiceProviderLoginActivity.this, ServiceProviderMainMenuActivity.class);
                     startActivity(intent);
                     finish();
@@ -70,14 +71,21 @@ public class ServiceProviderLoginActivity extends AppCompatActivity {
                 final String email = etEmail.getText().toString();
                 final String password = etPassword.getText().toString();
 
-                mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(ServiceProviderLoginActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful() ){
-                            Toast.makeText(ServiceProviderLoginActivity.this, "Sign in error", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+                    Toast.makeText(ServiceProviderLoginActivity.this, "Fill out the fields", Toast.LENGTH_SHORT).show();
+                }else {
+
+                    mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(ServiceProviderLoginActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(ServiceProviderLoginActivity.this, "Sign in error", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+                }
+
+
             }
         });
 
@@ -91,12 +99,14 @@ public class ServiceProviderLoginActivity extends AppCompatActivity {
         });
 
     }
+
     @Override
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(firebaseAuthStateListener);
 
     }
+
     @Override
     protected void onStop() {
         super.onStop();

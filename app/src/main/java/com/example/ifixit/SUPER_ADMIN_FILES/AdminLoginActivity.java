@@ -2,6 +2,7 @@ package com.example.ifixit.SUPER_ADMIN_FILES;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -69,15 +70,19 @@ public class AdminLoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 final String email = etEmail.getText().toString();
                 final String password = etPassword.getText().toString();
-
-                mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(AdminLoginActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful() ){
-                            Toast.makeText(AdminLoginActivity.this, "Sign in error", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+                    Toast.makeText(AdminLoginActivity.this, "Fill out the fields", Toast.LENGTH_SHORT).show();
+                }else {
+                    mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(AdminLoginActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(!task.isSuccessful() ){
+                                Toast.makeText(AdminLoginActivity.this, "Sign in error", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+                }
+
             }
         });
 

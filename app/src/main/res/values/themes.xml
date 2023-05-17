@@ -40,6 +40,7 @@
 
     <style name="SplashScreen." parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:statusBarColor" >?attr/colorOnPrimary</item>
+
     </style>
 
 

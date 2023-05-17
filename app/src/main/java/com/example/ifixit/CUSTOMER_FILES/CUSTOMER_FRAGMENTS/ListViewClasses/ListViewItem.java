@@ -6,10 +6,21 @@ public class ListViewItem {
     String profileImageUrl;
     String SERVICE;
     String ADDRESS;
+
+    public float getMAXPRICE() {
+        return MAXPRICE;
+    }
+
+    public void setMAXPRICE(float MAXPRICE) {
+        this.MAXPRICE = MAXPRICE;
+    }
+
+    float MAXPRICE;
     float RATING;
 
-    public ListViewItem(String NAME, String profileImageUrl, String SERVICE, String ADDRESS, float RATING, String USERID) {
+    public ListViewItem(String NAME, String profileImageUrl, String SERVICE, String ADDRESS, float RATING, String USERID,float MAXPRICE) {
         this.NAME = NAME;
+        this.MAXPRICE = MAXPRICE;
         this.profileImageUrl = profileImageUrl;
         this.SERVICE = SERVICE;
         this.ADDRESS = ADDRESS;

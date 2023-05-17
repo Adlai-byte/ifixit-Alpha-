@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.ifixit.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,12 +52,15 @@ public class NotificationViewAdapter extends RecyclerView.Adapter<NotificationVi
 
         Glide.with(context).load(notificationViewItem.getProfileimageurl()).into(holder.imageView);
 
+        String review = holder.reviewComment.getText().toString();
+        float rate = holder.ratingBar.getRating();
 
         holder.completeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                HashMap<String, String> reviews = new HashMap<>();
+                HashMap<String, Object> reviews = new HashMap<>();
+                HashMap<String, Object> rating = new HashMap<>();
 
                 String serviceProviderUserId = notificationViewItem.getUserid();
                 String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
@@ -67,6 +72,49 @@ public class NotificationViewAdapter extends RecyclerView.Adapter<NotificationVi
                         .child("reviews")
                         .child(currentUserId);
 
+
+                DatabaseReference ratingRef = FirebaseDatabase.getInstance().getReference()
+                        .child("service-providers")
+                        .child("verified")
+                        .child(serviceProviderUserId);
+
+                ratingRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            float currentRating = snapshot.child("rating").getValue(Float.class);
+
+                                float newRating = (currentRating + rate) / 2;
+                                rating.put("rating", newRating);
+
+                                ratingRef.updateChildren(rating)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                // The update operation was successful
+                                                Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                // Handle the error that occurred during the update operation
+                                                Toast.makeText(context, "Failed to update rating", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            } else {
+                                Toast.makeText(context, "Failed to get current rating", Toast.LENGTH_SHORT).show();
+                            }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
                 DatabaseReference currentUserRef = FirebaseDatabase.getInstance().getReference()
                         .child("customers")
                         .child(currentUserId);
@@ -76,12 +124,12 @@ public class NotificationViewAdapter extends RecyclerView.Adapter<NotificationVi
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
 
-                            String name = snapshot.child("name").getValue(String.class);
-                            String imgUrl = snapshot.child("profileimageurl").getValue(String.class);
+                        String name = snapshot.child("name").getValue(String.class);
+                        String imgUrl = snapshot.child("profileimageurl").getValue(String.class);
 
-                            Toast.makeText(context, name, Toast.LENGTH_SHORT).show();
-                            reviews.put("name", name);
-                            reviews.put("profileimageurl", imgUrl);
+                        Toast.makeText(context, name, Toast.LENGTH_SHORT).show();
+                        reviews.put("name", name);
+                        reviews.put("profileimageurl", imgUrl);
 
                         reviewsRef.setValue(reviews);
 
@@ -94,14 +142,7 @@ public class NotificationViewAdapter extends RecyclerView.Adapter<NotificationVi
                 });
 
 
-                String review = holder.reviewComment.getText().toString();
-                float rate = holder.ratingBar.getRating();
-
-
-
-
                 reviews.put("comment", review);
-                reviews.put("rating", String.valueOf(rate));
                 reviewsRef.setValue(reviews);
 
                 Toast.makeText(context, "Review Sent", Toast.LENGTH_SHORT).show();

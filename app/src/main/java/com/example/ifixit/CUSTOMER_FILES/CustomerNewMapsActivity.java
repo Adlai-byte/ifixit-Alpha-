@@ -61,13 +61,7 @@ public class CustomerNewMapsActivity extends AppCompatActivity {
 
 
                         ItemView item = new ItemView(userid, name, imgURL, service, ratings);
-                        ItemView item2 = new ItemView(userid, name, imgURL, service, ratings);
-                        ItemView item3 = new ItemView(userid, name, imgURL, service, ratings);
-                        ItemView item4 = new ItemView(userid, name, imgURL, service, ratings);
                         itemViewList.add(item);
-                        itemViewList.add(item2);
-                        itemViewList.add(item3);
-                        itemViewList.add(item4);
 
 
                     }
