@@ -159,6 +159,8 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
                                 userInfo.put("phone", phone);
                                 userInfo.put("password", password);
                                 userInfo.put("service", service);
+                                userInfo.put("maxPrice",0.0);
+                                userInfo.put("minPrice",0.0);
 
                                 current_user_db.updateChildren(userInfo);
 

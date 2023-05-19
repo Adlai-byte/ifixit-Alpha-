@@ -15,8 +15,6 @@ import com.example.ifixit.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class ListViewAdapter extends RecyclerView.Adapter<ListViewHolder> {
@@ -31,36 +29,19 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewHolder> {
         this.originalList = new ArrayList<>(listViewItems);
     }
 
-    public void setFilteredList(List<ListViewItem> newfilteredList) {
+    public void setFilteredList(List<ListViewItem> newFilteredList) {
         this.listViewItems.clear();
-        this.listViewItems.addAll(newfilteredList);
+        this.listViewItems.addAll(newFilteredList);
         notifyDataSetChanged();
     }
 
-    public void sortItemsByPriceAscending() {
-        Collections.sort(listViewItems, new Comparator<ListViewItem>() {
-            @Override
-            public int compare(ListViewItem item1, ListViewItem item2) {
-                return Float.compare(item1.getMAXPRICE(), item2.getMAXPRICE());
-            }
-        });
-        notifyDataSetChanged();
-    }
 
-    public void sortItemsByPriceDescending() {
-        Collections.sort(listViewItems, new Comparator<ListViewItem>() {
-            @Override
-            public int compare(ListViewItem item1, ListViewItem item2) {
-                return Float.compare(item2.getMAXPRICE(), item1.getMAXPRICE());
-            }
-        });
-        notifyDataSetChanged();
-    }
 
     @NonNull
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ListViewHolder(LayoutInflater.from(context).inflate(R.layout.customer_list_view_item, parent, false));
+        View itemView = LayoutInflater.from(context).inflate(R.layout.customer_list_view_item, parent, false);
+        return new ListViewHolder(itemView);
     }
 
     @Override
@@ -79,7 +60,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewHolder> {
             @Override
             public void onClick(View view) {
                 String serviceProviderUserId = listViewItem.getUSERID();
-                String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+                String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
                 Intent intent = new Intent(context, CustomerCheckOutActivity.class);
                 intent.putExtra("customerUserId", currentUserId);

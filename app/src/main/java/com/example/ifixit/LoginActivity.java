@@ -52,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        btnAdmin.setVisibility(View.GONE);
         btnAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -28,7 +28,7 @@
     <string name="title_activity_service_provider_maps">ServiceProviderMapsActivity</string>
 
     <string-array name="service_options">
-
+        <item>None</item>
         <item>Plumber</item>
         <item>Electrician</item>
         <item>Masonry</item>

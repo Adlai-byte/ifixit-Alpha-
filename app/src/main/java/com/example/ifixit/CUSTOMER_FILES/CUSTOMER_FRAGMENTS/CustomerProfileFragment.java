@@ -55,7 +55,7 @@ public class CustomerProfileFragment extends Fragment {
     private String mPhone;
     private String mAddress;
     private ImageView mSettings;
-    private Button saveBtn;
+    private Button saveBtn, uploadImage;
     private ImageView customerImage;
     private Uri resultUri;
     private String mProfileImageUrl;
@@ -72,6 +72,7 @@ public class CustomerProfileFragment extends Fragment {
         customerAddress = (TextView) rootView.findViewById(R.id.customerAddress);
         mSettings = (ImageView) rootView.findViewById(R.id.customerSettingBtn);
 
+        uploadImage = (Button)rootView.findViewById(R.id.uploadImage);
         saveBtn = (Button) rootView.findViewById(R.id.saveBtn);
         customerImage = (ImageView) rootView.findViewById(R.id.customerProfileImage);
 
@@ -102,7 +103,9 @@ public class CustomerProfileFragment extends Fragment {
         });
 
 
-        customerImage.setOnClickListener(new View.OnClickListener() {
+   
+
+        uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK);

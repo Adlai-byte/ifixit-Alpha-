@@ -46,7 +46,7 @@
             android:padding="10dp"
             android:layout_margin="5dp"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             android:text="" />
 
         <Button

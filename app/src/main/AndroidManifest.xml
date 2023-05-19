@@ -64,6 +64,7 @@
             android:parentActivityName=".CUSTOMER_FILES.CustomerMainMenuActivity" />
         <activity
             android:name=".CUSTOMER_FILES.CustomerMainMenuActivity"
+            android:parentActivityName=".CUSTOMER_FILES.CustomerMainMenuActivity"
             android:exported="false" />
         <activity
             android:name=".CUSTOMER_FILES.CustomerRegistrationActivity"

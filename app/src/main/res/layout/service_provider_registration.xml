@@ -120,7 +120,7 @@
             android:padding="10dp"
             android:layout_margin="5dp"
             android:hint="Password"
-            android:inputType="textPersonName" />
+            android:inputType="textPassword" />
 
         <EditText
             android:id="@+id/SPetConfirmPassword"
@@ -134,7 +134,7 @@
             android:padding="10dp"
             android:layout_margin="5dp"
             android:hint="Confirm Password"
-            android:inputType="textPersonName" />
+            android:inputType="textPassword" />
 
 
         <Button

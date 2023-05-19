@@ -120,9 +120,7 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
                                 userInfo.put("email", email);
                                 userInfo.put("address", address);
                                 userInfo.put("phone",phone);
-                                userInfo.put("rating",0.0);
-                                userInfo.put("maxPrice",0.0);
-                                userInfo.put("minPrice",0.0);
+
                                 current_user_db.updateChildren(userInfo);
                             }
                         }
