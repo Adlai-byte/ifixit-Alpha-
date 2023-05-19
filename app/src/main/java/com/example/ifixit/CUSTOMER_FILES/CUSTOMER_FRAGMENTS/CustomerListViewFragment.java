@@ -38,9 +38,12 @@ public class CustomerListViewFragment extends Fragment {
     private Query query;
     private Spinner spService;
     private Spinner spPrice;
+    private Spinner spRating;
+
 
     private String mService = "";
     private String mPriceSort = "";
+    private String mRatingSort = "";
 
     @Nullable
     @Override
@@ -52,6 +55,8 @@ public class CustomerListViewFragment extends Fragment {
         recyclerView = rootView.findViewById(R.id.listRecyclerView);
         spService = rootView.findViewById(R.id.adminspinner);
         spPrice = rootView.findViewById(R.id.adminspinner2);
+        spRating = rootView.findViewById(R.id.adminspinner3);
+
 
         // Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -75,6 +80,28 @@ public class CustomerListViewFragment extends Fragment {
             }
         });
 
+        //Set up Rating spinner
+        ArrayAdapter<CharSequence> ratingAdapter = ArrayAdapter.createFromResource(
+                getContext(), R.array.rating_options, android.R.layout.simple_spinner_item);
+        ratingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spRating.setAdapter(ratingAdapter);
+
+        spRating.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mRatingSort = spRating.getItemAtPosition(i).toString();
+
+                sortListByRating(listViewItems, mRatingSort);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                listViewAdapter.setFilteredList(originalList);
+                listViewAdapter.notifyDataSetChanged();
+            }
+        });
+
 
         // Set up service spinner
         ArrayAdapter<CharSequence> serviceAdapter = ArrayAdapter.createFromResource(
@@ -86,13 +113,15 @@ public class CustomerListViewFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mService = spService.getItemAtPosition(position).toString();
-                filterList(mService, mPriceSort);
+
+                filterList(mService);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 mService = "";
             }
+
         });
 
 
@@ -107,13 +136,14 @@ public class CustomerListViewFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mPriceSort = spPrice.getItemAtPosition(position).toString();
-                filterList(mService, mPriceSort);
+
+                sortListByPrice(listViewItems,mPriceSort);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                mPriceSort = "";
-                filterList(mService, mPriceSort);
+                listViewAdapter.setFilteredList(originalList);
+                listViewAdapter.notifyDataSetChanged();
             }
         });
 
@@ -160,19 +190,16 @@ public class CustomerListViewFragment extends Fragment {
         return rootView;
     }
 
-    private void filterList(String service, String priceSortOption) {
-
+    private void filterList(String service) {
         List<ListViewItem> filteredList = new ArrayList<>(originalList);
 
-        // Apply the filtering and sorting operations
-
+        // Apply the filtering operations
         filteredList = filterByService(filteredList, service);
-        filteredList = sortListByPrice(filteredList, priceSortOption);
 
-        // Update the adapter with the filtered and sorted list
         listViewAdapter.setFilteredList(filteredList);
         listViewAdapter.notifyDataSetChanged();
     }
+
 
     private void filterByText(List<ListViewItem> items, String text) {
         if (text.isEmpty()) {
@@ -184,7 +211,7 @@ public class CustomerListViewFragment extends Fragment {
         for (ListViewItem item : items) {
 
             if (item.getNAME() != null && item.getNAME().toLowerCase().contains(text.toLowerCase())
-                || item.getADDRESS() != null && item.getADDRESS().toLowerCase().contains(text.toLowerCase())
+                    || item.getADDRESS() != null && item.getADDRESS().toLowerCase().contains(text.toLowerCase())
             ) {
                 filteredList.add(item);
 
@@ -199,11 +226,6 @@ public class CustomerListViewFragment extends Fragment {
 
     private List<ListViewItem> filterByService(List<ListViewItem> items, String service) {
 
-
-        if (service.equalsIgnoreCase("None")) {
-            return originalList;
-        }
-
         List<ListViewItem> filteredList = new ArrayList<>();
 
         for (ListViewItem item : items) {
@@ -216,26 +238,54 @@ public class CustomerListViewFragment extends Fragment {
     }
 
 
-    private List<ListViewItem> sortListByPrice(List<ListViewItem> items, String priceSortOption) {
+    private void sortListByPrice(List<ListViewItem> items, String priceSortOption) {
         List<ListViewItem> sortedList = new ArrayList<>(items);
 
-        if (priceSortOption.equalsIgnoreCase("Ascending")) {
+        if (priceSortOption.equals("Price-Ascending")) {
             Collections.sort(sortedList, new Comparator<ListViewItem>() {
                 @Override
                 public int compare(ListViewItem item1, ListViewItem item2) {
                     return Float.compare(item1.getMAXPRICE(), item2.getMAXPRICE());
                 }
             });
-        } else if (priceSortOption.equalsIgnoreCase("Descending")) {
+        } else if (priceSortOption.equals("Price-Descending")) {
             Collections.sort(sortedList, new Comparator<ListViewItem>() {
                 @Override
                 public int compare(ListViewItem item1, ListViewItem item2) {
                     return Float.compare(item2.getMAXPRICE(), item1.getMAXPRICE());
                 }
             });
+
+        }
+        listViewAdapter.setFilteredList(sortedList);
+
+        listViewAdapter.notifyDataSetChanged();
+
+    }
+
+    private void sortListByRating(List<ListViewItem> items, String ratingSortOption) {
+        List<ListViewItem> sortedList = new ArrayList<>(items);
+
+        if (ratingSortOption.equals("Rating-Ascending")) {
+            Collections.sort(sortedList, new Comparator<ListViewItem>() {
+                @Override
+                public int compare(ListViewItem item1, ListViewItem item2) {
+                    return Float.compare(item1.getRATING(), item2.getRATING());
+                }
+            });
+        } else if (ratingSortOption.equals("Rating-Descending")) {
+            Collections.sort(sortedList, new Comparator<ListViewItem>() {
+                @Override
+                public int compare(ListViewItem item1, ListViewItem item2) {
+                    return Float.compare(item2.getRATING(), item1.getRATING());
+                }
+            });
+
         }
 
-        return sortedList;
+        listViewAdapter.setFilteredList(sortedList);
+
+        listViewAdapter.notifyDataSetChanged();
     }
 
 

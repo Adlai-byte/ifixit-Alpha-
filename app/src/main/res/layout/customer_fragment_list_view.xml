@@ -11,57 +11,98 @@
         android:id="@+id/listSearchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:layout_marginTop="70sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="10dp"
+        android:background="#FAFAFA"
+        android:elevation="6dp"
         android:queryHint="Search Here....." />
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
 
-
-        <Spinner
-            android:layout_centerVertical="true"
-            android:id="@+id/adminspinner"
-            style="@style/Widget.AppCompat.EditText"
-            android:layout_width="160dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/white"
-            android:elevation="5dp"
-            android:entries="@array/service_options"
-            android:padding="10dp"
-            android:textAlignment="center" />
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
 
-        <Spinner
-            android:id="@+id/adminspinner2"
-            style="@style/Widget.AppCompat.EditText"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/white"
-            android:elevation="5dp"
-            android:entries="@array/price_options"
-            android:padding="10dp"
-            android:textAlignment="center" />
+            >
+
+            <Spinner
+                android:id="@+id/adminspinner"
+                style="@style/Widget.AppCompat.EditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/white"
+                android:elevation="5dp"
+                android:entries="@array/service_options"
+                android:padding="10dp"
+                android:textAlignment="center" />
+
+            <Spinner
+                android:id="@+id/adminspinner2"
+                style="@style/Widget.AppCompat.EditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="10dp"
+
+                android:background="@color/white"
+                android:elevation="5dp"
+                android:entries="@array/price_options"
+                android:padding="10dp"
+                android:textAlignment="center" />
+
+            <Spinner
+                android:id="@+id/adminspinner3"
+                style="@style/Widget.AppCompat.EditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="10dp"
+
+                android:background="@color/white"
+                android:elevation="5dp"
+                android:entries="@array/price_options"
+                android:padding="10dp"
+                android:textAlignment="center" />
 
 
-    </RelativeLayout>
+
+        </LinearLayout>
+
+
+
+
+
+</HorizontalScrollView>
+
+
+
+
 
 
 
     <androidx.recyclerview.widget.RecyclerView
 
-        android:elevation="10dp"
         android:id="@+id/listRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:elevation="10dp" />
 
 
 </LinearLayout>

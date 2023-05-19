@@ -39,14 +39,24 @@
     </string-array>
 
     <string-array name="price_options">
-        <item>Ascending</item>
-        <item>Descending</item>
+        <item>None</item>
+        <item>Price-Ascending</item>
+        <item>Price-Descending</item>
+    </string-array>
+
+    <string-array name="rating_options">
+        <item>None</item>
+        <item>Rating-Ascending</item>
+        <item>Rating-Descending</item>
     </string-array>
 
     <string-array name="service_type">
         <item>Installation</item>
         <item>Maintenance</item>
         <item>Repair</item>
+
+
+
     </string-array>
     <string name="title_activity_admin_menu">AdminMenu</string>
     <string name="title_home">Home</string>
