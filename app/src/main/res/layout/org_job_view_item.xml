@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:background="@color/white"
+    android:elevation="10dp"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/job_list_org"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DOLE"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/job_list_service"
+            android:textStyle="italic"
+            android:textColor="@color/colorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Electrical Installation"
+
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/job_list_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Juan Dela Cruz"
+
+            android:textSize="15sp" />
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:id="@+id/job_list_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rate:"
+                android:textStyle="bold"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_toEndOf="@+id/job_list_rate"
+                android:id="@+id/job_list_maxPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1000"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/dash"
+                android:layout_toEndOf="@+id/job_list_maxPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" - "
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_toEndOf="@+id/dash"
+                android:id="@+id/job_list_minPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1000"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+
+
+        <TextView
+            android:id="@+id/job_list_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Martinez Subdivision, Phase 6"
+            android:textSize="12sp" />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Job Description:"
+            android:textStyle="bold"
+            android:textSize="15sp" />
+        <TextView
+            android:id="@+id/job_list_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Akoy  tahimik lng sa umpisa kahit  na di moko pilitin"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/job_list_accept_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accept"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="30dp"
+
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>

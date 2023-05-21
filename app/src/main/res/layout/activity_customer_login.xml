@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".LoginActivity"
+    tools:context=".CustomerLogin"
 
     >
 
@@ -54,7 +54,7 @@
         app:rowCount="3">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/btnServiceProvider"
+            android:id="@+id/btnOrganization"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_row="1"
@@ -77,13 +77,13 @@
                 <ImageView
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:src="@mipmap/ic_electrician_logo" />
+                    android:src="@mipmap/ic_organization" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Service Provider"
-                    android:textColor="@color/teal_200"
+                    android:text="Organizational"
+                    android:textColor="@color/colorPrimary"
                     android:textAlignment="center"
                     android:textStyle="bold" />
                 <TextView
@@ -91,15 +91,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="10dp"
-                    android:text="A service provider is a company or individual that offers services to clients or customers in exchange for payment."
+                    android:text="An organizational account refers to an account specifically created for and managed by an organization or company, often used for collaborative and administrative purposes."
                     android:textAlignment="center"
-                     />
+                    />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/btnCustomer"
+            android:id="@+id/btnIndividual"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_row="0"
@@ -124,12 +124,12 @@
                 <ImageView
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:src="@mipmap/ic_customer_logo" />
+                    android:src="@mipmap/ic_individual" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Customer"
+                    android:text="Individual"
                     android:textColor="@color/quantum_vanillablue200"
                     android:textAlignment="center"
                     android:textStyle="bold" />
@@ -138,8 +138,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="10dp"
-                    android:text="
-A customer is an individual or entity who purchases goods or services from a business in exchange for payment."
+                    android:text="An individual account refers to a personal user account that is typically owned and managed by a single individual"
                     android:textAlignment="center"
                     />
 
@@ -157,13 +156,6 @@ A customer is an individual or entity who purchases goods or services from a bus
         android:layout_below="@id/grid">
 
 
-
-        <Button
-            android:layout_gravity="center"
-            android:id="@+id/btnAdmin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" Login as Admin" />
 
 
     </LinearLayout>

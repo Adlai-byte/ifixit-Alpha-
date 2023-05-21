@@ -15,20 +15,39 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ifixit"
         tools:targetApi="31">
-
+        <activity
+            android:name=".CustomerLogin"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDbm7rYA_28n5PpW1xQHBq-kScG4AbW2ug" />
+
+        <activity
+            android:name=".ORGANIZATIONAL_FILES.OrgLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ORGANIZATIONAL_FILES.OrgRegistrationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ORGANIZATIONAL_FILES.OrgMainMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ORGANIZATIONAL_FILES.OrgMapsActivity"
+            android:parentActivityName=".ORGANIZATIONAL_FILES.OrgMainMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ORGANIZATIONAL_FILES.OrgCheckOutActivity"
+            android:exported="false" />
+
+
         <activity
             android:name=".Messaging.ChatActivity"
             android:exported="false" />
-
         <activity
             android:name=".CUSTOMER_FILES.CustomerNewMapsActivity"
             android:exported="false" />
         <activity
-
             android:name=".SUPER_ADMIN_FILES.AdminMainMenuActivity"
             android:exported="false" />
         <activity
@@ -43,20 +62,17 @@
         <activity
             android:name=".CUSTOMER_FILES.CustomerCheckOutActivity"
             android:exported="false"
-            android:parentActivityName=".CUSTOMER_FILES.CustomerMapsActivity" />
+            android:parentActivityName=".CUSTOMER_FILES.CustomerMainMenuActivity" />
         <activity
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderMainMenuActivity"
-            android:exported="false"
-            />
+            android:exported="false" />
         <activity
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderRegistrationActivity"
-            android:exported="false"
-         />
+            android:exported="false" />
         <activity
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderMapsActivity"
             android:exported="false"
-            android:parentActivityName=".SERVICE_PROVIDER_FILES.ServiceProviderMainMenuActivity"
-   />
+            android:parentActivityName=".SERVICE_PROVIDER_FILES.ServiceProviderMainMenuActivity" />
         <activity
             android:name=".CUSTOMER_FILES.CustomerMapsActivity"
             android:exported="false"
@@ -64,8 +80,8 @@
             android:parentActivityName=".CUSTOMER_FILES.CustomerMainMenuActivity" />
         <activity
             android:name=".CUSTOMER_FILES.CustomerMainMenuActivity"
-            android:parentActivityName=".CUSTOMER_FILES.CustomerMainMenuActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".CUSTOMER_FILES.CustomerMainMenuActivity" />
         <activity
             android:name=".CUSTOMER_FILES.CustomerRegistrationActivity"
             android:exported="false" />

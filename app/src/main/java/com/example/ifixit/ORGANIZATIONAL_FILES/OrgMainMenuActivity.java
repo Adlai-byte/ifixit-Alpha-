@@ -1,4 +1,4 @@
-package com.example.ifixit.CUSTOMER_FILES;
+package com.example.ifixit.ORGANIZATIONAL_FILES;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,11 +19,11 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
-import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerListViewFragment;
-import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerNotificationFragment;
-import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerProfileFragment;
 import com.example.ifixit.Messaging.ChatActivity;
 import com.example.ifixit.ORGANIZATIONAL_FILES.ORG_FRAGMENTS.OrgJobPostingFragment;
+import com.example.ifixit.ORGANIZATIONAL_FILES.ORG_FRAGMENTS.OrgListViewFragment;
+import com.example.ifixit.ORGANIZATIONAL_FILES.ORG_FRAGMENTS.OrgNotificationFragment;
+import com.example.ifixit.ORGANIZATIONAL_FILES.ORG_FRAGMENTS.OrgProfileFragment;
 import com.example.ifixit.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Map;
 
-public class CustomerMainMenuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class OrgMainMenuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
     //Variables
@@ -62,12 +62,12 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
         super.onCreate(savedInstanceState);
 
 
-        setContentView(R.layout.customer_main_menu);
-        Toolbar toolbar = findViewById(R.id.CMtoolbar);
+        setContentView(R.layout.org_main_menu);
+        Toolbar toolbar = findViewById(R.id.ORGtoolbar);
         setSupportActionBar(toolbar);
 
 
-        NavigationView navigationViews = findViewById(R.id.CMnav_view);
+        NavigationView navigationViews = findViewById(R.id.ORGnav_view);
         headerInfo = navigationViews.getHeaderView(0);
         navigationViews.setNavigationItemSelectedListener(this);
         customerImage = headerInfo.findViewById(R.id.CMheaderImageView);
@@ -79,13 +79,13 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
 
 
         mCustomerDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("customers")
+                .child("organizational")
                 .child(userID);
         getHeaderInfo();
 
 
-        drawer = findViewById(R.id.CMdrawer_layout);
-        NavigationView navigationView = findViewById(R.id.CMnav_view);
+        drawer = findViewById(R.id.ORGdrawer_layout);
+        NavigationView navigationView = findViewById(R.id.ORGnav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -94,7 +94,7 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
 
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerListViewFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.ORGfragment_container, new OrgListViewFragment()).commit();
         }
 
     }
@@ -105,31 +105,31 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
 
 
             case R.id.CMnav_profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerProfileFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.ORGfragment_container, new OrgProfileFragment()).commit();
                 break;
             case R.id.CMnav_listview:
-                getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerListViewFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.ORGfragment_container, new OrgListViewFragment()).commit();
                 break;
             case R.id.CMnav_map:
-                Intent intent = new Intent(CustomerMainMenuActivity.this, CustomerMapsActivity.class);
+                Intent intent = new Intent(OrgMainMenuActivity.this, OrgMapsActivity.class);
                 startActivity(intent);
                 break;
             case R.id.CMnav_message:
-               Intent intent2 = new Intent(CustomerMainMenuActivity.this, ChatActivity.class);
+               Intent intent2 = new Intent(OrgMainMenuActivity.this, ChatActivity.class);
                 break;
             case R.id.CMnav_jobposting:
-                getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new OrgJobPostingFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.ORGfragment_container,new OrgJobPostingFragment()).commit();
 
                 break;
             case R.id.CMnav_notification:
-                getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerNotificationFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.ORGfragment_container, new OrgNotificationFragment()).commit();
                 break;
             case R.id.CMnav_share:
                 Toast.makeText(this, "Shared", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.CMnav_logout:
                 FirebaseAuth.getInstance().signOut();
-                Intent intent1 = new Intent(CustomerMainMenuActivity.this, CustomerLoginActivity.class);
+                Intent intent1 = new Intent(OrgMainMenuActivity.this, OrgLoginActivity.class);
                 startActivity(intent1);
                 finish();
                 break;

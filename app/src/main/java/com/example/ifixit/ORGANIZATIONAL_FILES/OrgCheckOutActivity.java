@@ -1,4 +1,4 @@
-package com.example.ifixit.CUSTOMER_FILES;
+package com.example.ifixit.ORGANIZATIONAL_FILES;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,7 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CustomerCheckOutActivity extends AppCompatActivity {
+public class OrgCheckOutActivity extends AppCompatActivity {
 
     private ImageView profileImage;
     private TextView name;
@@ -92,7 +92,7 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
 
 
                 } else {
-                    Toast.makeText(CustomerCheckOutActivity.this, "Not Found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OrgCheckOutActivity.this, "Not Found", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -163,7 +163,7 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 mCustomerRef = FirebaseDatabase.getInstance().getReference()
-                        .child("customers");
+                        .child("organizational");
                 mServiceProviderRef = FirebaseDatabase.getInstance().getReference()
                         .child("service-providers")
                         .child("verified")
@@ -209,8 +209,8 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
 
                     }
                 });
-                Toast.makeText(CustomerCheckOutActivity.this, "Requested Succesfully", Toast.LENGTH_SHORT).show();
-                Intent intent1 = new Intent(CustomerCheckOutActivity.this,CustomerMapsActivity.class);
+                Toast.makeText(OrgCheckOutActivity.this, "Requested Succesfully", Toast.LENGTH_SHORT).show();
+                Intent intent1 = new Intent(OrgCheckOutActivity.this, OrgMapsActivity.class);
                 startActivity(intent1);
 
 

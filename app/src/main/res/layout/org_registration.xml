@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".CUSTOMER_FILES.CustomerRegistrationActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="30dp"
+        android:orientation="vertical"
+
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:text="Let's gets started"
+            android:textAlignment="center"
+            android:textSize="35sp"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Please fill in the form below"
+
+            android:textAlignment="center" />
+
+
+        <EditText
+            android:id="@+id/etOrgName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            style="@style/Widget.AppCompat.EditText"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
+            android:ems="10"
+            android:hint="Organization Name"
+            android:inputType="textPersonName" />
+
+
+        <EditText
+            android:id="@+id/etFullName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            style="@style/Widget.AppCompat.EditText"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
+            android:ems="10"
+            android:hint="Admin Name"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/etPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            style="@style/Widget.AppCompat.EditText"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
+            android:ems="10"
+            android:hint="Phone"
+            android:inputType="phone" />
+
+        <EditText
+            android:id="@+id/etAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            style="@style/Widget.AppCompat.EditText"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
+            android:ems="10"
+            android:hint="Address"
+            android:inputType="textPersonName" />
+
+
+        <EditText
+            android:id="@+id/etadminEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            style="@style/Widget.AppCompat.EditText"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textPersonName" />
+
+
+        <EditText
+            android:id="@+id/etadminPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            style="@style/Widget.AppCompat.EditText"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
+            android:ems="10"
+            android:hint="Password"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/etadminPassword2"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:ems="10"
+            android:hint="Confirm Passwrd"
+            android:inputType="textPassword"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:padding="15dp"
+            android:textSize="15dp"
+
+            android:text="Sign-up" />
+
+        <TextView
+            android:id="@+id/tvAlreadyHaveAnAccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Already have an accout? click here to Sign in" />
+
+
+    </LinearLayout>
+</LinearLayout>

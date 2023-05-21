@@ -8,7 +8,6 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.example.ifixit.CUSTOMER_FILES.CustomerLoginActivity;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.ServiceProviderLoginActivity;
 import com.example.ifixit.SUPER_ADMIN_FILES.AdminRegistrationActivity;
 
@@ -36,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         btnCustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, CustomerLoginActivity.class);
+                Intent intent = new Intent(LoginActivity.this, CustomerLogin.class);
                 startActivity(intent);
                 return;
 
