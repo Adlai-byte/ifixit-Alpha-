@@ -12,7 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.ifixit.CUSTOMER_FILES.CustomerRegistrationActivity;
 import com.example.ifixit.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -90,7 +89,7 @@ public class OrgLoginActivity extends AppCompatActivity {
         tvNoAccout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(OrgLoginActivity.this, CustomerRegistrationActivity.class);
+                Intent intent = new Intent(OrgLoginActivity.this, OrgRegistrationActivity.class);
                 startActivity(intent);
                 return;
             }

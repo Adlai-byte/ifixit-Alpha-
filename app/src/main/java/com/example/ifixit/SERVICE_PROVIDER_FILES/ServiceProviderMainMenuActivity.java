@@ -1,6 +1,7 @@
 package com.example.ifixit.SERVICE_PROVIDER_FILES;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -21,6 +23,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.bumptech.glide.Glide;
 import com.example.ifixit.Messaging.ChatActivity;
 import com.example.ifixit.R;
+import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderJobPostingFragment;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderOngoingJob;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderProfileFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -50,7 +53,7 @@ public class ServiceProviderMainMenuActivity extends AppCompatActivity implement
     private String mProfileImageUrl;
     private ImageView serviceProviderImage;
     private Uri resultUri;
-
+    private boolean backPressedOnce = false;
     //Notification
     ArrayList<String> requestUserID = new ArrayList<>();
 
@@ -118,6 +121,10 @@ public class ServiceProviderMainMenuActivity extends AppCompatActivity implement
                 startActivity(intent1);
                 finish();
                 break;
+            case R.id.SPnav_jobposting:
+                getSupportFragmentManager().beginTransaction().replace(R.id.SPfragment_container, new ServiceProviderJobPostingFragment()).commit();
+                break;
+
 //            case R.id.SPnav_notification:
 //                Intent intent2 = new Intent(ServiceProviderMainMenuActivity.this, ServiceProviderNotification.class);
 //                startActivity(intent2);
@@ -179,10 +186,31 @@ public class ServiceProviderMainMenuActivity extends AppCompatActivity implement
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (backPressedOnce) {
+                // If back button is pressed again, exit the application
+                super.onBackPressed();
+            } else {
+                backPressedOnce = true;
+                // Show a dialog box to confirm exit
+                new AlertDialog.Builder(this)
+                        .setTitle("Exit Application")
+                        .setMessage("Do you want to exit the application?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Exit the application
+                                finishAffinity();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                backPressedOnce = false;
+                            }
+                        })
+                        .show();
+            }
         }
-
-
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.ifixit.CUSTOMER_FILES;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -52,6 +54,7 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
     private String mEmail;
     private String mProfileImageUrl;
     private ImageView customerImage;
+    private boolean backPressedOnce = false;
 
     //Profile Fragment
     //Variables
@@ -173,16 +176,9 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
 
 
-    }
+
 
 
 
@@ -193,6 +189,37 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
             final Uri imageUri = data.getData();
             resultUri = imageUri;
             customerImage.setImageURI(resultUri);
+        }
+    }
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            if (backPressedOnce) {
+                // If back button is pressed again, exit the application
+                super.onBackPressed();
+            } else {
+                backPressedOnce = true;
+                // Show a dialog box to confirm exit
+                new AlertDialog.Builder(this)
+                        .setTitle("Exit Application")
+                        .setMessage("Do you want to exit the application?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Exit the application
+                                finishAffinity();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                backPressedOnce = false;
+                            }
+                        })
+                        .show();
+            }
         }
     }
 

@@ -52,7 +52,7 @@ public class OrgRegistrationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.customer_registration);
+        setContentView(R.layout.org_registration);
 
         //---Layout Connecting
         etConfirmPassword = (EditText)findViewById(R.id.etadminPassword2);

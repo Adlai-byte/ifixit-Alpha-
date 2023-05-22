@@ -94,11 +94,14 @@ public class OrgJobPostingFragment extends Fragment {
                     DatabaseReference currentUserRef = FirebaseDatabase.getInstance().getReference()
                             .child("organizational");
 
+
+
                     currentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if(snapshot.exists()){
                                 String currentUserName = snapshot.child("name").getValue(String.class);
+                                String orgName = snapshot.child("orgname").getValue(String.class);
 
                                 DatabaseReference jobPostingRef = FirebaseDatabase.getInstance().getReference()
                                         .child("job-posting");
@@ -107,8 +110,9 @@ public class OrgJobPostingFragment extends Fragment {
 
 
                                 Map jobInfo = new HashMap();
+                                jobInfo.put("orgname",orgName);
                                 jobInfo.put("userid",currentUid);
-                                jobInfo.put("orgname", currentUserName);
+                                jobInfo.put("name", currentUserName);
                                 jobInfo.put("jobtype", jobtype);
                                 jobInfo.put("minrate", minrate);
                                 jobInfo.put("maxrate", maxrate);

@@ -187,7 +187,11 @@ public class CustomerListViewFragment extends Fragment {
             }
         });
 
+
+
         return rootView;
+
+
     }
 
     private void filterList(String service) {
@@ -287,6 +291,9 @@ public class CustomerListViewFragment extends Fragment {
 
         listViewAdapter.notifyDataSetChanged();
     }
+
+
+
 
 
 }

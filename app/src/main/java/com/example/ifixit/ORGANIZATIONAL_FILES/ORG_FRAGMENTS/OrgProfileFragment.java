@@ -77,7 +77,7 @@ public class OrgProfileFragment extends Fragment {
         customerAddress = (TextView) rootView.findViewById(R.id.customerAddress);
         mSettings = (ImageView) rootView.findViewById(R.id.customerSettingBtn);
 
-        uploadImage = (Button)rootView.findViewById(R.id.uploadImage);
+        uploadImage = (Button) rootView.findViewById(R.id.uploadImage);
         saveBtn = (Button) rootView.findViewById(R.id.saveBtn);
         customerImage = (ImageView) rootView.findViewById(R.id.customerProfileImage);
 
@@ -95,20 +95,8 @@ public class OrgProfileFragment extends Fragment {
                 .child(userID);
 
 
-        DatabaseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                getHeaderInfo();
-            }
+        getHeaderInfo();
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
-   
 
         uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,8 +134,8 @@ public class OrgProfileFragment extends Fragment {
                                 mAddress = map.get("address").toString();
                                 address.setText(mAddress);
                             }
-                            if(map.get("phone")!=null){
-                                mPhone = map.get("phone") .toString();
+                            if (map.get("phone") != null) {
+                                mPhone = map.get("phone").toString();
                                 phone.setText(mPhone);
                             }
 
@@ -165,7 +153,6 @@ public class OrgProfileFragment extends Fragment {
                 editLayout.setVisibility(View.VISIBLE);
 
 
-
             }
         });
 
@@ -173,7 +160,6 @@ public class OrgProfileFragment extends Fragment {
         return rootView;
 
     }
-
 
 
     public void getHeaderInfo() {
@@ -187,6 +173,10 @@ public class OrgProfileFragment extends Fragment {
                         mUserName = map.get("name").toString();
                         customerName.setText(mUserName);
                     }
+                    if (map.get("email") != null) {
+                        mEmail = map.get("email").toString();
+                        customerEmail.setText(mEmail);
+                    }
 
 
                     if (map.get("address") != null) {
@@ -195,7 +185,6 @@ public class OrgProfileFragment extends Fragment {
                     }
                     if (map.get("profileimageurl") != null) {
                         mProfileImageUrl = map.get("profileimageurl").toString();
-//                        Glide.with(getApplication()).load(mProfileImageUrl).into(customerImage);
                         Glide.with(getContext().getApplicationContext()).load(mProfileImageUrl).into(customerImage);
                     }
 
@@ -219,13 +208,12 @@ public class OrgProfileFragment extends Fragment {
         mPhone = phone.getText().toString();
 
 
-        Map <String,Object>userInfo = new HashMap();
+        Map<String, Object> userInfo = new HashMap();
         userInfo.put("name", mUserName);
         userInfo.put("phone", mPhone);
         userInfo.put("address", mAddress);
 //      userInfo.put("services",mService);
         DatabaseRef.updateChildren(userInfo);
-
 
 
         if (resultUri != null) {
@@ -283,8 +271,6 @@ public class OrgProfileFragment extends Fragment {
         } else {
 //            finish();
         }
-
-
 
 
     }
