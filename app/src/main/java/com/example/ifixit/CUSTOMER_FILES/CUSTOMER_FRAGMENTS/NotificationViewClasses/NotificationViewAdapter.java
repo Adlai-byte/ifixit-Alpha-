@@ -73,6 +73,13 @@ public class NotificationViewAdapter extends RecyclerView.Adapter<NotificationVi
                         .child(currentUserId);
 
 
+                DatabaseReference notificationRef = FirebaseDatabase.getInstance().getReference()
+                        .child("customers")
+                        .child(currentUserId)
+                        .child("notification")
+                        .child(serviceProviderUserId);
+
+
                 DatabaseReference ratingRef = FirebaseDatabase.getInstance().getReference()
                         .child("service-providers")
                         .child("verified")
@@ -84,27 +91,37 @@ public class NotificationViewAdapter extends RecyclerView.Adapter<NotificationVi
                         if (snapshot.exists()) {
                             float currentRating = snapshot.child("rating").getValue(Float.class);
 
-                                float newRating = (currentRating + rate) / 2;
-                                rating.put("rating", newRating);
+                            float newRating = (currentRating + rate) / 2;
+                            rating.put("rating", newRating);
 
-                                ratingRef.updateChildren(rating)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                // The update operation was successful
-                                                Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                // Handle the error that occurred during the update operation
-                                                Toast.makeText(context, "Failed to update rating", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                            } else {
-                                Toast.makeText(context, "Failed to get current rating", Toast.LENGTH_SHORT).show();
-                            }
+                            reviewsRef.updateChildren(rating)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            // The update operation was successful
+                                            Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+
+                                            notificationRef.removeValue();
+
+                                            int itemPosition = holder.getAdapterPosition();
+                                            notificationViewItems.remove(itemPosition);
+                                            notifyItemRemoved(itemPosition);
+                                            notifyItemRangeChanged(itemPosition, notificationViewItems.size());
+
+
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            // Handle the error that occurred during the update operation
+                                            Toast.makeText(context, "Failed to update rating", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        } else {
+                            Toast.makeText(context, "Failed to get current rating", Toast.LENGTH_SHORT).show();
+                        }
+
 
                     }
 

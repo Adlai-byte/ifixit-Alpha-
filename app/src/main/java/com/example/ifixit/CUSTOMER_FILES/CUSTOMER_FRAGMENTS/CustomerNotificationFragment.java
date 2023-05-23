@@ -75,6 +75,9 @@ public class CustomerNotificationFragment extends Fragment {
                                 .child(serviceProviderId);
 
 
+
+
+
                         serviceProviderRef.addValueEventListener(new ValueEventListener() {
                             @Override
 

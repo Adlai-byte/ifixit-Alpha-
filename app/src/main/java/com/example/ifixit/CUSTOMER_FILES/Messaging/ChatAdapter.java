@@ -76,5 +76,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
             timestampTextView = itemView.findViewById(R.id.timestamp_text_view);
         }
     }
+
 }
 

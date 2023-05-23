@@ -1,16 +1,23 @@
 package com.example.ifixit.SERVICE_PROVIDER_FILES.Messaging;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ifixit.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -22,9 +29,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity {
 
+
+    private ImageView chatImage;
+    private TextView chatName;
+    private Uri resultUri;
     private RecyclerView recyclerView;
     private EditText messageEditText;
     private Button sendButton;
@@ -41,6 +53,10 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         // -- Contacts ArrayList --
+
+        // -- Chat Header --
+        chatImage = findViewById(R.id.chatProfileImage);
+        chatName =findViewById(R.id.chatName);
 
         contactIds = new ArrayList<>();
 
@@ -89,6 +105,34 @@ public class ChatActivity extends AppCompatActivity {
                         String customerId = contactIds.get(0);
                         String chatId =  customerId+currentUserId; // Replace with your own chat ID
 
+                        DatabaseReference customerRef = FirebaseDatabase.getInstance().getReference()
+                                .child("customers")
+                                .child(customerId);
+
+                        customerRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if(snapshot.exists()&& snapshot.getChildrenCount()>0){
+                                    Map<String,Object> map =(Map<String, Object>)snapshot.getValue();
+                                    if(map.get("name")!=null){
+                                        String name =  map.get("name").toString();
+                                        chatName.setText(name);
+                                    }
+                                    if(map.get("profileimageurl")!=null){
+                                        String url = map.get("profileimageurl").toString();
+                                        Glide.with(getApplication()).load(url).into(chatImage);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+
+
                         messagesDatabaseRef = FirebaseDatabase.getInstance().getReference().child("messages").child(chatId);
                         sendButton.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -113,20 +157,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-// ...
 
-//        String servicProviderId = contactIds.get(0);
-//        String chatId = currentUserId+servicProviderId;// Replace with your own chat ID
-//
-//        messagesDatabaseRef = FirebaseDatabase.getInstance().getReference().child("messages").child(chatId);
-//        sendButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                sendMessage();
-//            }
-//        });
-//
-//        retrieveMessages();
     }
 
     private void sendMessage(DatabaseReference currentUserRef, String currentUserId) {
@@ -196,4 +227,13 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            final Uri imageUri = data.getData();
+            resultUri = imageUri;
+            chatImage.setImageURI(resultUri);
+        }
+    }
 }
