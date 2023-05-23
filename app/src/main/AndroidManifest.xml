@@ -43,7 +43,7 @@
 
 
         <activity
-            android:name=".Messaging.ChatActivity"
+            android:name=".CUSTOMER_FILES.Messaging.ChatActivity"
             android:exported="false" />
         <activity
             android:name=".CUSTOMER_FILES.CustomerNewMapsActivity"
@@ -88,6 +88,12 @@
         <activity
             android:name=".CUSTOMER_FILES.CustomerRegistrationActivity"
             android:exported="false" />
+        <activity
+            android:name=".SERVICE_PROVIDER_FILES.Messaging.ChatActivity"
+            android:parentActivityName=".SERVICE_PROVIDER_FILES.ServiceProviderMainMenuActivity"
+            android:exported="false" />
+
+
         <activity
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderLoginActivity"
             android:exported="false"

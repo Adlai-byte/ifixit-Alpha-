@@ -20,7 +20,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
-import com.example.ifixit.Messaging.ChatActivity;
+import com.example.ifixit.CUSTOMER_FILES.Messaging.ChatActivity;
 import com.example.ifixit.R;
 import com.example.ifixit.SUPER_ADMIN_FILES.Fragments.ADMAdminProfileFragment;
 import com.example.ifixit.SUPER_ADMIN_FILES.Fragments.ADMCustomerListFragment;
@@ -152,17 +152,17 @@ public class AdminMainMenuActivity extends AppCompatActivity implements Navigati
 
                 if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
                     Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
-                    if (map.get("NAME") != null) {
-                        mUserName = map.get("NAME").toString();
+                    if (map.get("name") != null) {
+                        mUserName = map.get("name").toString();
                         headerUserName.setText(mUserName);
                     }
-                    if (map.get("EMAIL") != null) {
-                        mEmail = map.get("EMAIL").toString();
+                    if (map.get("email") != null) {
+                        mEmail = map.get("email").toString();
                         headerEmail.setText(mEmail);
                     }
 
-                    if(map.get("profileImageUrl")!=null){
-                        mProfileImageUrl = map.get("profileImageUrl").toString();
+                    if(map.get("profileimageurl")!=null){
+                        mProfileImageUrl = map.get("profileimageurl").toString();
                         Glide.with(getApplication()).load(mProfileImageUrl).into(serviceProviderImage);
 
                     }

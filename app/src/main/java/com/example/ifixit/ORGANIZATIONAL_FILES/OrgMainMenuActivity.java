@@ -21,7 +21,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
-import com.example.ifixit.Messaging.ChatActivity;
+import com.example.ifixit.CUSTOMER_FILES.Messaging.ChatActivity;
 import com.example.ifixit.ORGANIZATIONAL_FILES.ORG_FRAGMENTS.OrgJobPostingFragment;
 import com.example.ifixit.ORGANIZATIONAL_FILES.ORG_FRAGMENTS.OrgListViewFragment;
 import com.example.ifixit.ORGANIZATIONAL_FILES.ORG_FRAGMENTS.OrgNotificationFragment;

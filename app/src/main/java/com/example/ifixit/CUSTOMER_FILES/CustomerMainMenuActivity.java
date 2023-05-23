@@ -24,7 +24,7 @@ import com.bumptech.glide.Glide;
 import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerListViewFragment;
 import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerNotificationFragment;
 import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerProfileFragment;
-import com.example.ifixit.Messaging.ChatActivity;
+import com.example.ifixit.CUSTOMER_FILES.Messaging.ChatActivity;
 import com.example.ifixit.ORGANIZATIONAL_FILES.ORG_FRAGMENTS.OrgJobPostingFragment;
 import com.example.ifixit.R;
 import com.google.android.material.navigation.NavigationView;
@@ -119,7 +119,10 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
                 break;
             case R.id.CMnav_message:
                Intent intent2 = new Intent(CustomerMainMenuActivity.this, ChatActivity.class);
+                startActivity(intent2);
                 break;
+
+
             case R.id.CMnav_jobposting:
                 getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new OrgJobPostingFragment()).commit();
 

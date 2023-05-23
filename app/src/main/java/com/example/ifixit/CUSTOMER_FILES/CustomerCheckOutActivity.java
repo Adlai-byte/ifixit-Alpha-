@@ -104,8 +104,8 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
         });
 
 
-        String customerUserId = intent.getStringExtra("customerUserId");
-        String serviceProviderUserId = intent.getStringExtra("serviceProviderUserId");
+        String customerUserId = intent.getStringExtra("customeruserid");
+        String serviceProviderUserId = intent.getStringExtra("serviceprovideruserid");
 
 
         //Database References

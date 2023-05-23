@@ -160,8 +160,8 @@ public class CustomerMapsActivity extends AppCompatActivity implements OnMapRead
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                        String userId = childSnapshot.getKey();
 
+                        String userId = childSnapshot.getKey();
                         String name = childSnapshot.child("name").getValue(String.class);
                         String email = childSnapshot.child("email").getValue(String.class);
                         String service = childSnapshot.child("service").getValue(String.class);
