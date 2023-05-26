@@ -17,14 +17,13 @@
         android:layout_marginStart="10dp"
         android:orientation="horizontal">
 
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/customerProfileImage"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="10dp"
-
-            android:src="@mipmap/ic_launcher_round" />
-
+            android:src="@mipmap/ic_default_image" />
 
         <LinearLayout
             android:layout_width="wrap_content"

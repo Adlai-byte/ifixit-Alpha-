@@ -11,50 +11,76 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        android:padding="10dp"
         android:elevation="10dp"
       android:layout_margin="10dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
             android:id="@+id/ongoingName"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Vinz Lloyd Alferez"
-            android:textSize="20sp"
+            android:textColor="#777777"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
         <TextView
-            android:layout_marginStart="10dp"
             android:id="@+id/ongoingLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Mati City" />
+            android:text="Mati City"
+            android:textColor="#777777" />
 
         <TextView
-            android:layout_marginStart="10dp"
+
             android:id="@+id/ongoingJobType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Installiation" />
+            android:text="Installiation"
+            android:textColor="#777777" />
 
         <TextView
-            android:layout_marginStart="10dp"
+
             android:id="@+id/ongoingTotalPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="1000" />
-
-        <Button
-            android:id="@+id/ongoingCompleteButton"
-            android:layout_margin="10dp"
+            android:text="1000"
+            android:textColor="#777777" />
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="wrap_content">
 
-            android:text="Job Completed"
+            <Button
+                android:id="@+id/ongoingCancelledButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="10dp"
+                android:text="Cancelled" />
+
+            <Button
+                android:id="@+id/ongoingCompletedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="50dp"
+
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/ongoingCancelledButton"
+                android:textSize="10dp"
+                android:text="Completed" />
+
             />
+        </RelativeLayout>
+
 
 
     </LinearLayout>

@@ -63,8 +63,8 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewHolder> {
                 String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
                 Intent intent = new Intent(context, CustomerCheckOutActivity.class);
-                intent.putExtra("customerUserId", currentUserId);
-                intent.putExtra("serviceProviderUserId", serviceProviderUserId);
+                intent.putExtra("customeruserid", currentUserId);
+                intent.putExtra("serviceprovideruserid", serviceProviderUserId);
                 context.startActivity(intent);
             }
         });

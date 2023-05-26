@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:pointerIcon="arrow">
 
     <!--Create the list View-->
     <SearchView
@@ -21,8 +22,7 @@
 
     <HorizontalScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,21 +32,46 @@
 
             >
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="15dp"
+                    android:src="@mipmap/ic_filter_image" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="Filter"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
             <Spinner
                 android:id="@+id/adminspinner"
-                style="@style/Widget.AppCompat.EditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="30dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="@color/white"
+                android:background="@drawable/orange_outline"
+                android:dropDownVerticalOffset="40dp"
                 android:elevation="5dp"
                 android:entries="@array/service_options"
+                android:gravity="center"
                 android:padding="10dp"
+                android:popupBackground="@color/colorPrimary"
+                android:spinnerMode="dropdown"
                 android:textAlignment="center" />
+
 
             <Spinner
                 android:id="@+id/adminspinner2"
@@ -55,14 +80,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-
-                android:layout_marginEnd="30dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-
-                android:background="@color/white"
+                android:background="@drawable/orange_outline"
                 android:elevation="5dp"
                 android:entries="@array/price_options"
                 android:padding="10dp"
+                android:popupBackground="@color/colorPrimary"
+                android:spinnerMode="dropdown"
                 android:textAlignment="center" />
 
             <Spinner
@@ -72,29 +97,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="30dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
+                android:background="@drawable/orange_outline"
 
-                android:background="@color/white"
                 android:elevation="5dp"
                 android:entries="@array/price_options"
                 android:padding="10dp"
+                android:popupBackground="@color/colorPrimary"
+                android:spinnerMode="dropdown"
                 android:textAlignment="center" />
-
 
 
         </LinearLayout>
 
 
-
-
-
-</HorizontalScrollView>
-
-
-
-
-
+    </HorizontalScrollView>
 
 
     <androidx.recyclerview.widget.RecyclerView

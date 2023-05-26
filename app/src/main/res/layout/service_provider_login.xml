@@ -62,13 +62,32 @@
 
             android:text="Log-in" />
 
-        <TextView
-            android:id="@+id/tvadminNoAccout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-            android:layout_gravity="center"
-            android:text="Doesn't have an account yet?" />
+
+    <TextView
+        android:id="@+id/tvadminNoAccout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:text="Doesn't have an account yet?" />
+    <TextView
+        android:id="@+id/tvadminNoAccout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/tvadminNoAccout2"
+        android:textColor="@color/colorPrimary"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:text=" Sign-in" />
+
+</RelativeLayout>
+
+
+
     </LinearLayout>
 
 </LinearLayout>

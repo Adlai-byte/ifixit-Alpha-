@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
@@ -17,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.ifixit.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,12 +39,13 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
     private TextView total;
     private Button placeOrder;
     private Spinner serviceType;
+    private EditText description;
 
     //Use this as the key in the Hashmap
 
     //*
     private String service = "Installation";
-    private String comment;
+    String comment = "";
     double days = 1.0;
     double finalPrice;
     //*
@@ -90,7 +94,6 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                     initialPrice = servicePriceDictionary.get(service);
 
 
-
                 } else {
                     Toast.makeText(CustomerCheckOutActivity.this, "Not Found", Toast.LENGTH_SHORT).show();
                 }
@@ -135,6 +138,7 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
         total = (TextView) findViewById(R.id.tvTotal);
         picker1 = (NumberPicker) findViewById(R.id.numberPicker1);
         placeOrder = (Button) findViewById(R.id.placeOrderButton);
+        description = (EditText) findViewById(R.id.checkoutDescription);
 
         //Number Picker
         picker1.setMinValue(0);
@@ -161,7 +165,7 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
         placeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                comment = description.getText().toString();
                 mCustomerRef = FirebaseDatabase.getInstance().getReference()
                         .child("customers");
                 mServiceProviderRef = FirebaseDatabase.getInstance().getReference()
@@ -171,7 +175,6 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                         .child("joboffers")
                         .child("pending")
                         .child(customerUserId);
-
 
                 mCustomerRef.child(customerUserId).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -183,9 +186,9 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                             String imgUrl = snapshot.child("profileimageurl").getValue(String.class);
 
                             String jobType = service;
-                            String commentReview = comment;
                             String daysOfWork = String.valueOf(days);
                             String totalPrice = String.valueOf(finalPrice);
+                            String description = comment;
 
                             // Create a new job offer HashMap with the customer's data
                             HashMap<String, String> jobOffer = new HashMap<>();
@@ -195,27 +198,101 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                             jobOffer.put("timestamp", String.valueOf(timestamp));
                             jobOffer.put("profileimageurl", imgUrl);
                             jobOffer.put("jobtype", jobType);
-                            jobOffer.put("comment", commentReview);
                             jobOffer.put("duration", daysOfWork);
-                            jobOffer.put("totalprice",totalPrice);
+                            jobOffer.put("totalprice", totalPrice);
+                            jobOffer.put("decription", description);
 
-                            mServiceProviderRef.setValue(jobOffer);
-
+                            mServiceProviderRef.setValue(jobOffer).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        // Data successfully added to the database
+                                        Toast.makeText(CustomerCheckOutActivity.this, "Data added successfully", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        // Failed to add data to the database
+                                        Toast.makeText(CustomerCheckOutActivity.this, "Failed to add data", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        // ...
                     }
                 });
-                Toast.makeText(CustomerCheckOutActivity.this, "Requested Succesfully", Toast.LENGTH_SHORT).show();
-                Intent intent1 = new Intent(CustomerCheckOutActivity.this,CustomerMapsActivity.class);
+
+                Intent intent1 = new Intent(CustomerCheckOutActivity.this, CustomerMapsActivity.class);
                 startActivity(intent1);
-
-
             }
         });
+        placeOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                comment = description.getText().toString();
+                mCustomerRef = FirebaseDatabase.getInstance().getReference()
+                        .child("customers");
+                mServiceProviderRef = FirebaseDatabase.getInstance().getReference()
+                        .child("service-providers")
+                        .child("verified")
+                        .child(serviceProviderUserId)
+                        .child("joboffers")
+                        .child("pending")
+                        .child(customerUserId);
+
+                mCustomerRef.child(customerUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            String name = snapshot.child("name").getValue(String.class);
+                            String address = snapshot.child("address").getValue(String.class);
+                            String email = snapshot.child("email").getValue(String.class);
+                            String imgUrl = snapshot.child("profileimageurl").getValue(String.class);
+
+                            String jobType = service;
+                            String daysOfWork = String.valueOf(days);
+                            String totalPrice = String.valueOf(finalPrice);
+                            String description = comment;
+
+                            // Create a new job offer HashMap with the customer's data
+                            HashMap<String, String> jobOffer = new HashMap<>();
+                            jobOffer.put("name", name);
+                            jobOffer.put("address", address);
+                            jobOffer.put("email", email);
+                            jobOffer.put("timestamp", String.valueOf(timestamp));
+                            jobOffer.put("profileimageurl", imgUrl);
+                            jobOffer.put("jobtype", jobType);
+                            jobOffer.put("duration", daysOfWork);
+                            jobOffer.put("totalprice", totalPrice);
+                            jobOffer.put("decription", description);
+
+                            mServiceProviderRef.setValue(jobOffer).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        // Data successfully added to the database
+                                        Toast.makeText(CustomerCheckOutActivity.this, "Requested Succesfully", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        // Failed to add data to the database
+                                        Toast.makeText(CustomerCheckOutActivity.this, "Failed to add data", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // ...
+                    }
+                });
+
+                Intent intent1 = new Intent(CustomerCheckOutActivity.this, CustomerMainMenuActivity.class);
+                startActivity(intent1);
+            }
+        });
+
 
         //-------------------------------------------------------------------------------------------
     }

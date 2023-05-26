@@ -26,6 +26,7 @@ import com.example.ifixit.SERVICE_PROVIDER_FILES.Messaging.ChatActivity;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderJobPostingFragment;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderOngoingJob;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderProfileFragment;
+import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderTransactionHistoryFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -131,6 +132,10 @@ public class ServiceProviderMainMenuActivity extends AppCompatActivity implement
 //                break;
             case R.id.SPnav_share:
                 Toast.makeText(this, "Shared", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.SPnav_history:
+                getSupportFragmentManager().beginTransaction().replace(R.id.SPfragment_container, new ServiceProviderTransactionHistoryFragment()).commit();
                 break;
             case R.id.SPnav_logout:
                 FirebaseAuth.getInstance().signOut();

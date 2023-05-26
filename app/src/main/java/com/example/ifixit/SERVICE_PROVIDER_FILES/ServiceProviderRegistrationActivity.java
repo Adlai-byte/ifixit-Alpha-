@@ -35,7 +35,6 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
 
-
     //------EditTexts
     private EditText etName;
     private EditText etAddress;
@@ -80,20 +79,18 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // handle nothing selected
-
                 mService = "";
             }
         });
 
-        etPhone = (EditText) findViewById(R.id.SPetPhone);
-        etConfirmPassword = (EditText) findViewById(R.id.SPetConfirmPassword);
-        etName = (EditText) findViewById(R.id.adminetFullName);
-        etAddress = (EditText) findViewById(R.id.adminetAddress);
-        etEmail = (EditText) findViewById(R.id.adminetEmail);
-        etPassword = (EditText) findViewById(R.id.adminetPassword);
-        btnRegister = (Button) findViewById(R.id.adminbtnRegister);
-        tvAlreadyHave = (TextView) findViewById(R.id.admintvAlreadyHaveAnAccount);
-
+        etPhone = findViewById(R.id.SPetPhone);
+        etConfirmPassword = findViewById(R.id.SPetConfirmPassword);
+        etName = findViewById(R.id.adminetFullName);
+        etAddress = findViewById(R.id.adminetAddress);
+        etEmail = findViewById(R.id.adminetEmail);
+        etPassword = findViewById(R.id.adminetPassword);
+        btnRegister = findViewById(R.id.adminbtnRegister);
+        tvAlreadyHave = findViewById(R.id.admintvAlreadyHaveAnAccount);
 
         mAuth = FirebaseAuth.getInstance();
         firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -104,7 +101,6 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
                     Intent intent = new Intent(ServiceProviderRegistrationActivity.this, ServiceProviderMainMenuActivity.class);
                     startActivity(intent);
                     finish();
-                    return;
                 }
             }
         };
@@ -113,7 +109,6 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 final String email = etEmail.getText().toString();
                 final String password = etPassword.getText().toString();
                 final String name = etName.getText().toString();
@@ -122,22 +117,17 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
                 final String phone = etPhone.getText().toString();
                 final String confirmPassword = etConfirmPassword.getText().toString();
 
-                //Validations
+                // Validations
                 if (TextUtils.isEmpty(name)
-                        || TextUtils.isEmpty(email)
+                        ||TextUtils.isEmpty(email)
                         || TextUtils.isEmpty(address)
                         || TextUtils.isEmpty(password)
                         || TextUtils.isEmpty(confirmPassword)
-                        || TextUtils.isEmpty(phone)
-                        || !password.equals(confirmPassword)
-
-                ) {
-                    Toast.makeText(getApplicationContext(), "Please fill in all fields or password doesn't match", Toast.LENGTH_SHORT).show();
-                }
-                
-                else {
-
-
+                        || TextUtils.isEmpty(phone)) {
+                    Toast.makeText(getApplicationContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                } else if (!password.equals(confirmPassword)) {
+                    Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+                } else {
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(ServiceProviderRegistrationActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -148,29 +138,27 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
                                 DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference()
                                         .child("service-providers")
                                         .child("verified")
-//                                        .child("unverified")
                                         .child(userID);
                                 current_user_db.setValue(true);
 
-                                Map userInfo = new HashMap();
+                                Map<String, Object> userInfo = new HashMap<>();
                                 userInfo.put("name", name);
                                 userInfo.put("email", email);
                                 userInfo.put("address", address);
                                 userInfo.put("phone", phone);
                                 userInfo.put("password", password);
                                 userInfo.put("service", service);
-                                userInfo.put("maxPrice",0.0);
-                                userInfo.put("minPrice",0.0);
+                                userInfo.put("rating", 0.0);
+                                userInfo.put("maxPrice", 0.0);
+                                userInfo.put("minPrice", 0.0);
 
                                 current_user_db.updateChildren(userInfo);
 
+                                Toast.makeText(ServiceProviderRegistrationActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
-
                 }
-
-
             }
         });
 
@@ -179,7 +167,6 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ServiceProviderRegistrationActivity.this, ServiceProviderLoginActivity.class);
                 startActivity(intent);
-                return;
             }
         });
     }
@@ -188,7 +175,6 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(firebaseAuthStateListener);
-
     }
 
     @Override
@@ -197,3 +183,4 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
         mAuth.removeAuthStateListener(firebaseAuthStateListener);
     }
 }
+

@@ -27,51 +27,48 @@ import java.util.Map;
 
 public class OrgRegistrationActivity extends AppCompatActivity {
 
-    //Variables
+    // Variables
 
-    //------Firebase
+    // Firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
 
-
-
-    //------EditTexts
+    // EditTexts
     private EditText etName, etOrgname;
     private EditText etAddress;
     private EditText etEmail;
     private EditText etPhone;
-    private EditText etPassword, etConfirmPassword;
+    private EditText etPassword;
+    private EditText etConfirmPassword;
 
-    //------Buttons
+    // Buttons
     private Button btnRegister;
 
-    //------TextView
+    // TextView
     private TextView tvAlreadyHave;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.org_registration);
 
-        //---Layout Connecting
-        etConfirmPassword = (EditText)findViewById(R.id.etadminPassword2);
-        etName = (EditText) findViewById(R.id.etFullName);
-        etOrgname = (EditText)findViewById(R.id.etOrgName);
-        etAddress =(EditText) findViewById(R.id.etAddress);
-        etEmail = (EditText) findViewById(R.id.etadminEmail);
-        etPassword = (EditText)findViewById(R.id.etadminPassword);
-        etPhone = (EditText) findViewById(R.id.etPhone);
-        btnRegister = (Button) findViewById(R.id.btnRegister);
-
-        tvAlreadyHave = (TextView) findViewById(R.id.tvAlreadyHaveAnAccount);
+        // Layout Connecting
+        etConfirmPassword = findViewById(R.id.etadminPassword2);
+        etName = findViewById(R.id.etFullName);
+        etOrgname = findViewById(R.id.etOrgName);
+        etAddress = findViewById(R.id.etAddress);
+        etEmail = findViewById(R.id.etadminEmail);
+        etPassword = findViewById(R.id.etadminPassword);
+        etPhone = findViewById(R.id.etPhone);
+        btnRegister = findViewById(R.id.btnRegister);
+        tvAlreadyHave = findViewById(R.id.tvAlreadyHaveAnAccount);
 
         mAuth = FirebaseAuth.getInstance();
         firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if(user!=null){
+                if (user != null) {
                     Intent intent = new Intent(OrgRegistrationActivity.this, OrgMapsActivity.class);
                     startActivity(intent);
                     finish();
@@ -80,61 +77,14 @@ public class OrgRegistrationActivity extends AppCompatActivity {
             }
         };
 
-        //---On Click Listeners
+        // On Click Listeners
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String orgname = etOrgname.getText().toString();
-                final String email = etEmail.getText().toString();
-                final String password = etPassword.getText().toString();
-                final String name = etName.getText().toString();
-                final String address = etAddress.getText().toString();
-                final String phone = etPhone.getText().toString();
-                final String confirmPassword = etConfirmPassword.getText().toString();
-
-
-                if (TextUtils.isEmpty(name)
-                        ||TextUtils.isEmpty(orgname)
-                        || TextUtils.isEmpty(email)
-                        || TextUtils.isEmpty(address)
-                        || TextUtils.isEmpty(password)
-                        || TextUtils.isEmpty(confirmPassword)
-                        || TextUtils.isEmpty(phone)
-                        || !password.equals(confirmPassword)
-
-                ) {
-                    Toast.makeText(getApplicationContext(), "Please fill in all fields or password doesn't match", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(OrgRegistrationActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(!task.isSuccessful()){
-                                Toast.makeText(OrgRegistrationActivity.this, "Sign-up Error", Toast.LENGTH_SHORT).show();
-                            }else {
-                                String userID = mAuth.getCurrentUser().getUid();
-                                DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference()
-                                        .child("organizational")
-                                        .child(userID);
-                                current_user_db.setValue(true);
-
-                                Map userInfo = new HashMap();
-                                userInfo.put("orgname",orgname);
-                                userInfo.put("name", name);
-                                userInfo.put("email", email);
-                                userInfo.put("address", address);
-                                userInfo.put("phone",phone);
-
-                                current_user_db.updateChildren(userInfo);
-                            }
-                        }
-                    });
-
-                }
-
-
+                registerOrganization();
             }
         });
+
         tvAlreadyHave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,12 +94,65 @@ public class OrgRegistrationActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void registerOrganization() {
+        final String orgname = etOrgname.getText().toString().trim();
+        final String email = etEmail.getText().toString().trim();
+        final String password = etPassword.getText().toString().trim();
+        final String name = etName.getText().toString().trim();
+        final String address = etAddress.getText().toString().trim();
+        final String phone = etPhone.getText().toString().trim();
+        final String confirmPassword = etConfirmPassword.getText().toString().trim();
+
+        if (TextUtils.isEmpty(name)
+                || TextUtils.isEmpty(orgname)
+                || TextUtils.isEmpty(email)
+                || TextUtils.isEmpty(address)
+                || TextUtils.isEmpty(password)
+                || TextUtils.isEmpty(confirmPassword)
+                || TextUtils.isEmpty(phone)
+        )  {
+            showToast("Please fill in all fields");
+        } else if (!password.equals(confirmPassword)) {
+            showToast("Password does not match");
+        } else {
+            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(OrgRegistrationActivity.this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (!task.isSuccessful()) {
+                        showToast("Sign-up Error: " + task.getException().getMessage());
+                    } else {
+                        String userID = mAuth.getCurrentUser().getUid();
+                        DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference()
+                                .child("organizational")
+                                .child(userID);
+                        current_user_db.setValue(true);
+                        Map<String, Object> userInfo = new HashMap<>();
+                        userInfo.put("orgname", orgname);
+                        userInfo.put("name", name);
+                        userInfo.put("email", email);
+                        userInfo.put("address", address);
+                        userInfo.put("phone", phone);
+
+                        current_user_db.updateChildren(userInfo);
+
+                        showToast("Registration successful");
+                    }
+                }
+            });
+        }
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(OrgRegistrationActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(firebaseAuthStateListener);
-
     }
+
     @Override
     protected void onStop() {
         super.onStop();

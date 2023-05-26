@@ -28,7 +28,7 @@
     <string name="title_activity_service_provider_maps">ServiceProviderMapsActivity</string>
 
     <string-array name="service_options">
-        <item>None</item>
+        <item>Service Provider</item>
         <item>Plumber</item>
         <item>Electrician</item>
         <item>Masonry</item>
@@ -39,13 +39,13 @@
     </string-array>
 
     <string-array name="price_options">
-        <item>None</item>
+        <item>Price Sort</item>
         <item>Price-Ascending</item>
         <item>Price-Descending</item>
     </string-array>
 
     <string-array name="rating_options">
-        <item>None</item>
+        <item>Rating Sort</item>
         <item>Rating-Ascending</item>
         <item>Rating-Descending</item>
     </string-array>

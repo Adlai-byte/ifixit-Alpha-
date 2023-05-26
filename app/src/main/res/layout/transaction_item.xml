@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:background="@color/white"
+
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/transactionService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Service Type"
+            android:textColor="#777777"
+            android:textSize="15sp"
+          />
+
+        <TextView
+            android:id="@+id/transactionName"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Vinz Lloyd Alferez"
+            android:textColor="#777777"
+            android:textSize="15sp" />
+        <TextView
+
+            android:id="@+id/transactionTimeStamp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="May 2, 2001"
+            android:textColor="#777777" />
+
+
+
+
+
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_gravity=""
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+        <TextView
+          android:textAlignment="viewEnd"
+            android:id="@+id/transactionTotalPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1000"
+            android:textColor="#777777" />
+        <TextView
+            android:textAlignment="viewEnd"
+            android:id="@+id/transactionStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Completed"
+            android:textColor="@color/quantum_googgreen" />
+    </LinearLayout>
+
+
+</LinearLayout>

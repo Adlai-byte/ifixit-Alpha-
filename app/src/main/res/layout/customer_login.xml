@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="20sp"
     android:layout_marginTop="120sp"
-android:layout_marginStart="20sp"
     android:layout_marginEnd="20sp"
     android:orientation="vertical"
     tools:context=".CUSTOMER_FILES.CustomerLoginActivity">
@@ -20,35 +20,33 @@ android:layout_marginStart="20sp"
 
         <EditText
             android:id="@+id/etadminEmail"
-            android:layout_width="match_parent"
-            android:hint="Email"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-
             style="@style/Widget.AppCompat.EditText"
-            android:background="@color/white"
-            android:elevation="5dp"
-            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="5dp"
-       />
+            android:background="@color/white"
 
+            android:elevation="5dp"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textPersonName"
+            android:padding="10dp" />
 
 
         <EditText
             android:id="@+id/etadminPassword"
+            style="@style/Widget.AppCompat.EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
-            android:ems="10"
-            android:inputType="textPassword"
-            style="@style/Widget.AppCompat.EditText"
+            android:layout_margin="5dp"
             android:background="@color/white"
             android:elevation="5dp"
+            android:ems="10"
+            android:hint="Password"
+            android:inputType="textPassword"
             android:padding="10dp"
-            android:layout_margin="5dp"
 
-             />
+            />
 
         <Button
             android:id="@+id/adminbtnLogin"
@@ -58,14 +56,39 @@ android:layout_marginStart="20sp"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
             android:padding="15dp"
-            android:textSize="15dp"
-            android:text="Log-in" />
+            android:text="Log-in"
+            android:textSize="15dp" />
 
-        <TextView
-            android:id="@+id/tvadminNoAccout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Doesn't have an account yet?" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvadminNoAccout2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="Doesn't have an account yet?"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tvadminNoAccout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/tvadminNoAccout2"
+                android:text=" Sign-up"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+
+
     </LinearLayout>
 </LinearLayout>

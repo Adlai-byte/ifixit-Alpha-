@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,7 +39,6 @@ public class CustomerNotificationFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.notification_fragment_list_view, container, false);
 
         //-----Recycler View and Friends------
@@ -67,21 +65,16 @@ public class CustomerNotificationFragment extends Fragment {
                     if (snapshot.exists()) {
 
                         String serviceProviderId = childSnapshot.getKey();
-                        Toast.makeText(getContext(), serviceProviderId, Toast.LENGTH_SHORT).show();
-
                         DatabaseReference serviceProviderRef = FirebaseDatabase.getInstance().getReference()
                                 .child("service-providers")
                                 .child("verified")
                                 .child(serviceProviderId);
 
-
-
-
-
                         serviceProviderRef.addValueEventListener(new ValueEventListener() {
                             @Override
 
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                notificationViewItemList.clear();
                                 if (snapshot.exists()) {
                                     String name = snapshot.child("name").getValue(String.class);
                                     String service = snapshot.child("service").getValue(String.class);

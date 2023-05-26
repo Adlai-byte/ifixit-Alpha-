@@ -62,8 +62,7 @@ public class CustomerListViewFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         listViewItems = new ArrayList<>();
         originalList = new ArrayList<>();
-        listViewAdapter = new ListViewAdapter(getActivity(), listViewItems);
-        recyclerView.setAdapter(listViewAdapter);
+
 
         // Set up search functionality
         listSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -148,11 +147,143 @@ public class CustomerListViewFragment extends Fragment {
         });
 
 // Retrieve data from Firebase
+
+
+
+
+
+        return rootView;
+
+
+    }
+
+    private void filterList(String service) {
+        if (service.isEmpty()|| service.equals("Service Provider")) {
+            listViewAdapter.setFilteredList(originalList);
+            listViewAdapter.notifyDataSetChanged();
+            return;
+        }
+
+        List<ListViewItem> filteredList = new ArrayList<>();
+
+        for (ListViewItem item : originalList) {
+            if (item.getSERVICE() != null && item.getSERVICE().equalsIgnoreCase(service)) {
+                filteredList.add(item);
+            }
+        }
+
+        listViewAdapter.setFilteredList(filteredList);
+        listViewAdapter.notifyDataSetChanged();
+    }
+
+
+
+    private void filterByText(List<ListViewItem> items, String text) {
+        if (text.isEmpty()) {
+            listViewAdapter.setFilteredList(items);
+        }
+
+        List<ListViewItem> filteredList = new ArrayList<>();
+
+        for (ListViewItem item : items) {
+
+            if (item.getNAME() != null && item.getNAME().toLowerCase().contains(text.toLowerCase())
+                    || item.getADDRESS() != null && item.getADDRESS().toLowerCase().contains(text.toLowerCase())
+                    || item.getSERVICE() != null && item.getSERVICE().toLowerCase().contains(text.toLowerCase())
+
+            ) {
+                filteredList.add(item);
+
+
+            }
+            listViewAdapter.setFilteredList(filteredList);
+
+        }
+        listViewAdapter.notifyDataSetChanged();
+
+    }
+
+    private List<ListViewItem> filterByService(List<ListViewItem> items, String service) {
+
+        List<ListViewItem> filteredList = new ArrayList<>(originalList);
+
+        for (ListViewItem item : items) {
+            if (item.getSERVICE().equalsIgnoreCase(service)) {
+                filteredList.add(item);
+            }
+        }
+
+        return filteredList;
+    }
+
+
+    private void sortListByPrice(List<ListViewItem> items, String priceSortOption) {
+        List<ListViewItem> sortedList = new ArrayList<>(originalList);
+
+        if (priceSortOption.equals("Price-Ascending")) {
+            Collections.sort(sortedList, new Comparator<ListViewItem>() {
+                @Override
+                public int compare(ListViewItem item1, ListViewItem item2) {
+                    return Float.compare(item1.getMAXPRICE(), item2.getMAXPRICE());
+                }
+            });
+        } else if (priceSortOption.equals("Price-Descending")) {
+            Collections.sort(sortedList, new Comparator<ListViewItem>() {
+                @Override
+                public int compare(ListViewItem item1, ListViewItem item2) {
+                    return Float.compare(item2.getMAXPRICE(), item1.getMAXPRICE());
+                }
+            });
+
+        }
+        listViewAdapter.setFilteredList(sortedList);
+
+        listViewAdapter.notifyDataSetChanged();
+
+    }
+
+    private void sortListByRating(List<ListViewItem> items, String ratingSortOption) {
+        List<ListViewItem> sortedList = new ArrayList<>(originalList);
+
+        if (ratingSortOption.equals("Rating-Ascending")) {
+            Collections.sort(sortedList, new Comparator<ListViewItem>() {
+                @Override
+                public int compare(ListViewItem item1, ListViewItem item2) {
+                    return Float.compare(item1.getRATING(), item2.getRATING());
+                }
+            });
+        } else if (ratingSortOption.equals("Rating-Descending")) {
+            Collections.sort(sortedList, new Comparator<ListViewItem>() {
+                @Override
+                public int compare(ListViewItem item1, ListViewItem item2) {
+                    return Float.compare(item2.getRATING(), item1.getRATING());
+                }
+            });
+
+        }
+
+        listViewAdapter.setFilteredList(sortedList);
+
+        listViewAdapter.notifyDataSetChanged();
+    }
+
+
+
+    //Modified Part
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        //Adapter-------------------------------------------------------------
+        listViewAdapter = new ListViewAdapter(getActivity(), listViewItems);
+        recyclerView.setAdapter(listViewAdapter);
+        //--------------------------------------------------------------------
+
+        //Firebase
         query = FirebaseDatabase.getInstance().getReference()
                 .child("service-providers")
                 .child("verified")
                 .orderByChild("name");
-
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -186,114 +317,7 @@ public class CustomerListViewFragment extends Fragment {
 
             }
         });
-
-
-
-        return rootView;
-
+        //.................................................................................................................
 
     }
-
-    private void filterList(String service) {
-        List<ListViewItem> filteredList = new ArrayList<>(originalList);
-
-        // Apply the filtering operations
-        filteredList = filterByService(filteredList, service);
-
-        listViewAdapter.setFilteredList(filteredList);
-        listViewAdapter.notifyDataSetChanged();
-    }
-
-
-    private void filterByText(List<ListViewItem> items, String text) {
-        if (text.isEmpty()) {
-            listViewAdapter.setFilteredList(items);
-        }
-
-        List<ListViewItem> filteredList = new ArrayList<>();
-
-        for (ListViewItem item : items) {
-
-            if (item.getNAME() != null && item.getNAME().toLowerCase().contains(text.toLowerCase())
-                    || item.getADDRESS() != null && item.getADDRESS().toLowerCase().contains(text.toLowerCase())
-            ) {
-                filteredList.add(item);
-
-
-            }
-            listViewAdapter.setFilteredList(filteredList);
-
-        }
-        listViewAdapter.notifyDataSetChanged();
-
-    }
-
-    private List<ListViewItem> filterByService(List<ListViewItem> items, String service) {
-
-        List<ListViewItem> filteredList = new ArrayList<>();
-
-        for (ListViewItem item : items) {
-            if (item.getSERVICE().equalsIgnoreCase(service)) {
-                filteredList.add(item);
-            }
-        }
-
-        return filteredList;
-    }
-
-
-    private void sortListByPrice(List<ListViewItem> items, String priceSortOption) {
-        List<ListViewItem> sortedList = new ArrayList<>(items);
-
-        if (priceSortOption.equals("Price-Ascending")) {
-            Collections.sort(sortedList, new Comparator<ListViewItem>() {
-                @Override
-                public int compare(ListViewItem item1, ListViewItem item2) {
-                    return Float.compare(item1.getMAXPRICE(), item2.getMAXPRICE());
-                }
-            });
-        } else if (priceSortOption.equals("Price-Descending")) {
-            Collections.sort(sortedList, new Comparator<ListViewItem>() {
-                @Override
-                public int compare(ListViewItem item1, ListViewItem item2) {
-                    return Float.compare(item2.getMAXPRICE(), item1.getMAXPRICE());
-                }
-            });
-
-        }
-        listViewAdapter.setFilteredList(sortedList);
-
-        listViewAdapter.notifyDataSetChanged();
-
-    }
-
-    private void sortListByRating(List<ListViewItem> items, String ratingSortOption) {
-        List<ListViewItem> sortedList = new ArrayList<>(items);
-
-        if (ratingSortOption.equals("Rating-Ascending")) {
-            Collections.sort(sortedList, new Comparator<ListViewItem>() {
-                @Override
-                public int compare(ListViewItem item1, ListViewItem item2) {
-                    return Float.compare(item1.getRATING(), item2.getRATING());
-                }
-            });
-        } else if (ratingSortOption.equals("Rating-Descending")) {
-            Collections.sort(sortedList, new Comparator<ListViewItem>() {
-                @Override
-                public int compare(ListViewItem item1, ListViewItem item2) {
-                    return Float.compare(item2.getRATING(), item1.getRATING());
-                }
-            });
-
-        }
-
-        listViewAdapter.setFilteredList(sortedList);
-
-        listViewAdapter.notifyDataSetChanged();
-    }
-
-
-
-
-
 }

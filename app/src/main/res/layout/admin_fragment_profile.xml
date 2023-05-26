@@ -19,7 +19,7 @@
             android:layout_margin="15sp"
             android:layout_marginRight="20sp"
 
-            android:src="@mipmap/ic_launcher_round" />
+            android:src="@mipmap/ic_default_image" />
 
 
         <LinearLayout

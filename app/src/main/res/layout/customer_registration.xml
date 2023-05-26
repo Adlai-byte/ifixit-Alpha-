@@ -133,11 +133,30 @@
 
             android:text="Sign-up" />
 
-        <TextView
-            android:id="@+id/tvAlreadyHaveAnAccount"
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Already have an accout? click here to Sign in" />
+            >
+            <TextView
+                android:id="@+id/tvAlreadyHaveAnAccount2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Already have an accout? click here to "/>
+
+            <TextView
+                android:layout_toEndOf="@+id/tvAlreadyHaveAnAccount2"
+                android:id="@+id/tvAlreadyHaveAnAccount"
+                android:layout_width="match_parent"
+                android:textSize="15sp"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:text=" Sign in" />
+
+
+        </RelativeLayout>
+
+
 
 
     </LinearLayout>

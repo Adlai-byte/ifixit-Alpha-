@@ -27,6 +27,10 @@
             android:id="@+id/SPnav_message"
             android:icon="@drawable/ic_message"
             android:title="Message" />
+        <item
+            android:id="@+id/SPnav_history"
+            android:icon="@drawable/ic_history"
+            android:title="Transaction History" />
 <!--        <item-->
 <!--            android:id="@+id/SPnav_notification"-->
 <!--            android:icon="@drawable/ic_notification"-->

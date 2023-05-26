@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.ifixit.CUSTOMER_FILES.CustomerMainMenuActivity;
 import com.example.ifixit.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -36,6 +37,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private ImageView chatImage;
     private TextView chatName;
+    private ImageView backButton;
 
     private RecyclerView recyclerView;
     private EditText messageEditText;
@@ -52,6 +54,8 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        backButton = (ImageView) findViewById(R.id.backArrow);
 
         // -- Contacts ArrayList --
 
@@ -152,6 +156,15 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChatActivity.this, CustomerMainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
     }
 
@@ -235,5 +248,7 @@ public class ChatActivity extends AppCompatActivity {
             chatImage.setImageURI(resultUri);
         }
     }
+
+
 
 }
