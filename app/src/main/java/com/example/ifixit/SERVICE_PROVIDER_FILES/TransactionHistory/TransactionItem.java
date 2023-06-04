@@ -85,13 +85,24 @@ public class TransactionItem {
             SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
             Date date = inputFormat.parse(timestamp);
 
-            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-            return outputFormat.format(date);
+            SimpleDateFormat outputFormat = new SimpleDateFormat("MM:dd:yyyy HH:mm:ss", Locale.getDefault());
+            String formattedDate = outputFormat.format(date);
+
+            // Extract the time components
+            String time = formattedDate.substring(9); // Get the time part (HH:mm:ss)
+
+            // Extract the date components
+            String datePart = formattedDate.substring(0, 9); // Get the date part (MM:dd:yyyy)
+
+            // Combine the time and date parts with the desired format
+            return time + ":" + datePart;
+
         } catch (ParseException e) {
             e.printStackTrace();
             return "";
         }
     }
+
 
 
 }

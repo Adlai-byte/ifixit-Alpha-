@@ -1,61 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
    android:layout_marginTop="50sp"
-
+    android:layout_margin="10dp"
+    android:background="@color/white"
+    android:elevation="5dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="16dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/notification_view_imageView"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_margin="15dp"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_profile" />
+<!--    <de.hdodenhof.circleimageview.CircleImageView-->
+<!--        android:id="@+id/notification_view_imageView"-->
+<!--        android:layout_width="70dp"-->
+<!--        android:layout_height="70dp"-->
+<!--        android:layout_margin="15dp"-->
+<!--        android:contentDescription="@string/app_name"-->
+<!--        android:src="@drawable/ic_profile" />-->
 
-    <LinearLayout
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/notification_view_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jessica Bustria"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/dash"
+                android:layout_toEndOf="@id/notification_view_name"
+                android:layout_width="wrap_content"
+                android:text=" - A"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:layout_toEndOf="@id/dash"
+                android:id="@+id/notification_view_service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Plumber "
+                android:textSize="15sp" />
+            <TextView
+                android:layout_toEndOf="@+id/notification_view_service"
+                android:id="@+id/notification_view_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=",has finished the job!"
+                android:textSize="15dp"/>
+        </RelativeLayout>
+
+
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:text="Rate the service:"
+        android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/notification_view_name"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Jessica Bustria"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/notification_view_service"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Plumber"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/notification_view_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Has finished the job!"
-            android:textSize="12sp" />
-        <TextView
-            android:layout_marginTop="10sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rate the service:"
-            android:textSize="15sp" />
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
 
-        <RatingBar
-            android:id="@+id/notification_view_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:isIndicator="false"
-            android:numStars="5"
-            />
+
+            <RatingBar
+                android:layout_gravity="center_vertical"
+                android:id="@+id/notification_view_rating"
+                style="@android:style/Widget.Material.Light.RatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="false"
+                android:numStars="5" />
+
+
+        </LinearLayout>
+
 
         <TextView
 
@@ -66,17 +92,39 @@
         <EditText
             android:hint="Leave a message here"
             android:layout_width="match_parent"
-            android:layout_height="50sp"
+            android:gravity="start"
+            android:layout_height="100sp"
             android:id="@+id/notificationReviewComment"
-
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:padding="10dp"
+            android:background="@drawable/grey_border"
             />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/notificationDeleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+
+            android:text="Delete" />
+
         <Button
             android:id="@+id/notificationConfirmButton"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/notificationDeleteButton"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_height="wrap_content"
+
             android:text="Confirm" />
 
-    </LinearLayout>
+    </RelativeLayout>
+
+
 
 
 

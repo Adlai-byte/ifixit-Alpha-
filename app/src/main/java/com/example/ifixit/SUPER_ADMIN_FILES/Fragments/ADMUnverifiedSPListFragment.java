@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ifixit.R;
-import com.example.ifixit.SUPER_ADMIN_FILES.Fragments.UsersRecyclerView.CMAdapter;
+import com.example.ifixit.SUPER_ADMIN_FILES.Fragments.UsersRecyclerView.UVSPAdapter;
 import com.example.ifixit.SUPER_ADMIN_FILES.Fragments.UsersRecyclerView.UsersItemView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,22 +28,22 @@ public class ADMUnverifiedSPListFragment extends Fragment {
     //------Recycler Variables----
     private RecyclerView recyclerView;
     private List<UsersItemView> usersItemViewList;
-    private CMAdapter cmAdapter;
+    private UVSPAdapter uvspAdapter;
     //------------------------
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.adm_customer_list_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.adm_unverified_sp_list_fragment, container, false);
 
 
         //------References--------
-        recyclerView = rootView.findViewById(R.id.adm_customer_list_recyclerView);
+        recyclerView = rootView.findViewById(R.id.adm_unverified_sp_list_recyclerView);
         usersItemViewList = new ArrayList<>();
-        cmAdapter = new CMAdapter(usersItemViewList, getActivity());
+        uvspAdapter = new UVSPAdapter(usersItemViewList, getActivity());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(cmAdapter);
+        recyclerView.setAdapter(uvspAdapter);
         //-----------------------
 
 
@@ -64,10 +64,12 @@ public class ADMUnverifiedSPListFragment extends Fragment {
                     String email = customerSnapshot.child("email").getValue(String.class);
                     String address = customerSnapshot.child("address").getValue(String.class);
                     String phone = customerSnapshot.child("phone").getValue(String.class);
-                    String userprofileimage = customerSnapshot.child("profileImageUrl").getValue(String.class);
+                    String userprofileimage = customerSnapshot.child("profileimageurl").getValue(String.class);
+
+
 
                     usersItemViewList.add(new UsersItemView(userid,name,address,userprofileimage,phone,email));
-                    cmAdapter.notifyDataSetChanged();
+                    uvspAdapter.notifyDataSetChanged();
 
 
                 }

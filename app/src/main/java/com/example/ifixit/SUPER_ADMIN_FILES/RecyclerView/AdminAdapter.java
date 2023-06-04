@@ -37,7 +37,9 @@ public class AdminAdapter extends RecyclerView.Adapter<AdminViewHolder> {
         holder.serviceProviderName.setText(adminItemView.getNAME());
         holder.serviceProviderAddress.setText(adminItemView.getADDRESS());
         holder.serviceProviderJob.setText(adminItemView.getJOBTYPE());
-        holder.serviceProviderRate.setText(adminItemView.getRATE());
+        holder.serviceProviderMaxPrice.setText(adminItemView.getMAXPRICE());
+        holder.serviceProviderMinPrice.setText(adminItemView.getMINPRICE());
+
         Glide.with(context).load(adminItemView.getProfileImageUrl()).into(holder.serviceProviderImageView);
         //------Button Shit--------
         holder.acceptButton.setOnClickListener(new View.OnClickListener() {

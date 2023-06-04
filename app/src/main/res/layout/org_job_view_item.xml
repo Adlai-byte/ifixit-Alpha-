@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="20dp"
+    android:layout_marginTop="10dp"
     android:background="@color/white"
-    android:elevation="10dp"
+    android:elevation="5dp"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:padding="10dp">
 
     <LinearLayout
-        android:layout_width="180dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -100,23 +100,20 @@
             android:layout_height="wrap_content"
             android:text="Akoy  tahimik lng sa umpisa kahit  na di moko pilitin"
             android:textSize="12sp" />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <Button
             android:id="@+id/job_list_accept_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Accept"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="30dp"
+            android:layout_margin="20dp"/>
 
-            />
 
     </LinearLayout>
+
+
+
+
 
 
 </LinearLayout>

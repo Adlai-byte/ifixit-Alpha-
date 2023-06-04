@@ -24,13 +24,13 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:layout_gravity="center_horizontal"
-        android:text="Vinz LLoyd Alferez"
+        android:text="Loading Name...."
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
     <TextView
         android:id="@+id/ADMemailTV"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="vinzlloydalferez@gmail.com"/>
+        android:text="Loading email...."/>
 
 </LinearLayout>

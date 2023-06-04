@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
         });
-
+//
         btnAdmin.setVisibility(View.GONE);
         btnAdmin.setOnClickListener(new View.OnClickListener() {
             @Override

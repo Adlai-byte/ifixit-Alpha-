@@ -1,4 +1,4 @@
-package com.example.ifixit.ORGANIZATIONAL_FILES.JOB_POSTING;
+package com.example.ifixit.SERVICE_PROVIDER_FILES.JOB_POSTING;
 
 import android.view.View;
 import android.widget.Button;

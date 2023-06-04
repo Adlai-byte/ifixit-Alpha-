@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="50dp"
     android:gravity="center_horizontal"
     android:orientation="vertical">
@@ -12,26 +12,27 @@
         android:id="@+id/customerInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:layout_gravity="bottom"
         android:background="@color/white"
-        android:orientation="vertical">
+        android:elevation="5dp"
+        android:orientation="vertical"
+        android:padding="15dp">
 
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginBottom="10dp"
             android:background="@color/white"
-
             android:orientation="horizontal">
 
 
             <de.hdodenhof.circleimageview.CircleImageView
-               android:layout_marginTop="20sp"
                 android:id="@+id/SPNewImage"
                 android:layout_width="60sp"
                 android:layout_height="60sp"
+                android:layout_marginTop="20sp"
 
                 android:layout_marginRight="10sp"
                 android:src="@mipmap/ic_default_image" />
@@ -46,8 +47,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25sp"
+                    android:text="Loading Name...."
                     android:textSize="20dp"
-                    android:text="Vinz Lloyd Alferez"
                     android:textStyle="bold" />
 
                 <TextView
@@ -55,9 +56,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="0dp"
-                    android:text="Plumber"
+                    android:text="Loading Service"
 
                     />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -71,17 +73,19 @@
                         android:textStyle="bold"
 
                         />
+
                     <TextView
                         android:id="@+id/tvSPbasepricingLOW"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="0dp"
-                        android:textStyle="bold"
+                        android:text=" 0 "
                         android:textColor="@color/quantum_googgreen"
-                        android:text=" 500 "
+                        android:textStyle="bold"
 
 
                         />
+
                     <TextView
 
                         android:layout_width="wrap_content"
@@ -90,13 +94,14 @@
                         android:text="-"
 
                         />
+
                     <TextView
                         android:id="@+id/tvSPbasepricingHIGH"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="0dp"
-                        android:textColor="@color/quantum_googred"
                         android:text=" 1000"
+                        android:textColor="@color/quantum_googred"
 
                         />
 
@@ -109,7 +114,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="0dp"
-                    android:text="vinzlloydalferez@gmail.com"
+                    android:text="Loading email...."
 
                     />
             </LinearLayout>
@@ -174,28 +179,27 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/ETpriceLOW"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
                     android:hint="Minimum Pricing"
+                    android:inputType="number"
 
                     />
+
                 <EditText
                     android:id="@+id/ETpriceHIGH"
-                    android:layout_marginStart="50dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="Maximum Pricing"/>
+                    android:layout_marginStart="50dp"
+                    android:hint="Maximum Pricing"
+                    android:inputType="number" />
 
 
             </LinearLayout>
-
-
 
 
             <Spinner
@@ -204,6 +208,11 @@
                 android:layout_height="wrap_content"
                 android:entries="@array/service_options" />
 
+            <Button
+                android:id="@+id/SPUploadBtnNew"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Upload Image" />
 
             <Button
                 android:id="@+id/SPsaveBtnNew"
@@ -216,13 +225,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/requestBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
                 android:paddingStart="30dp"
                 android:paddingEnd="30dp"
                 android:text="Request" />
@@ -232,7 +242,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="60dp"
                 android:paddingStart="30dp"
                 android:paddingEnd="30dp"
                 android:text="Reviews" />
@@ -247,13 +257,14 @@
         android:id="@+id/requestsRecyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
+        android:layout_marginTop="5dp"
         android:background="@color/white"
         android:elevation="10dp"
         android:padding="10dp"
 
 
         />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/reviewsRecyclerView"
         android:layout_width="match_parent"

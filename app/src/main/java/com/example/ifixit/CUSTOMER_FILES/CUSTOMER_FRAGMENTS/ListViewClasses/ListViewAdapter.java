@@ -54,7 +54,10 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewHolder> {
         holder.ratingBar.setRating(listViewItem.getRATING());
         holder.maxPrice.setText(String.valueOf(listViewItem.getMAXPRICE()));
 
-        Glide.with(context).load(listViewItem.getProfileImageUrl()).into(holder.imageView);
+
+            Glide.with(context).load(listViewItem.getProfileImageUrl()).into(holder.imageView);
+
+
 
         holder.hireButton.setOnClickListener(new View.OnClickListener() {
             @Override

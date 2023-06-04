@@ -115,19 +115,19 @@ public class ADMAdminProfileFragment extends Fragment {
 
                 if (snapshot.exists() && snapshot.getChildrenCount() > 0) {
                     Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
-                    if (map.get("NAME") != null) {
-                        mUserName = map.get("NAME").toString();
+                    if (map.get("name") != null) {
+                        mUserName = map.get("name").toString();
                         adminName.setText(mUserName);
                     }
-                    if (map.get("EMAIL") != null) {
-                        mEmail = map.get("EMAIL").toString();
+                    if (map.get("email") != null) {
+                        mEmail = map.get("email").toString();
                         adminEmail.setText(mEmail);
                     }
-                    if (map.get("ADDRESS") != null) {
-                        mAddress = map.get("ADDRESS").toString();
+                    if (map.get("address") != null) {
+                        mAddress = map.get("address").toString();
                         adminAddress.setText(mAddress);
                     }
-                    if (map.get("profileImageUrl") != null) {
+                    if (map.get("profileimageurl") != null) {
                         mProfileImageUrl = map.get("profileImageUrl").toString();
                         Glide.with(getContext().getApplicationContext()).load(mProfileImageUrl).into(adminProfileImage);
                     }
@@ -151,8 +151,8 @@ public class ADMAdminProfileFragment extends Fragment {
 
 
         Map userInfo = new HashMap();
-        userInfo.put("NAME", mUserName);
-        userInfo.put("ADDRESS", mAddress);
+        userInfo.put("name", mUserName);
+        userInfo.put("address", mAddress);
 //      userInfo.put("services",mService);
 
 
@@ -182,7 +182,7 @@ public class ADMAdminProfileFragment extends Fragment {
                             String downloadUrlStr = downloadUrl.toString();
 
                             Map<String, Object> newImage = new HashMap<>();
-                            newImage.put("profileImageUrl", downloadUrlStr);
+                            newImage.put("profileimageurl", downloadUrlStr);
                             DatabaseRef.updateChildren(newImage).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void Void) {

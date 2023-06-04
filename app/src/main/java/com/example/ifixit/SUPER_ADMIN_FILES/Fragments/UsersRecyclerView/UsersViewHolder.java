@@ -17,7 +17,7 @@ public class UsersViewHolder extends RecyclerView.ViewHolder {
     public TextView usersEmail;
     public ImageView usersProfile;
     public TextView usersPhone;
-    public Button userEditButton;
+    public Button userAcceptButton;
     public Button usersDeleteButton;
 
 
@@ -28,7 +28,7 @@ public class UsersViewHolder extends RecyclerView.ViewHolder {
         usersAddress = itemView.findViewById(R.id.usersAddress);
         usersEmail =itemView.findViewById(R.id.usersEmail);
         usersPhone = itemView.findViewById(R.id.usersPhone);
-        userEditButton = itemView.findViewById(R.id.usersEditButton);
+        userAcceptButton = itemView.findViewById(R.id.usersAcceptButton);
         usersDeleteButton = itemView.findViewById(R.id.usersDeleteButton);
         usersProfile = itemView.findViewById(R.id.usersProfileImage);
 

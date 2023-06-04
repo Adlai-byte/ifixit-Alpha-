@@ -2,7 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
+    android:background="@color/white"
+    android:elevation="5dp"
+    android:padding="5dp"
+    android:layout_marginTop="5dp"
     android:orientation="horizontal">
 
 
@@ -21,6 +24,7 @@
                 android:layout_height="70dp"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
+                android:src="@mipmap/ic_default_image"
 
                 />
 
@@ -34,26 +38,26 @@
                     android:id="@+id/usersName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Vinz Lloyd Alferez"
-                    android:textSize="20sp" />
+                    android:text="Loading Name ..."
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/usersAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Mati Davao Oriental" />
+                    android:text="Loading Location" />
 
                 <TextView
                     android:id="@+id/usersEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="vinzlloydalferez@gmail.com" />
+                    android:text="Loading email...." />
 
                 <TextView
                     android:id="@+id/usersPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="09565000553" />
+                    android:text="Loading phone....." />
 
             </LinearLayout>
 
@@ -64,12 +68,10 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/usersEditButton"
+                    android:id="@+id/usersAcceptButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
-
-                    android:text="Edit" />
+                    android:text="Accept" />
 
                 <Button
                     android:id="@+id/usersDeleteButton"

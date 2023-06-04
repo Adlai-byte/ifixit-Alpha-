@@ -29,6 +29,7 @@
             android:elevation="5dp"
             android:ems="10"
             android:hint="Email"
+            android:text="vinzlloydalferez@gmail.com"
             android:inputType="textPersonName"
             android:padding="10dp" />
 
@@ -43,6 +44,7 @@
             android:elevation="5dp"
             android:ems="10"
             android:hint="Password"
+            android:text="admins"
             android:inputType="textPassword"
             android:padding="10dp"
 

@@ -73,6 +73,7 @@ public class CustomerListViewFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+
                 filterByText(originalList, newText);
 
                 return false;
@@ -297,6 +298,7 @@ public class CustomerListViewFragment extends Fragment {
                     String address = childSnapshot.child("address").getValue(String.class);
                     String service = childSnapshot.child("service").getValue(String.class);
                     String imgURL = childSnapshot.child("profileimageurl").getValue(String.class);
+
                     Float ratingFloat = childSnapshot.child("rating").getValue(Float.class);
                     Float maxPriceFloat = childSnapshot.child("maxPrice").getValue(Float.class);
                     // Check for null values before using them

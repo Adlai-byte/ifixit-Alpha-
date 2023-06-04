@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +35,7 @@ public class CustomerNotificationFragment extends Fragment {
     //--------------------------------------
 
     DatabaseReference customerNotificationRef;
+    DatabaseReference transactionHistoryRef;
 
 
     @Nullable
@@ -51,50 +53,66 @@ public class CustomerNotificationFragment extends Fragment {
 
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        //Notification Reference
         customerNotificationRef = FirebaseDatabase.getInstance().getReference()
                 .child("customers")
                 .child(currentUserId)
                 .child("notification");
 
 
+
+
         customerNotificationRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                     if (snapshot.exists()) {
+                        for (DataSnapshot childSnapShot : snapshot.getChildren()){
 
-                        String serviceProviderId = childSnapshot.getKey();
-                        DatabaseReference serviceProviderRef = FirebaseDatabase.getInstance().getReference()
-                                .child("service-providers")
-                                .child("verified")
-                                .child(serviceProviderId);
+                            String serviceProviderId = childSnapShot.child("userid").getValue(String.class);
+                            String key = childSnapShot.getKey();
+                            Toast.makeText(getContext(), serviceProviderId, Toast.LENGTH_SHORT).show();
+                            DatabaseReference serviceProviderRef = FirebaseDatabase.getInstance().getReference()
+                                    .child("service-providers")
+                                    .child("verified")
+                                    .child(serviceProviderId);
 
-                        serviceProviderRef.addValueEventListener(new ValueEventListener() {
-                            @Override
+                            serviceProviderRef.addValueEventListener(new ValueEventListener() {
+                                @Override
 
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                notificationViewItemList.clear();
-                                if (snapshot.exists()) {
-                                    String name = snapshot.child("name").getValue(String.class);
-                                    String service = snapshot.child("service").getValue(String.class);
-                                    String imgurl = snapshot.child("profileimageurl").getValue(String.class);
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    notificationViewItemList.clear();
+                                    if (snapshot.exists()) {
+                                        String name = snapshot.child("name").getValue(String.class);
+                                        String service = snapshot.child("service").getValue(String.class);
+                                        String imgurl = snapshot.child("profileimageurl").getValue(String.class);
 
-                                    NotificationViewItem item = new NotificationViewItem(serviceProviderId, name, imgurl, service);
-                                    notificationViewItemList.add(item);
-                                    notificationViewAdapter.notifyDataSetChanged();
+
+                                        NotificationViewItem item = new NotificationViewItem(serviceProviderId, name, imgurl, service,key);
+                                        notificationViewItemList.add(item);
+                                        notificationViewAdapter.notifyDataSetChanged();
+
+
+
+
+
+                                    }
 
                                 }
 
-                            }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+                        }
 
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
 
-                            }
-                        });
 
+                    }else {
 
                     }
 
@@ -103,7 +121,7 @@ public class CustomerNotificationFragment extends Fragment {
 
 
 
-            }
+
 
 
             @Override

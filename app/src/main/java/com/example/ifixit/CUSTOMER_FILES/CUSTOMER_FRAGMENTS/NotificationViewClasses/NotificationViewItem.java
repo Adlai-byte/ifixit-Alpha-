@@ -1,11 +1,16 @@
 package com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.NotificationViewClasses;
 
 public class NotificationViewItem {
+    String key;
     String userid;
     String name;
     String profileimageurl;
     String service;
     float rating;
+
+    public String getKey() {
+        return key;
+    }
 
     public float getRating() {
         return rating;
@@ -17,11 +22,12 @@ public class NotificationViewItem {
 
     String reviews;
 
-    public NotificationViewItem(String user, String name, String profileimageurl, String service) {
+    public NotificationViewItem(String user, String name, String profileimageurl, String service,String key) {
         this.userid = user;
         this.name = name;
         this.profileimageurl = profileimageurl;
         this.service = service;
+        this.key = key;
     }
 
     public void setUserid(String userid) {

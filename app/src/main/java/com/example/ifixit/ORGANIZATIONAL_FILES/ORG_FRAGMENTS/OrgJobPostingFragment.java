@@ -92,7 +92,8 @@ public class OrgJobPostingFragment extends Fragment {
 
 
                     DatabaseReference currentUserRef = FirebaseDatabase.getInstance().getReference()
-                            .child("organizational");
+                            .child("organizational")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
 
 
@@ -100,6 +101,7 @@ public class OrgJobPostingFragment extends Fragment {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if(snapshot.exists()){
+
                                 String currentUserName = snapshot.child("name").getValue(String.class);
                                 String orgName = snapshot.child("orgname").getValue(String.class);
 

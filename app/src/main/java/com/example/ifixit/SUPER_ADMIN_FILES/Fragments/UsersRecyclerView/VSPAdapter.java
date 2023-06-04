@@ -45,15 +45,7 @@ public class VSPAdapter extends RecyclerView.Adapter<UsersViewHolder> {
 
 
 
-        //------Button Shit--------
-        holder.userEditButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Create a new activity for editing account
-
-
-            }
-        });
+holder.userAcceptButton.setVisibility(View.GONE);
 
 
         holder.usersDeleteButton.setOnClickListener(new View.OnClickListener() {
@@ -62,9 +54,8 @@ public class VSPAdapter extends RecyclerView.Adapter<UsersViewHolder> {
 
                 String userUid = usersItemView.getUserid();
                 DatabaseReference customerRef = FirebaseDatabase.getInstance().getReference()
-                        .child("USERS")
-                        .child("SERVICE-PROVIDERS")
-                        .child("VERIFIED")
+                        .child("service-providers")
+                        .child("verified")
                         .child(userUid);
 
                 customerRef.removeValue();

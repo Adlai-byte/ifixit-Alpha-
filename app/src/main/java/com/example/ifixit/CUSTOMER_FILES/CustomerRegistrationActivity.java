@@ -39,6 +39,7 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
     private EditText etPhone;
     private EditText etPassword;
     private EditText etConfirmPassword;
+    private String defaultProfilePicUrl;
 
     // Buttons
     private Button btnRegister;
@@ -51,6 +52,8 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customer_registration);
 
+
+        defaultProfilePicUrl = "https://firebasestorage.googleapis.com/v0/b/ifixit-fac6e.appspot.com/o/profile_images%2F64_7.png?alt=media&token=f03436db-e228-4a0c-8a48-04bc480b8bca";
         // Layout Connecting
         etConfirmPassword = findViewById(R.id.etadminPassword2);
         etName = findViewById(R.id.etFullName);
@@ -101,6 +104,7 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
         final String phone = etPhone.getText().toString().trim();
         final String confirmPassword = etConfirmPassword.getText().toString().trim();
 
+
         if (TextUtils.isEmpty(name)
                 || TextUtils.isEmpty(email)
                 || TextUtils.isEmpty(address)
@@ -109,6 +113,7 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
                 || TextUtils.isEmpty(phone)) {
             showToast("Please fill in all fields");
         } else if (!password.equals(confirmPassword)) {
+
             showToast("Password does not match");
         } else {
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(CustomerRegistrationActivity.this, new OnCompleteListener<AuthResult>() {
@@ -127,11 +132,13 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
                             userInfo.put("email", email);
                             userInfo.put("address", address);
                             userInfo.put("phone", phone);
+//                            userInfo.put("profileimageurl",defaultProfilePicUrl);
+
 
                             current_user_db.updateChildren(userInfo);
 
                             showToast("Registration successful");
-                            Intent intent = new Intent(CustomerRegistrationActivity.this, CustomerMapsActivity.class);
+                            Intent intent = new Intent(CustomerRegistrationActivity.this, CustomerMainMenuActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
@@ -159,5 +166,57 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         mAuth.removeAuthStateListener(firebaseAuthStateListener);
+    }
+
+    public static boolean isPasswordValid(String password) {
+        // Check if password length is at least 8 characters
+        if (password.length() < 8) {
+            return false;
+        }
+
+        // Check if password contains at least one uppercase letter
+        if (!password.matches(".*[A-Z].*")) {
+            return false;
+        }
+
+        // Check if password contains at least one lowercase letter
+        if (!password.matches(".*[a-z].*")) {
+            return false;
+        }
+
+        // Check if password contains at least one digit
+        if (!password.matches(".*\\d.*")) {
+            return false;
+        }
+
+        // Check if password contains at least one special character
+
+
+        // Password meets all the password standards
+        return true;
+
+
+//        public static void main(String[] args) {
+//            String password = "MyPassword123!"; // Replace with the password you want to check
+//            if (isPasswordValid(password)) {
+//                System.out.println("Password meets the password standards.");
+//            } else {
+//                System.out.println("Password does not meet the password standards.");
+//            }
+//        }
+
+
+        //else if ( isPasswordValid(password) == false) {
+        //
+        //            String message = "The password must contain:\n" +
+        //                    "- At least 8 characters\n" +
+        //                    "- At least one uppercase letter\n" +
+        //                    "- At least one lowercase letter\n" +
+        //                    "- At least one digit\n" +
+        //                    "- At least one special character";
+        //
+        //            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        //        }
+
     }
 }

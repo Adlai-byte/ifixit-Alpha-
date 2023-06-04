@@ -54,6 +54,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -97,6 +98,7 @@ public class CustomerMapsActivity extends AppCompatActivity implements OnMapRead
         setContentView(R.layout.customer_maps);
         Toolbar toolbar = findViewById(R.id.CMMaptoolbar);
         setSupportActionBar(toolbar);
+
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.CMmap);

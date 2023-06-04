@@ -21,12 +21,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:text="username"
+        android:text="Loading name...."
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
     <TextView
         android:id="@+id/CMemailTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="email@email.com"/>
+        android:text="Loading email...."/>
 
 </LinearLayout>

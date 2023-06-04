@@ -9,7 +9,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.ifixit.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,11 +21,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NotificationViewAdapter extends RecyclerView.Adapter<NotificationViewHolder> {
 
     private List<NotificationViewItem> notificationViewItems;
     private Context context;
+    String review;
+    float rate;
 
     public NotificationViewAdapter(Context context, List<NotificationViewItem> notificationViewItems) {
         this.context = context;
@@ -41,27 +43,118 @@ public class NotificationViewAdapter extends RecyclerView.Adapter<NotificationVi
 
     @Override
     public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
-        NotificationViewItem notificationViewItem = notificationViewItems.get(position);
 
+
+
+        NotificationViewItem notificationViewItem = notificationViewItems.get(position);
+        Map<String,Object> transactionItem = new HashMap();
         holder.nameView.setText(notificationViewItem.getName());
         holder.serviceView.setText(notificationViewItem.getService());
+        String key = notificationViewItem.getKey();
 
-        Glide.with(context).load(notificationViewItem.getProfileimageurl()).into(holder.imageView);
 
-        String review = holder.reviewComment.getText().toString();
-        float rate = holder.ratingBar.getRating();
+
+        //Necessary Variables
+        String serviceProviderUserId = notificationViewItem.getUserid();
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference notificationRef = FirebaseDatabase.getInstance().getReference()
+                .child("customers")
+                .child(currentUserId)
+                .child("notification")
+                .child(key);
+
+
+        //Delete Button
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                
+                // Remove the notification from the database
+                notificationRef.removeValue()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                // The notification was successfully removed
+                                int itemPosition = holder.getAdapterPosition();
+                                if (itemPosition != RecyclerView.NO_POSITION) {
+                                    notificationViewItems.remove(itemPosition);
+                                    notifyItemRemoved(itemPosition);
+                                    notifyItemRangeChanged(itemPosition, notificationViewItems.size());
+                                } else {
+                                    // Handle the case when the item position is invalid
+                                    Toast.makeText(context, "Failed to remove item", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(context, "Failed to remove item", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+            }
+        });
+
+
 
         holder.completeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String serviceProviderUserId = notificationViewItem.getUserid();
                 String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                DatabaseReference notificationRef = FirebaseDatabase.getInstance().getReference()
-                        .child("customers")
-                        .child(currentUserId)
-                        .child("notification")
-                        .child(serviceProviderUserId);
+
+
+
+
+                notificationRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+
+                            if(snapshot.exists()){
+                                String key = snapshot.getKey();
+                                String serviceProviderId = snapshot.child("userid").getValue(String.class);
+                                String name = snapshot.child("name").getValue(String.class);
+                                String service = snapshot.child("service").getValue(String.class);
+                                String timestamp = snapshot.child("timestamp").getValue(String.class);
+                                String total = snapshot.child("total").getValue(String.class);
+                                String status = snapshot.child("status").getValue(String.class);
+
+
+                                transactionItem.put("serviceProviderId",serviceProviderId);
+                                transactionItem.put("status",status);
+                                transactionItem.put("name",name);
+                                transactionItem.put("service",service);
+                                transactionItem.put("timestamp",timestamp);
+                                transactionItem.put("total",total);
+
+                                //Transaction History reference
+                                DatabaseReference transactionHistoryRef = FirebaseDatabase.getInstance().getReference()
+                                        .child("customers")
+                                        .child(currentUserId)
+                                        .child("transaction-history");
+
+                                transactionHistoryRef.push().updateChildren(transactionItem);
+
+
+
+                            }
+
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
 
                 DatabaseReference reviewsRef = FirebaseDatabase.getInstance().getReference()
                         .child("service-providers")
@@ -79,6 +172,7 @@ public class NotificationViewAdapter extends RecyclerView.Adapter<NotificationVi
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
+                            rate = holder.ratingBar.getRating();
                             float currentRating = snapshot.child("rating").getValue(Float.class);
                             float newRating = (currentRating + rate) / 2;
 
@@ -117,16 +211,21 @@ public class NotificationViewAdapter extends RecyclerView.Adapter<NotificationVi
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
+
+
                             String name = snapshot.child("name").getValue(String.class);
                             String imgUrl = snapshot.child("profileimageurl").getValue(String.class);
+                            review = holder.reviewComment.getText().toString();
 
                             HashMap<String, Object> reviews = new HashMap<>();
+
                             reviews.put("comment", review);
                             reviews.put("name", name);
                             reviews.put("profileimageurl", imgUrl);
 
                             // Set the review data for the service provider
                             reviewsRef.setValue(reviews)
+
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {

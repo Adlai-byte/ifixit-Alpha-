@@ -62,8 +62,7 @@ public class OrgListViewFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         listViewItems = new ArrayList<>();
         originalList = new ArrayList<>();
-        listViewAdapter = new ListViewAdapter(getActivity(), listViewItems);
-        recyclerView.setAdapter(listViewAdapter);
+
 
         // Set up search functionality
         listSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -137,7 +136,7 @@ public class OrgListViewFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mPriceSort = spPrice.getItemAtPosition(position).toString();
 
-                sortListByPrice(listViewItems,mPriceSort);
+                sortListByPrice(listViewItems, mPriceSort);
             }
 
             @Override
@@ -147,54 +146,28 @@ public class OrgListViewFragment extends Fragment {
             }
         });
 
+
 // Retrieve data from Firebase
-        query = FirebaseDatabase.getInstance().getReference()
-                .child("service-providers")
-                .child("verified")
-                .orderByChild("name");
 
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                originalList.clear();  // Clear the original list before adding items
-                listViewItems.clear();
-
-                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                    String userId = childSnapshot.getKey();
-                    String name = childSnapshot.child("name").getValue(String.class);
-                    String address = childSnapshot.child("address").getValue(String.class);
-                    String service = childSnapshot.child("service").getValue(String.class);
-                    String imgURL = childSnapshot.child("profileimageurl").getValue(String.class);
-                    Float ratingFloat = childSnapshot.child("rating").getValue(Float.class);
-                    Float maxPriceFloat = childSnapshot.child("maxPrice").getValue(Float.class);
-                    // Check for null values before using them
-                    float rating = ratingFloat != null ? ratingFloat : 0.0f;
-                    float maxPrice = maxPriceFloat != null ? maxPriceFloat : 0.0f;
-
-                    ListViewItem item = new ListViewItem(name, imgURL, service, address, rating, userId, maxPrice);
-                    originalList.add(item);
-                    listViewItems.add(item);
-                }
-
-                listViewAdapter.setFilteredList(originalList);
-                listViewAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
         return rootView;
     }
 
-    private void filterList(String service) {
-        List<ListViewItem> filteredList = new ArrayList<>(originalList);
 
-        // Apply the filtering operations
-        filteredList = filterByService(filteredList, service);
+    private void filterList(String service) {
+        if (service.isEmpty() || service.equals("Service Provider")) {
+            listViewAdapter.setFilteredList(originalList);
+            listViewAdapter.notifyDataSetChanged();
+            return;
+        }
+
+        List<ListViewItem> filteredList = new ArrayList<>();
+
+        for (ListViewItem item : originalList) {
+            if (item.getSERVICE() != null && item.getSERVICE().equalsIgnoreCase(service)) {
+                filteredList.add(item);
+            }
+        }
 
         listViewAdapter.setFilteredList(filteredList);
         listViewAdapter.notifyDataSetChanged();
@@ -289,4 +262,58 @@ public class OrgListViewFragment extends Fragment {
     }
 
 
+    //Modified Part
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        //Adapter-------------------------------------------------------------
+        listViewAdapter = new ListViewAdapter(getActivity(), listViewItems);
+        recyclerView.setAdapter(listViewAdapter);
+        //--------------------------------------------------------------------
+
+        //Firebase
+        query = FirebaseDatabase.getInstance().getReference()
+                .child("service-providers")
+                .child("verified")
+                .orderByChild("name");
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                originalList.clear();  // Clear the original list before adding items
+                listViewItems.clear();
+
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    String userId = childSnapshot.getKey();
+                    String name = childSnapshot.child("name").getValue(String.class);
+                    String address = childSnapshot.child("address").getValue(String.class);
+                    String service = childSnapshot.child("service").getValue(String.class);
+                    String imgURL = childSnapshot.child("profileimageurl").getValue(String.class);
+
+                    Float ratingFloat = childSnapshot.child("rating").getValue(Float.class);
+                    Float maxPriceFloat = childSnapshot.child("maxPrice").getValue(Float.class);
+                    // Check for null values before using them
+                    float rating = ratingFloat != null ? ratingFloat : 0.0f;
+                    float maxPrice = maxPriceFloat != null ? maxPriceFloat : 0.0f;
+
+                    ListViewItem item = new ListViewItem(name, imgURL, service, address, rating, userId, maxPrice);
+                    originalList.add(item);
+                    listViewItems.add(item);
+                }
+
+                listViewAdapter.setFilteredList(originalList);
+                listViewAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        //.................................................................................................................
+
+
+    }
 }
+

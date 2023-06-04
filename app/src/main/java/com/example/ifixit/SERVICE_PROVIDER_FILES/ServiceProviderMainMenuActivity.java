@@ -95,7 +95,7 @@ public class ServiceProviderMainMenuActivity extends AppCompatActivity implement
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.SPfragment_container, new ServiceProviderOngoingJob()).commit();
-            navigationView.setCheckedItem(R.id.SPnav_ongoing);
+//            navigationView.setCheckedItem(R.id.SPnav_ongoing);
         }
 
 

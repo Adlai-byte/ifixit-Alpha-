@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.ifixit.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -168,13 +169,28 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                 comment = description.getText().toString();
                 mCustomerRef = FirebaseDatabase.getInstance().getReference()
                         .child("customers");
+
+                //Customer Pending request reference
+                DatabaseReference customerPendingRequestRef = FirebaseDatabase.getInstance().getReference()
+                        .child("customers")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child("pending-request");
+
+
+                //Pending Jobs directory reference
                 mServiceProviderRef = FirebaseDatabase.getInstance().getReference()
                         .child("service-providers")
                         .child("verified")
                         .child(serviceProviderUserId)
                         .child("joboffers")
-                        .child("pending")
-                        .child(customerUserId);
+                        .child("pending");
+
+                //Service Provider reference
+                DatabaseReference ServiceProviderRefData = FirebaseDatabase.getInstance().getReference()
+                        .child("service-providers")
+                        .child("verified")
+                        .child(serviceProviderUserId);
+
 
                 mCustomerRef.child(customerUserId).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -192,6 +208,9 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
 
                             // Create a new job offer HashMap with the customer's data
                             HashMap<String, String> jobOffer = new HashMap<>();
+
+                            jobOffer.put("userid",customerUserId);
+                            jobOffer.put("service", service);
                             jobOffer.put("name", name);
                             jobOffer.put("address", address);
                             jobOffer.put("email", email);
@@ -202,7 +221,36 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                             jobOffer.put("totalprice", totalPrice);
                             jobOffer.put("decription", description);
 
-                            mServiceProviderRef.setValue(jobOffer).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                            // Hashmap for to send to pending request
+                            HashMap<String, String> pendingReqData = new HashMap<>();
+                            //Service Provider Data
+                            ServiceProviderRefData.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                    String spName = snapshot.child("name").getValue(String.class);
+                                    String spService = snapshot.child("service").getValue(String.class);
+                                    pendingReqData.put("userid",serviceProviderUserId);
+                                    pendingReqData.put("name", spName);
+                                    pendingReqData.put("service", spService);
+                                    pendingReqData.put("totalprice", totalPrice);
+                                    pendingReqData.put("timestamp", String.valueOf(timestamp));
+                                    pendingReqData.put("jobtype",jobType);
+                                    pendingReqData.put("status","PENDING");
+
+                                    customerPendingRequestRef.push().setValue(pendingReqData);
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+
+                            mServiceProviderRef.push().setValue(jobOffer).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
@@ -214,6 +262,11 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                                     }
                                 }
                             });
+
+
+                            //Sending data to customer pending request
+
+
                         }
                     }
 
@@ -227,74 +280,6 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                 startActivity(intent1);
             }
         });
-        placeOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                comment = description.getText().toString();
-                mCustomerRef = FirebaseDatabase.getInstance().getReference()
-                        .child("customers");
-                mServiceProviderRef = FirebaseDatabase.getInstance().getReference()
-                        .child("service-providers")
-                        .child("verified")
-                        .child(serviceProviderUserId)
-                        .child("joboffers")
-                        .child("pending")
-                        .child(customerUserId);
-
-                mCustomerRef.child(customerUserId).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            String name = snapshot.child("name").getValue(String.class);
-                            String address = snapshot.child("address").getValue(String.class);
-                            String email = snapshot.child("email").getValue(String.class);
-                            String imgUrl = snapshot.child("profileimageurl").getValue(String.class);
-
-                            String jobType = service;
-                            String daysOfWork = String.valueOf(days);
-                            String totalPrice = String.valueOf(finalPrice);
-                            String description = comment;
-
-                            // Create a new job offer HashMap with the customer's data
-                            HashMap<String, String> jobOffer = new HashMap<>();
-                            jobOffer.put("name", name);
-                            jobOffer.put("address", address);
-                            jobOffer.put("email", email);
-                            jobOffer.put("timestamp", String.valueOf(timestamp));
-                            jobOffer.put("profileimageurl", imgUrl);
-                            jobOffer.put("jobtype", jobType);
-                            jobOffer.put("duration", daysOfWork);
-                            jobOffer.put("totalprice", totalPrice);
-                            jobOffer.put("decription", description);
-
-                            mServiceProviderRef.setValue(jobOffer).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        // Data successfully added to the database
-                                        Toast.makeText(CustomerCheckOutActivity.this, "Requested Succesfully", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        // Failed to add data to the database
-                                        Toast.makeText(CustomerCheckOutActivity.this, "Failed to add data", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        // ...
-                    }
-                });
-
-                Intent intent1 = new Intent(CustomerCheckOutActivity.this, CustomerMainMenuActivity.class);
-                startActivity(intent1);
-            }
-        });
-
-
-        //-------------------------------------------------------------------------------------------
     }
 
     public void getHeaderInfo() {

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".SERVICE_PROVIDER_FILES.ServiceProviderMapsActivity">
 
 
@@ -16,6 +17,17 @@
         tools:context=".SERVICE_PROVIDER_FILES.ServiceProviderMapsActivity"
         tools:layout="@layout/service_provider_maps" />
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/SPMaptoolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:title="Map"
+        app:navigationIcon="@drawable/ic_back_arrow"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        />
+
 
     <LinearLayout
         android:id="@+id/customerInfo"
@@ -27,10 +39,11 @@
         android:visibility="gone">
 
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/customerProfileImage"
             android:layout_width="100sp"
             android:layout_height="100sp"
+            android:src="@mipmap/ic_default_image"
             android:padding="20sp" />
 
         <LinearLayout

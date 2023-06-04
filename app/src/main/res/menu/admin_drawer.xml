@@ -12,7 +12,7 @@
 
         <item
             android:id="@+id/adminCMtList"
-            android:icon="@mipmap/ic_gardener_logo"
+            android:icon="@mipmap/ic_masonry_logo"
             android:title="Customers"/>
 
         <item
@@ -22,13 +22,13 @@
 
         <item
             android:id="@+id/adminUnverifiedSPList"
-            android:icon="@mipmap/ic_gardener_logo"
+            android:icon="@mipmap/ic_carpentry_logo"
             android:title="Unverified Accounts"/>
 
-        <item
-            android:id="@+id/adminMessaging"
-            android:icon="@mipmap/ic_gardener_logo"
-            android:title="Messaging"/>
+<!--        <item-->
+<!--            android:id="@+id/adminMessaging"-->
+<!--            android:icon="@mipmap/ic_gardener_logo"-->
+<!--            android:title="Messaging"/>-->
 
 
 

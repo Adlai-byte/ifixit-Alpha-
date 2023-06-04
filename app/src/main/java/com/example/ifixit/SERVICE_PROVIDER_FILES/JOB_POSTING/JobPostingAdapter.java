@@ -1,4 +1,4 @@
-package com.example.ifixit.ORGANIZATIONAL_FILES.JOB_POSTING;
+package com.example.ifixit.SERVICE_PROVIDER_FILES.JOB_POSTING;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,9 +8,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.example.ifixit.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class JobPostingAdapter extends RecyclerView.Adapter<JobPostingViewHolder> {
@@ -32,6 +35,8 @@ public class JobPostingAdapter extends RecyclerView.Adapter<JobPostingViewHolder
     @Override
     public void onBindViewHolder(@NonNull JobPostingViewHolder holder, int position) {
 
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         JobPostingItemView itemView = itemViewList.get(position);
         holder.orgName.setText(itemView.getOrgName());
         holder.name.setText(itemView.getName());;
@@ -48,6 +53,33 @@ public class JobPostingAdapter extends RecyclerView.Adapter<JobPostingViewHolder
             @Override
             public void onClick(View view) {
 
+                HashMap<String, Object> jobPostingItem = new HashMap<>();
+
+                String jobPostingKey = itemView.getOrderid();
+                DatabaseReference ongoingRef  = FirebaseDatabase.getInstance().getReference()
+                        .child("service-providers")
+                        .child("verified")
+                        .child(currentUserId)
+                        .child("joboffers")
+                        .child("ongoing")
+                        .child(itemView.getOrderid());
+
+
+                jobPostingItem.put("address",itemView.getAddress());
+                jobPostingItem.put("email","");
+                jobPostingItem.put("jobtype",itemView.getServiceType());
+                jobPostingItem.put("name",itemView.getOrgName());
+                jobPostingItem.put("totalprice",itemView.getMaxPrice());
+
+                ongoingRef.updateChildren(jobPostingItem);
+
+
+
+                DatabaseReference jobPosting = FirebaseDatabase.getInstance().getReference()
+                        .child("job-posting")
+                        .child(jobPostingKey);
+
+
 
             }
         });
@@ -57,6 +89,6 @@ public class JobPostingAdapter extends RecyclerView.Adapter<JobPostingViewHolder
 
     @Override
     public int getItemCount() {
-        return 0;
+       return   itemViewList.size();
     }
 }

@@ -2,7 +2,17 @@ package com.example.ifixit.SUPER_ADMIN_FILES.RecyclerView;
 
 public class AdminItemView {
     String USERID, NAME,ADDRESS,JOBTYPE,profileImageUrl,EMAIL;
-    String RATE;
+    String MAXPRICE;
+
+    public String getMINPRICE() {
+        return MINPRICE;
+    }
+
+    public void setMINPRICE(String MINPRICE) {
+        this.MINPRICE = MINPRICE;
+    }
+
+    String MINPRICE;
 
     public String getEMAIL() {
         return EMAIL;
@@ -12,13 +22,14 @@ public class AdminItemView {
         this.EMAIL = EMAIL;
     }
 
-    public AdminItemView(String USERID, String NAME, String ADDRESS, String EMAIL, String JOBTYPE, String profileImageUrl, String RATE) {
+    public AdminItemView(String USERID, String NAME, String ADDRESS, String EMAIL, String JOBTYPE, String profileImageUrl, String MINPRICE,String MAXPRICE) {
         this.USERID = USERID;
         this.NAME = NAME;
         this.ADDRESS = ADDRESS;
         this.JOBTYPE = JOBTYPE;
         this.profileImageUrl = profileImageUrl;
-        this.RATE = RATE;
+        this.MAXPRICE = MAXPRICE;
+        this.MINPRICE = MINPRICE;
         this.EMAIL = EMAIL;
     }
 
@@ -64,11 +75,11 @@ public class AdminItemView {
         this.profileImageUrl = profileImageUrl;
     }
 
-    public String getRATE() {
-        return RATE;
+    public String getMAXPRICE() {
+        return MAXPRICE;
     }
 
-    public void setRATE(String RATE) {
-        this.RATE = RATE;
+    public void setMAXPRICE(String MAXPRICE) {
+        this.MAXPRICE = MAXPRICE;
     }
 }

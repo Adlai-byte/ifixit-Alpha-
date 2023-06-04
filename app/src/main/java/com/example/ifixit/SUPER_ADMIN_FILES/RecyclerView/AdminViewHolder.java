@@ -15,8 +15,11 @@ public class AdminViewHolder extends RecyclerView.ViewHolder {
     public TextView serviceProviderName;
     public TextView serviceProviderAddress;
     public TextView serviceProviderJob;
-    public TextView serviceProviderRate;
+    public TextView serviceProviderMaxPrice;
+    public TextView serviceProviderMinPrice;
     public ImageView serviceProviderImageView;
+
+
     public Button acceptButton;
     public Button declineButton;
 
@@ -26,11 +29,11 @@ public class AdminViewHolder extends RecyclerView.ViewHolder {
         serviceProviderName = itemView.findViewById(R.id.adminserviceProviderName);
         serviceProviderAddress = itemView.findViewById(R.id.adminserviceProviderAddress);
         serviceProviderJob = itemView.findViewById(R.id.adminserviceProviderJob);
-        serviceProviderRate = itemView.findViewById(R.id.adminservicerProviderRate);
+        serviceProviderMaxPrice = itemView.findViewById(R.id.adminservicerMaxPrice);
+        serviceProviderMinPrice = itemView.findViewById(R.id.adminservicerMinPrice);
         acceptButton = itemView.findViewById(R.id.adminbtnAccept);
         declineButton = itemView.findViewById(R.id.adminbtnDecline);
         serviceProviderImageView = itemView.findViewById(R.id.serviceProviderProfileImage);
-
 
 
     }

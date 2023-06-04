@@ -46,14 +46,7 @@ public class CMAdapter extends RecyclerView.Adapter<UsersViewHolder> {
 
 
         //------Button Shit--------
-        holder.userEditButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Create a new activity for editing account
-
-
-            }
-        });
+        holder.userAcceptButton.setVisibility(View.GONE);
 
 
         holder.usersDeleteButton.setOnClickListener(new View.OnClickListener() {

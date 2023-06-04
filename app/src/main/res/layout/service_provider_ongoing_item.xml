@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
+    android:background="@color/white"
+    android:layout_marginBottom="1dp"
+    android:elevation="5dp"
     android:orientation="horizontal">
 
 
-
     <LinearLayout
+
+        android:background="@color/white"
+        android:elevation="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:padding="10dp"
-        android:elevation="10dp"
-      android:layout_margin="10dp"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp"
+
+       >
 
         <TextView
             android:id="@+id/ongoingName"
@@ -50,6 +53,7 @@
             android:layout_height="wrap_content"
             android:text="1000"
             android:textColor="#777777" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -58,32 +62,96 @@
                 android:id="@+id/ongoingCancelledButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:textSize="10dp"
-                android:text="Cancelled" />
+                android:layout_alignParentStart="true"
+                android:layout_marginEnd="70dp"
+                android:text="Cancelled"
+                android:textSize="14dp" />
 
             <Button
                 android:id="@+id/ongoingCompletedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
 
-                android:layout_marginStart="50dp"
-
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_toEndOf="@+id/ongoingCancelledButton"
-                android:textSize="10dp"
-                android:text="Completed" />
+                android:text="Completed"
+                android:textSize="14dp" />
 
             />
         </RelativeLayout>
 
 
 
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/completeStatusLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/white"
+        android:elevation="10dp"
+        android:visibility="gone"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+
+            android:gravity="center"
+            android:text="Complete Status (Choose 1)"
+            android:textSize="20sp" />
+
+        <RadioGroup
+            android:id="@+id/completeStatusradioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/paidCash"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:checked="false"
+                android:text="Complete/ Paid / In - Cash "
+                android:textAlignment="center" />
+
+            <RadioButton
+                android:id="@+id/paidOnline"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:checked="false"
+                android:text="Complete/ Paid / Online - Payment"
+                android:textAlignment="center" />
+
+            <RadioButton
+                android:id="@+id/notPaid"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:checked="false"
+                android:text="Complete/Not-Yet-Paid"
+                android:textAlignment="center" />
+
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/completeStatusButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Confirm">
+
+        </Button>
+
+
     </LinearLayout>
 
 
-</LinearLayout>
+</FrameLayout>

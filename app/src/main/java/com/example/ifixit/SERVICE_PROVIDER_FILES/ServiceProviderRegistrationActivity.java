@@ -54,6 +54,8 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
 
     //------String
     private String mService;
+    private String defaultProfilePicUrl;
+
 
 
     @Override
@@ -61,6 +63,9 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.service_provider_registration);
 
+
+
+        defaultProfilePicUrl = "https://firebasestorage.googleapis.com/v0/b/ifixit-fac6e.appspot.com/o/profile_images%2F64_7.png?alt=media&token=f03436db-e228-4a0c-8a48-04bc480b8bca";
         //---Layout Connecting
 
         //Spinner
@@ -146,11 +151,12 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
                                 userInfo.put("email", email);
                                 userInfo.put("address", address);
                                 userInfo.put("phone", phone);
-                                userInfo.put("password", password);
+//                                userInfo.put("password", password);
                                 userInfo.put("service", service);
                                 userInfo.put("rating", 0.0);
                                 userInfo.put("maxPrice", 0.0);
                                 userInfo.put("minPrice", 0.0);
+                                userInfo.put("profileimageurl",defaultProfilePicUrl);
 
                                 current_user_db.updateChildren(userInfo);
 
@@ -181,6 +187,33 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         mAuth.removeAuthStateListener(firebaseAuthStateListener);
+    }
+
+    public static boolean isPasswordValid(String password) {
+        // Check if password length is at least 8 characters
+        if (password.length() < 8) {
+            return false;
+        }
+
+        // Check if password contains at least one uppercase letter
+        if (!password.matches(".*[A-Z].*")) {
+            return false;
+        }
+
+        // Check if password contains at least one lowercase letter
+        if (!password.matches(".*[a-z].*")) {
+            return false;
+        }
+
+        // Check if password contains at least one digit
+        if (!password.matches(".*\\d.*")) {
+            return false;
+        }
+
+
+
+        // Password meets all the password standards
+        return true;
     }
 }
 

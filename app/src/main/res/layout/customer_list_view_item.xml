@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="20dp"
     android:background="@color/white"
     android:elevation="10dp"
     android:orientation="horizontal"
@@ -14,7 +13,7 @@
         android:layout_height="70dp"
         android:layout_margin="15dp"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_profile" />
+        android:src="@mipmap/ic_default_image" />
 
     <LinearLayout
         android:layout_width="wrap_content"

@@ -60,7 +60,10 @@ public class CustomerProfileFragment extends Fragment {
     private Uri resultUri;
     private String mProfileImageUrl;
 
-    private EditText name, phone, address;
+    private EditText name, email, address;
+
+
+
 
     @Nullable
     @Override
@@ -77,8 +80,11 @@ public class CustomerProfileFragment extends Fragment {
         customerImage = (ImageView) rootView.findViewById(R.id.customerProfileImage);
 
         name = (EditText) rootView.findViewById(R.id.NameET);
-        phone = (EditText) rootView.findViewById(R.id.PhoneET);
+        email = (EditText) rootView.findViewById(R.id.PhoneET);
         address = (EditText) rootView.findViewById(R.id.AddressET);
+
+
+
 
         mAuth = FirebaseAuth.getInstance();
         userID = mAuth.getCurrentUser().getUid();
@@ -89,6 +95,7 @@ public class CustomerProfileFragment extends Fragment {
                 .child("customers")
                 .child(userID);
 
+        //Listener
 
         DatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -103,7 +110,7 @@ public class CustomerProfileFragment extends Fragment {
         });
 
 
-   
+
 
         uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,10 +148,11 @@ public class CustomerProfileFragment extends Fragment {
                                 mAddress = map.get("address").toString();
                                 address.setText(mAddress);
                             }
-                            if(map.get("phone")!=null){
-                                mPhone = map.get("phone") .toString();
-                                phone.setText(mPhone);
+                            if(map.get("email")!=null){
+                                mEmail = map.get("email") .toString();
+                                email.setText(mEmail);
                             }
+
 
                         }
 
@@ -183,14 +191,18 @@ public class CustomerProfileFragment extends Fragment {
                         customerName.setText(mUserName);
                     }
 
+                    if (map.get("email") != null) {
+                        mEmail = map.get("email").toString();
+                        customerEmail.setText(mEmail);
+                    }
 
                     if (map.get("address") != null) {
                         mAddress = map.get("address").toString();
                         customerAddress.setText(mAddress);
                     }
+
                     if (map.get("profileimageurl") != null) {
                         mProfileImageUrl = map.get("profileimageurl").toString();
-//                        Glide.with(getApplication()).load(mProfileImageUrl).into(customerImage);
                         Glide.with(getContext().getApplicationContext()).load(mProfileImageUrl).into(customerImage);
                     }
 
@@ -211,14 +223,13 @@ public class CustomerProfileFragment extends Fragment {
 
         mUserName = name.getText().toString();
         mAddress = address.getText().toString();
-        mPhone = phone.getText().toString();
+        mPhone = email.getText().toString();
 
 
         Map <String,Object>userInfo = new HashMap();
         userInfo.put("name", mUserName);
         userInfo.put("phone", mPhone);
         userInfo.put("address", mAddress);
-//      userInfo.put("services",mService);
         DatabaseRef.updateChildren(userInfo);
 
 
@@ -247,17 +258,20 @@ public class CustomerProfileFragment extends Fragment {
                         public void onSuccess(Uri downloadUrl) {
                             String downloadUrlStr = downloadUrl.toString();
 
-                            Map<String, Object> newImage = new HashMap<>();
+                            Map<String,Object>  newImage = new HashMap<>();
                             newImage.put("profileimageurl", downloadUrlStr);
+
                             DatabaseRef.updateChildren(newImage).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void Void) {
 
                                     Toast.makeText(getContext(), "Profile Updated", Toast.LENGTH_SHORT).show();
+
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getContext(), "Profile Image Failed", Toast.LENGTH_SHORT).show();
                                     // Handle the error
                                 }
                             });
@@ -266,6 +280,7 @@ public class CustomerProfileFragment extends Fragment {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             // Handle the error
+                            Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -273,6 +288,7 @@ public class CustomerProfileFragment extends Fragment {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     // Handle the error
+                    Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
                 }
             });
         } else {

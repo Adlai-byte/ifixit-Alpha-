@@ -20,7 +20,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
-import com.example.ifixit.CUSTOMER_FILES.Messaging.ChatActivity;
 import com.example.ifixit.R;
 import com.example.ifixit.SUPER_ADMIN_FILES.Fragments.ADMAdminProfileFragment;
 import com.example.ifixit.SUPER_ADMIN_FILES.Fragments.ADMCustomerListFragment;
@@ -72,16 +71,21 @@ public class AdminMainMenuActivity extends AppCompatActivity implements Navigati
 
         headerInfo = navigationViews.getHeaderView(0);
         navigationViews.setNavigationItemSelectedListener(this);
-        serviceProviderImage = headerInfo.findViewById(R.id.SPheaderImageView);
-        headerEmail = headerInfo.findViewById(R.id.SPemailTV);
-        headerUserName = headerInfo.findViewById(R.id.SPuserNameTV);
+
+        serviceProviderImage = headerInfo.findViewById(R.id.ADMheaderImageView);
+        headerEmail = headerInfo.findViewById(R.id.ADMemailTV);
+        headerUserName = headerInfo.findViewById(R.id.ADMuserNameTV);
+
         mAuth = FirebaseAuth.getInstance();
         userID = mAuth.getCurrentUser().getUid();
 
 
 
 
-        mAdminRef = FirebaseDatabase.getInstance().getReference().child("admins").child(userID);
+        mAdminRef = FirebaseDatabase.getInstance().getReference()
+                .child("admins")
+                .child(userID);
+
         getHeaderInfo();
 
 
@@ -123,13 +127,13 @@ public class AdminMainMenuActivity extends AppCompatActivity implements Navigati
             case R.id.adminUnverifiedSPList:
                 getSupportFragmentManager().beginTransaction().replace(R.id.ADMfragment_container, new ADMUnverifiedSPListFragment()).commit();
                 break;
-            case R.id.adminMessaging:
-
-                Intent intent = new Intent(AdminMainMenuActivity.this, ChatActivity.class);
-                startActivity(intent);
-                finish();
-//                getSupportFragmentManager().beginTransaction().replace(R.id.ADMfragment_container, new ADMMessagingFragment()).commit();
-                break;
+//            case R.id.adminMessaging:
+//
+//                Intent intent = new Intent(AdminMainMenuActivity.this, ChatActivity.class);
+//                startActivity(intent);
+//                finish();
+////                getSupportFragmentManager().beginTransaction().replace(R.id.ADMfragment_container, new ADMMessagingFragment()).commit();
+//                break;
 
             case R.id.SPnav_logout:
                 FirebaseAuth.getInstance().signOut();

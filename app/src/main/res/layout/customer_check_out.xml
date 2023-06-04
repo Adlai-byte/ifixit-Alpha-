@@ -41,7 +41,7 @@
                     android:id="@+id/serviceProviderName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Service Provider Name"
+                    android:text="Loading name"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -49,13 +49,13 @@
                     android:id="@+id/serviceProviderJob"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Service Provider Job" />
+                    android:text="Loading service" />
 
                 <TextView
                     android:id="@+id/serviceProviderAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Service provider addres" />
+                    android:text="loading address" />
                 <!--Text Views-->
             </LinearLayout>
 

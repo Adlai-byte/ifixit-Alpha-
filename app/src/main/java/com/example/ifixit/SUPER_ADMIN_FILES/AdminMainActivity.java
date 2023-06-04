@@ -28,41 +28,41 @@ public class AdminMainActivity extends AppCompatActivity {
     //--------------------------------
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_main);
 
         //------Recycler View ------
-        recyclerView = (RecyclerView)findViewById(R.id.adminRecyclerView);
+        recyclerView = (RecyclerView) findViewById(R.id.adminRecyclerView);
         adminItemViewList = new ArrayList<>();
-        adminAdapter = new AdminAdapter(adminItemViewList,this);
+        adminAdapter = new AdminAdapter(adminItemViewList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adminAdapter);
         //--------------------------
 
-        DatabaseReference unverifiedServiceProviders= FirebaseDatabase.getInstance().getReference()
-                .child("USERS")
-                .child("SERVICE-PROVIDERS")
-                .child("UNVERIFIED");
+        DatabaseReference unverifiedServiceProviders = FirebaseDatabase.getInstance().getReference()
+                .child("users")
+                .child("service-providers")
+                .child("unverified");
 
         unverifiedServiceProviders.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //Clear the ArrayList
 
-                for(DataSnapshot serviceProviderSnapshot : snapshot.getChildren()){
-                    if(snapshot.exists()){
-                        String serviceProviderUid= serviceProviderSnapshot.getKey();
-                        String name  = serviceProviderSnapshot.child("NAME").getValue(String.class);
-                        String address = serviceProviderSnapshot.child("ADDRESS").getValue(String.class);
-                        String email = serviceProviderSnapshot.child("EMAIL").getValue(String.class);
-                        String service = serviceProviderSnapshot.child("SERVICE").getValue(String.class);
-                        String rate = serviceProviderSnapshot.child("RATE").getValue(String.class);
+                for (DataSnapshot serviceProviderSnapshot : snapshot.getChildren()) {
+                    if (snapshot.exists()) {
+                        String serviceProviderUid = serviceProviderSnapshot.getKey();
+                        String name = serviceProviderSnapshot.child("name").getValue(String.class);
+                        String address = serviceProviderSnapshot.child("address").getValue(String.class);
+                        String email = serviceProviderSnapshot.child("email").getValue(String.class);
+                        String service = serviceProviderSnapshot.child("service").getValue(String.class);
+                        String minprice = serviceProviderSnapshot.child("minPrice").getValue(String.class);
+                        String maxprice = serviceProviderSnapshot.child("maxPrice").getValue(String.class);
                         String profileImageUrl = serviceProviderSnapshot.child("profileImageUrl").getValue(String.class);
 
-                        adminItemViewList.add(new AdminItemView(serviceProviderUid,name,address,email,service,profileImageUrl,rate));
+                        adminItemViewList.add(new AdminItemView(serviceProviderUid, name, address, email, service, profileImageUrl, maxprice, minprice));
 
                     }
                     adminAdapter.notifyDataSetChanged();
@@ -76,12 +76,6 @@ public class AdminMainActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
-
 
 
     }

@@ -20,16 +20,18 @@ public class NotificationViewHolder extends  RecyclerView.ViewHolder {
     public RatingBar ratingBar;
     public EditText reviewComment;
     public Button completeButton;
+    public Button deleteButton;
 
 
     public NotificationViewHolder(@NonNull View itemView) {
         super(itemView);
-        imageView = itemView.findViewById(R.id.notification_view_imageView);
+//        imageView = itemView.findViewById(R.id.notification_view_imageView);
         nameView = itemView.findViewById(R.id.notification_view_name);
         reviewComment = itemView.findViewById(R.id.notificationReviewComment);
         serviceView = itemView.findViewById(R.id.notification_view_service);
         ratingBar = itemView.findViewById(R.id.notification_view_rating);
         completeButton = itemView.findViewById(R.id.notificationConfirmButton);
+        deleteButton = itemView.findViewById(R.id.notificationDeleteButton);
 
     }
 }

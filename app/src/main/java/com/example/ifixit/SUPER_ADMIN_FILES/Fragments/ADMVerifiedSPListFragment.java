@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ifixit.R;
-import com.example.ifixit.SUPER_ADMIN_FILES.Fragments.UsersRecyclerView.CMAdapter;
 import com.example.ifixit.SUPER_ADMIN_FILES.Fragments.UsersRecyclerView.UsersItemView;
+import com.example.ifixit.SUPER_ADMIN_FILES.Fragments.UsersRecyclerView.VSPAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +28,7 @@ public class ADMVerifiedSPListFragment extends Fragment {
     //------Recycler Variables----
     private RecyclerView recyclerView;
     private List<UsersItemView> usersItemViewList;
-    private CMAdapter cmAdapter;
+    private VSPAdapter vspAdapter;
     //------------------------
 
 
@@ -41,9 +41,9 @@ public class ADMVerifiedSPListFragment extends Fragment {
         //------References--------
         recyclerView = rootView.findViewById(R.id.adm_customer_list_recyclerView);
         usersItemViewList = new ArrayList<>();
-        cmAdapter = new CMAdapter(usersItemViewList, getActivity());
+        vspAdapter = new VSPAdapter(usersItemViewList, getActivity());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(cmAdapter);
+        recyclerView.setAdapter(vspAdapter);
         //-----------------------
 
 
@@ -64,10 +64,10 @@ public class ADMVerifiedSPListFragment extends Fragment {
                     String email = customerSnapshot.child("email").getValue(String.class);
                     String address = customerSnapshot.child("address").getValue(String.class);
                     String phone = customerSnapshot.child("phone").getValue(String.class);
-                    String userprofileimage = customerSnapshot.child("profileImageUrl").getValue(String.class);
+                    String userprofileimage = customerSnapshot.child("profileimageurl").getValue(String.class);
 
                     usersItemViewList.add(new UsersItemView(userid,name,address,userprofileimage,phone,email));
-                    cmAdapter.notifyDataSetChanged();
+                    vspAdapter.notifyDataSetChanged();
 
 
                 }

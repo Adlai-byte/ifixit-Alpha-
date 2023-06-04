@@ -48,8 +48,7 @@ public class ADMCustomerListFragment extends Fragment {
 
 
         DatabaseReference customerRef = FirebaseDatabase.getInstance().getReference()
-                .child("USERS")
-                .child("CUSTOMERS");
+                .child("customers");
 
         customerRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -60,11 +59,11 @@ public class ADMCustomerListFragment extends Fragment {
                 for (DataSnapshot customerSnapshot : snapshot.getChildren()) {
 
                     String userid = customerSnapshot.getKey();
-                    String name = customerSnapshot.child("NAME").getValue(String.class);
-                    String email = customerSnapshot.child("EMAIL").getValue(String.class);
-                    String address = customerSnapshot.child("ADDRESS").getValue(String.class);
-                    String phone = customerSnapshot.child("PHONE").getValue(String.class);
-                    String userprofileimage = customerSnapshot.child("profileImageUrl").getValue(String.class);
+                    String name = customerSnapshot.child("name").getValue(String.class);
+                    String email = customerSnapshot.child("email").getValue(String.class);
+                    String address = customerSnapshot.child("address").getValue(String.class);
+                    String phone = customerSnapshot.child("phone").getValue(String.class);
+                    String userprofileimage = customerSnapshot.child("profileimageurl").getValue(String.class);
 
                     usersItemViewList.add(new UsersItemView(userid,name,address,userprofileimage,phone,email));
                     cmAdapter.notifyDataSetChanged();

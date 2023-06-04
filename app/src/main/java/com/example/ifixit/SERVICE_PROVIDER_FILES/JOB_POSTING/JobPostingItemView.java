@@ -1,4 +1,4 @@
-package com.example.ifixit.ORGANIZATIONAL_FILES.JOB_POSTING;
+package com.example.ifixit.SERVICE_PROVIDER_FILES.JOB_POSTING;
 
 public class JobPostingItemView {
     String userid;
@@ -10,6 +10,16 @@ public class JobPostingItemView {
     String address;
     String duration;
     String description;
+    String orderid;
+
+
+    public String getOrderid() {
+        return orderid;
+    }
+
+    public void setOrderid(String orderid) {
+        this.orderid = orderid;
+    }
 
     public String getUserid() {
         return userid;
@@ -83,7 +93,7 @@ public class JobPostingItemView {
         this.description = description;
     }
 
-    public JobPostingItemView(String userid, String name, String serviceType, String maxPrice, String minPrice, String address, String duration, String description,String orgName) {
+    public JobPostingItemView(String userid, String name, String serviceType, String maxPrice, String minPrice, String address, String duration, String description,String orgName,String orderid) {
         this.userid = userid;
         this.name = name;
         this.serviceType = serviceType;
@@ -93,6 +103,7 @@ public class JobPostingItemView {
         this.duration = duration;
         this.description = description;
         this.orgName = orgName;
+        this.orderid = orderid;
     }
 
 
