@@ -133,24 +133,24 @@ public class OrgCheckOutActivity extends AppCompatActivity {
         job = (TextView) findViewById(R.id.serviceProviderJob);
         address = (TextView) findViewById(R.id.serviceProviderAddress);
         total = (TextView) findViewById(R.id.tvTotal);
-        picker1 = (NumberPicker) findViewById(R.id.numberPicker1);
+//        picker1 = (NumberPicker) findViewById(R.id.numberPicker1);
         placeOrder = (Button) findViewById(R.id.placeOrderButton);
 
         //Number Picker
-        picker1.setMinValue(0);
-        picker1.setMaxValue(31);
+//        picker1.setMinValue(0);
+//        picker1.setMaxValue(31);
 
 
-        picker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                days = picker1.getValue();
-                finalPrice = days * initialPrice;
-                total.setText(String.valueOf(finalPrice));
-
-            }
-        });
-
+//        picker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+//            @Override
+//            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+//
+//
+//            }
+//        });
+        days = 1;//Temporary
+        finalPrice = days * initialPrice;
+        total.setText(String.valueOf(finalPrice));
 
         getHeaderInfo();
 

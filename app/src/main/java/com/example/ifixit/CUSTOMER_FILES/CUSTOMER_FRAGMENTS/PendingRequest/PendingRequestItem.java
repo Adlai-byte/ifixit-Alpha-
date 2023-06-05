@@ -1,11 +1,8 @@
 package com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.PendingRequest;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 public class PendingRequestItem {
+
+    String key;
     String serviceProviderUid;
     String name;
     String timestamp;
@@ -58,6 +55,10 @@ public class PendingRequestItem {
         return service;
     }
 
+    public String getKey() {
+        return key;
+    }
+
     public void setService(String service) {
         this.service = service;
     }
@@ -70,7 +71,8 @@ public class PendingRequestItem {
         this.total = total;
     }
 
-    public PendingRequestItem(String serviceProviderUid, String name, String timestamp, String service, String total,String status,String jobtype) {
+    public PendingRequestItem(String serviceProviderUid, String name, String timestamp, String service, String total,String status,String jobtype,String key) {
+        this.key= key;
         this.jobtype = jobtype;
         this.serviceProviderUid = serviceProviderUid;
         this.name = name;
@@ -79,17 +81,5 @@ public class PendingRequestItem {
         this.total = total;
         this.status = status;
     }
-    public String getFormattedTimestamp() {
-        try {
-            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
-            Date date = inputFormat.parse(timestamp);
 
-            SimpleDateFormat outputFormat = new SimpleDateFormat("MM:dd:yyyy HH:mm:ss", Locale.getDefault());
-            return outputFormat.format(date);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
 }

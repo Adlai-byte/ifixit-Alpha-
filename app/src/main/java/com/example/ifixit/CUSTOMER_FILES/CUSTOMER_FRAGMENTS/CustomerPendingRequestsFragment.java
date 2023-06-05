@@ -59,23 +59,23 @@ public class CustomerPendingRequestsFragment extends Fragment {
                 .child("pending-request")
                 .orderByChild("timestamp");
 
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 pendingRequestItemList.clear();
                 if (snapshot.exists()) {
-                    Toast.makeText(getContext(), "Snapshot exist", Toast.LENGTH_SHORT).show();
-                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
 
-                        String userId = childSnapshot.getKey();
+                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                        String key = childSnapshot.getKey();
+                        String userId = childSnapshot.child("userid").getValue(String.class);
                         String name = childSnapshot.child("name").getValue(String.class);
                         String service = childSnapshot.child("service").getValue(String.class);
-                        String timestamp = childSnapshot.child("timestamp").getValue(String.class);
+                        String timestamp = childSnapshot.child("dateofservice").getValue(String.class);
                         String total = childSnapshot.child("totalprice").getValue(String.class);
                         String status = childSnapshot.child("status").getValue(String.class);
                         String jobType = childSnapshot.child("jobtype").getValue(String.class);
 
-                        PendingRequestItem item = new PendingRequestItem(userId, name, timestamp, service, total,status,jobType);
+                        PendingRequestItem item = new PendingRequestItem(userId, name, timestamp, service, total,status,jobType,key);
                         pendingRequestItemList.add(item);
                         pendingRequestAdapter.notifyDataSetChanged();
                     }

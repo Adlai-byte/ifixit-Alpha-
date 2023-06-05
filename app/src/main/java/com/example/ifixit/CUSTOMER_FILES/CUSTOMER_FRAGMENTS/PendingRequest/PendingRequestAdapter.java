@@ -9,6 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ifixit.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -35,13 +38,39 @@ public class PendingRequestAdapter extends RecyclerView.Adapter<PendingRequestVi
 
         PendingRequestItem pendingRequestItem = pendingRequestItemList.get(position);
 
+        String currentuserid = FirebaseAuth.getInstance().getUid();
         holder.status.setText(pendingRequestItem.getJobtype());
         holder.status.setText(pendingRequestItem.getStatus());
         holder.name.setText(pendingRequestItem.getName());
         holder.service.setText(pendingRequestItem.getService());
-        holder.timestamp.setText(pendingRequestItem.getFormattedTimestamp());
+        holder.timestamp.setText(pendingRequestItem.getTimestamp());
         holder.total.setText(pendingRequestItem.getTotal());
         holder.jobtype.setText(pendingRequestItem.getJobtype());
+
+
+
+
+
+        //Cancel the request
+        holder.cancelRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseReference pendingRequestRef = FirebaseDatabase.getInstance().getReference()
+                        .child("customers")
+                        .child(currentuserid)
+                        .child("pending-request")
+                        .child(pendingRequestItem.getKey());
+                pendingRequestRef.removeValue();
+
+                int itemPosition = holder.getAdapterPosition();
+                pendingRequestItemList.remove(itemPosition);
+                notifyItemRemoved(itemPosition);
+                notifyItemRangeChanged(itemPosition,pendingRequestItemList.size());
+
+
+            }
+        });
+
 
     }
 

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
@@ -27,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +43,11 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
     private Button placeOrder;
     private Spinner serviceType;
     private EditText description;
+
+    //Calendar
+    private CalendarView calendarView;
+    private String selecteddate;
+
 
     //Use this as the key in the Hashmap
 
@@ -137,26 +144,58 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
         job = (TextView) findViewById(R.id.serviceProviderJob);
         address = (TextView) findViewById(R.id.serviceProviderAddress);
         total = (TextView) findViewById(R.id.tvTotal);
-        picker1 = (NumberPicker) findViewById(R.id.numberPicker1);
+//        picker1 = (NumberPicker) findViewById(R.id.numberPicker1);
         placeOrder = (Button) findViewById(R.id.placeOrderButton);
-        description = (EditText) findViewById(R.id.checkoutDescription);
-
-        //Number Picker
-        picker1.setMinValue(0);
-        picker1.setMaxValue(31);
+//        description = (EditText) findViewById(R.id.checkoutDescription);
 
 
-        picker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        //Calendar
+        calendarView = (CalendarView) findViewById(R.id.calendar);
+
+
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                days = picker1.getValue();
-                finalPrice = days * initialPrice;
-                total.setText(String.valueOf(finalPrice));
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
+
+                // Create a Calendar instance for the selected date
+                Calendar selectedDate = Calendar.getInstance();
+                selectedDate.set(year, month, dayOfMonth);
+
+                // Create a Calendar instance for the current date
+                Calendar currentDate = Calendar.getInstance();
+
+                // Compare the selected date with the current date
+                if (selectedDate.before(currentDate)) {
+                    Toast.makeText(CustomerCheckOutActivity.this, "Can't select a date before the current date", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                selecteddate = dayOfMonth + "/" + (month + 1) + "/" + year;
+
+
 
             }
         });
 
 
+        //If the the button is clicked the calendar will be visible
+
+
+        //Number Picker
+//        picker1.setMinValue(0);
+//        picker1.setMaxValue(31);
+
+
+//        picker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+//            @Override
+//            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+//
+//
+//            }
+//        });
+
+        days = 1; //Temporary
+        finalPrice = days * initialPrice;
+        total.setText(String.valueOf(finalPrice));
         getHeaderInfo();
 
 
@@ -166,7 +205,7 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
         placeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                comment = description.getText().toString();
+                comment = "None for the moment";
                 mCustomerRef = FirebaseDatabase.getInstance().getReference()
                         .child("customers");
 
@@ -209,7 +248,7 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                             // Create a new job offer HashMap with the customer's data
                             HashMap<String, String> jobOffer = new HashMap<>();
 
-                            jobOffer.put("userid",customerUserId);
+                            jobOffer.put("userid", customerUserId);
                             jobOffer.put("service", service);
                             jobOffer.put("name", name);
                             jobOffer.put("address", address);
@@ -217,29 +256,35 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                             jobOffer.put("timestamp", String.valueOf(timestamp));
                             jobOffer.put("profileimageurl", imgUrl);
                             jobOffer.put("jobtype", jobType);
-                            jobOffer.put("duration", daysOfWork);
+//                            jobOffer.put("duration", daysOfWork);
                             jobOffer.put("totalprice", totalPrice);
-                            jobOffer.put("decription", description);
+//                            jobOffer.put("decription", description);
+                            jobOffer.put("dateofservice",selecteddate);
 
 
                             // Hashmap for to send to pending request
                             HashMap<String, String> pendingReqData = new HashMap<>();
                             //Service Provider Data
-                            ServiceProviderRefData.addValueEventListener(new ValueEventListener() {
+                            ServiceProviderRefData.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                                     String spName = snapshot.child("name").getValue(String.class);
                                     String spService = snapshot.child("service").getValue(String.class);
-                                    pendingReqData.put("userid",serviceProviderUserId);
+                                    pendingReqData.put("userid", serviceProviderUserId);
                                     pendingReqData.put("name", spName);
                                     pendingReqData.put("service", spService);
                                     pendingReqData.put("totalprice", totalPrice);
                                     pendingReqData.put("timestamp", String.valueOf(timestamp));
-                                    pendingReqData.put("jobtype",jobType);
-                                    pendingReqData.put("status","PENDING");
+                                    pendingReqData.put("jobtype", jobType);
+                                    pendingReqData.put("status", "PENDING");
+                                    pendingReqData.put("dateofservice",selecteddate);
 
+
+                                    //Sending Data to the customers pending request
                                     customerPendingRequestRef.push().setValue(pendingReqData);
+
+
 
                                 }
 
@@ -250,6 +295,9 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                             });
 
 
+
+
+                            //Sending the data to the service provider pending directory
                             mServiceProviderRef.push().setValue(jobOffer).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -263,8 +311,6 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                                 }
                             });
 
-
-                            //Sending data to customer pending request
 
 
                         }

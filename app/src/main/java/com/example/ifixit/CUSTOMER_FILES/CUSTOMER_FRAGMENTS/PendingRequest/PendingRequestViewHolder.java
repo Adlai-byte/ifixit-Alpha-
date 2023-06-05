@@ -1,6 +1,7 @@
 package com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.PendingRequest;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,12 +18,15 @@ public class PendingRequestViewHolder extends RecyclerView.ViewHolder {
     public TextView status;
     public TextView jobtype;
 
+    public Button cancelRequest;
+
+
 
 
      public PendingRequestViewHolder(@NonNull View itemView) {
         super(itemView);
 
-
+        cancelRequest = itemView.findViewById(R.id.cancelRequest);
         name = itemView.findViewById(R.id.cpSPname);
         service = itemView.findViewById(R.id.cpSPservice);
         timestamp = itemView.findViewById(R.id.cpSPtimestamp);
