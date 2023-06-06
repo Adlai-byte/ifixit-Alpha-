@@ -161,11 +161,11 @@ from the actual service day."
                 android:id="@+id/totalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50sp"
+                android:layout_marginStart="40sp"
                 android:layout_marginTop="10dp"
                 android:padding="5sp"
                 android:text="TOTAL:"
-                android:textSize="18sp"
+                android:textSize="15sp"
 
                 />
 
@@ -178,7 +178,7 @@ from the actual service day."
                 android:layout_toEndOf="@+id/totalText"
                 android:text="0"
                 android:textColor="@color/quantum_googgreen"
-                android:textSize="18sp"
+                android:textSize="15sp"
 
                 />
 

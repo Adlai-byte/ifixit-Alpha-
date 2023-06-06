@@ -49,10 +49,14 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
     private String selecteddate;
 
 
+    private ArrayAdapter<CharSequence> adapter;
+
+
     //Use this as the key in the Hashmap
 
     //*
-    private String service = "Installation";
+    private String serviceProviderService = "";
+    private String service = "";
     String comment = "";
     double days = 1.0;
     double finalPrice;
@@ -67,56 +71,19 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
     DatabaseReference mServiceProviderRef;
     DatabaseReference mCustomerRef;
     DatabaseReference mServiceProviderRefForHeader;
-
+    private HashMap<String, Double> servicePriceDictionary = new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customer_check_out);
         //------Spinner
         Intent intent = getIntent();
-        HashMap<String, Double> servicePriceDictionary = new HashMap<>();
-
-        String installation = "Installation";
-        String maintenance = "Maintenance";
-        String repair = "Repair";
-
-        servicePriceDictionary.put(installation, 500.0);
-        servicePriceDictionary.put(maintenance, 600.0);
-        servicePriceDictionary.put(repair, 450.0);
 
 
-        serviceType = findViewById(R.id.adminspinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.service_type, android.R.layout.simple_spinner_item);
-        serviceType.setAdapter(adapter);
-
-
-        serviceType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                service = serviceType.getItemAtPosition(i).toString();
-//                Toast.makeText(OrgCheckOutActivity.this, "Changed Here" +service, Toast.LENGTH_SHORT).show();
-
-                if (servicePriceDictionary.containsKey(service)) {
-
-                    initialPrice = servicePriceDictionary.get(service);
-
-
-                } else {
-                    Toast.makeText(CustomerCheckOutActivity.this, "Not Found", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-
+        //Variables
         String customerUserId = intent.getStringExtra("customeruserid");
         String serviceProviderUserId = intent.getStringExtra("serviceprovideruserid");
+
 
 
         //Database References
@@ -124,6 +91,84 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                 .child("service-providers")
                 .child("verified")
                 .child(serviceProviderUserId);
+
+        //Adding all the service data and it's price
+        //Carpentry Services---------------------------------------------------------------
+        servicePriceDictionary.put("Plywood Works", 1500.00);
+        servicePriceDictionary.put("Wood Works", 2000.00);
+        servicePriceDictionary.put("Wood Design Works", 3000.0);
+        servicePriceDictionary.put("Door Lock Repair and Install", 800.0);
+        servicePriceDictionary.put("Furniture Repair", 1500.0);
+        servicePriceDictionary.put("Blinds and Curtain install", 600.0);
+        servicePriceDictionary.put("Varnish Wood", 500.0);
+        servicePriceDictionary.put("Modular Kitchen Works", 5000.0);
+        //----------------------------------------------------------------------------------
+        //Plumbing Services-----------------------------------------------------------------
+        servicePriceDictionary.put("Underground and Above Ground Pipe installation", 1000.0);
+        servicePriceDictionary.put("Flush Tank Service", 800.0);
+        servicePriceDictionary.put("Wash Basin Service", 500.0);
+        servicePriceDictionary.put("Hot and Cold Water Mixed Repair and Installation", 1500.0);
+        servicePriceDictionary.put("Underground Tank Cleaning", 1500.0);
+        servicePriceDictionary.put("Water Meter Installation", 800.0);
+        servicePriceDictionary.put("Motor Installation", 1500.0);
+        //---------------------------------------------------------------------------------
+        //Electrical Services--------------------------------------------------------------
+        servicePriceDictionary.put("Internal House Wiring (under wall)", 1000.0);
+        servicePriceDictionary.put("Casing House Wiring (above wall)", 2000.0);
+        servicePriceDictionary.put("Fan Repair and Installation", 600.0);
+        servicePriceDictionary.put("Inverter and Stabilizer Repair and Installation", 1500.0);
+        servicePriceDictionary.put("Motor Repair", 800.0);
+        servicePriceDictionary.put("Solar Panel Installation", 5000.0);
+        //---------------------------------------------------------------------------------
+        //Masonry Services-----------------------------------------------------------------
+        servicePriceDictionary.put("Stone Walls Construction", 1500.0);
+        servicePriceDictionary.put("Brick walls construction", 1200.0);
+        servicePriceDictionary.put("Concrete block walls", 1000.0);
+        servicePriceDictionary.put("Concrete foundations", 1000.0);
+        servicePriceDictionary.put("Repairing cracked or damaged bricks/stone", 300.0);
+        servicePriceDictionary.put("Masonry columns and pillars", 1000.0);
+        servicePriceDictionary.put("Masonry garden sculptures<", 1500.0);
+        //---------------------------------------------------------------------------------
+        //Computer Services ---------------------------------------------------------------
+        servicePriceDictionary.put("Computer Assembly and Installation", 500.0);
+        servicePriceDictionary.put("Hardware Troubleshooting and Repair", 300.0);
+        servicePriceDictionary.put("System Upgrades and Expansion", 500.0);
+        servicePriceDictionary.put("Data Backup and Recovery", 300.0);
+        servicePriceDictionary.put("Virus and Malware Removal", 200.0);
+        servicePriceDictionary.put("System Maintenance and Optimization", 300.0);
+        servicePriceDictionary.put("Network Setup and Troubleshooting", 500.0);
+        servicePriceDictionary.put("Peripheral Setup and Configuration", 200.0);
+        //---------------------------------------------------------------------------------
+        //Gardening Services---------------------------------------------------------------
+        servicePriceDictionary.put("Lawn Care", 500.0);
+        servicePriceDictionary.put("Planting and Bed Maintenance",300.0);
+        servicePriceDictionary.put("Garden Design and Landscaping",5000.0);
+        servicePriceDictionary.put("Seasonal Plantings and Container Gardens", 300.0);
+        servicePriceDictionary.put("Vegetable and Herb Gardens", 500.0);
+        servicePriceDictionary.put("Tree and Shrub Care", 500.0);
+        servicePriceDictionary.put("Garden Cleanup and Waste Removal", 200.0);
+        servicePriceDictionary.put("Consultation and Maintenance Planning", 500.0);
+        //--------------------------------------------------------------------------------
+
+        //Get the service provider service type
+        mServiceProviderRefForHeader.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    serviceProviderService = snapshot.child("service").getValue(String.class);
+                    setupSpinnerAdapter();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+
 
         mCustomerRef = FirebaseDatabase.getInstance().getReference()
                 .child("customers");
@@ -144,9 +189,8 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
         job = (TextView) findViewById(R.id.serviceProviderJob);
         address = (TextView) findViewById(R.id.serviceProviderAddress);
         total = (TextView) findViewById(R.id.tvTotal);
-//        picker1 = (NumberPicker) findViewById(R.id.numberPicker1);
+        serviceType = (Spinner)findViewById(R.id.adminspinner) ;
         placeOrder = (Button) findViewById(R.id.placeOrderButton);
-//        description = (EditText) findViewById(R.id.checkoutDescription);
 
 
         //Calendar
@@ -172,30 +216,14 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                 selecteddate = dayOfMonth + "/" + (month + 1) + "/" + year;
 
 
-
             }
         });
 
 
-        //If the the button is clicked the calendar will be visible
 
 
-        //Number Picker
-//        picker1.setMinValue(0);
-//        picker1.setMaxValue(31);
 
 
-//        picker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-//            @Override
-//            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-//
-//
-//            }
-//        });
-
-        days = 1; //Temporary
-        finalPrice = days * initialPrice;
-        total.setText(String.valueOf(finalPrice));
         getHeaderInfo();
 
 
@@ -259,7 +287,7 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
 //                            jobOffer.put("duration", daysOfWork);
                             jobOffer.put("totalprice", totalPrice);
 //                            jobOffer.put("decription", description);
-                            jobOffer.put("dateofservice",selecteddate);
+                            jobOffer.put("dateofservice", selecteddate);
 
 
                             // Hashmap for to send to pending request
@@ -278,12 +306,11 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                                     pendingReqData.put("timestamp", String.valueOf(timestamp));
                                     pendingReqData.put("jobtype", jobType);
                                     pendingReqData.put("status", "PENDING");
-                                    pendingReqData.put("dateofservice",selecteddate);
+                                    pendingReqData.put("dateofservice", selecteddate);
 
 
                                     //Sending Data to the customers pending request
                                     customerPendingRequestRef.push().setValue(pendingReqData);
-
 
 
                                 }
@@ -293,8 +320,6 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
 
                                 }
                             });
-
-
 
 
                             //Sending the data to the service provider pending directory
@@ -310,7 +335,6 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-
 
 
                         }
@@ -366,6 +390,52 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+    }
+
+    private void setupSpinnerAdapter() {
+        switch (serviceProviderService) {
+            case "Plumber":
+                adapter = ArrayAdapter.createFromResource(this, R.array.plumbing_services, android.R.layout.simple_spinner_item);
+                break;
+            case "Electrician":
+                adapter = ArrayAdapter.createFromResource(this, R.array.electrical_services, android.R.layout.simple_spinner_item);
+                break;
+            case "Masonry":
+                adapter = ArrayAdapter.createFromResource(this, R.array.masonry_services, android.R.layout.simple_spinner_item);
+                break;
+            case "Computer Repair":
+                adapter = ArrayAdapter.createFromResource(this, R.array.computer_services, android.R.layout.simple_spinner_item);
+                break;
+            case "Gardener":
+                adapter = ArrayAdapter.createFromResource(this, R.array.gardening_services, android.R.layout.simple_spinner_item);
+                break;
+        }
+
+        serviceType.setAdapter(adapter);
+
+        serviceType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                service = serviceType.getItemAtPosition(i).toString();
+
+                if (servicePriceDictionary.containsKey(service)) {
+
+                    initialPrice = servicePriceDictionary.get(service);
+
+                    total.setText(String.valueOf(initialPrice));
+
+                } else {
+                    Toast.makeText(CustomerCheckOutActivity.this, String.valueOf(servicePriceDictionary.get(service)), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(CustomerCheckOutActivity.this, "Not Found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                // Handle the selection when nothing is selected
             }
         });
     }
