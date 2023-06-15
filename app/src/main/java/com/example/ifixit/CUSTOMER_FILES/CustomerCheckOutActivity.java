@@ -7,9 +7,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,9 +26,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class CustomerCheckOutActivity extends AppCompatActivity {
 
@@ -38,15 +38,20 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
     private TextView name;
     private TextView job;
     private TextView address;
-    private NumberPicker picker1;
     private TextView total;
     private Button placeOrder;
     private Spinner serviceType;
-    private EditText description;
+
+    private TextView statusTextView;
+    private TextView dateTextView;
+
 
     //Calendar
     private CalendarView calendarView;
     private String selecteddate;
+
+    //Calendar View
+    private CalendarView calendar;
 
 
     private ArrayAdapter<CharSequence> adapter;
@@ -61,17 +66,22 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
     double days = 1.0;
     double finalPrice;
     //*
-
+    Calendar selectedDate;
 
     double initialPrice;
 
 
     // Variables from customer maps
     long timestamp = System.currentTimeMillis();
+    DatabaseReference serviceProviderServiceSchedules;
     DatabaseReference mServiceProviderRef;
     DatabaseReference mCustomerRef;
     DatabaseReference mServiceProviderRefForHeader;
+
+    ArrayList<String>ListOfUnvailableDates = new ArrayList<>();
+
     private HashMap<String, Double> servicePriceDictionary = new HashMap<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +95,11 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
         String serviceProviderUserId = intent.getStringExtra("serviceprovideruserid");
 
 
-
+        serviceProviderServiceSchedules = FirebaseDatabase.getInstance().getReference()
+                .child("service-providers")
+                .child("verified")
+                .child(serviceProviderUserId)
+                .child("service-schedules");
         //Database References
         mServiceProviderRefForHeader = FirebaseDatabase.getInstance().getReference()
                 .child("service-providers")
@@ -141,8 +155,8 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
         //---------------------------------------------------------------------------------
         //Gardening Services---------------------------------------------------------------
         servicePriceDictionary.put("Lawn Care", 500.0);
-        servicePriceDictionary.put("Planting and Bed Maintenance",300.0);
-        servicePriceDictionary.put("Garden Design and Landscaping",5000.0);
+        servicePriceDictionary.put("Planting and Bed Maintenance", 300.0);
+        servicePriceDictionary.put("Garden Design and Landscaping", 5000.0);
         servicePriceDictionary.put("Seasonal Plantings and Container Gardens", 300.0);
         servicePriceDictionary.put("Vegetable and Herb Gardens", 500.0);
         servicePriceDictionary.put("Tree and Shrub Care", 500.0);
@@ -167,9 +181,6 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
         });
 
 
-
-
-
         mCustomerRef = FirebaseDatabase.getInstance().getReference()
                 .child("customers");
 
@@ -189,20 +200,22 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
         job = (TextView) findViewById(R.id.serviceProviderJob);
         address = (TextView) findViewById(R.id.serviceProviderAddress);
         total = (TextView) findViewById(R.id.tvTotal);
-        serviceType = (Spinner)findViewById(R.id.adminspinner) ;
+        serviceType = (Spinner) findViewById(R.id.adminspinner);
         placeOrder = (Button) findViewById(R.id.placeOrderButton);
+
+
+        //Service schedule reference
+
 
 
         //Calendar
         calendarView = (CalendarView) findViewById(R.id.calendar);
-
-
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
 
                 // Create a Calendar instance for the selected date
-                Calendar selectedDate = Calendar.getInstance();
+                selectedDate = Calendar.getInstance();
                 selectedDate.set(year, month, dayOfMonth);
 
                 // Create a Calendar instance for the current date
@@ -213,15 +226,51 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                     Toast.makeText(CustomerCheckOutActivity.this, "Can't select a date before the current date", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                selecteddate = dayOfMonth + "/" + (month + 1) + "/" + year;
 
+
+                //Example format 05/02/2001
+                selecteddate = (month + 1) + "/" + dayOfMonth + "/" + year;
+
+
+                serviceProviderServiceSchedules.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        StringBuilder statusBuilder = new StringBuilder();
+                        Boolean isFound = false;
+                        if (snapshot.exists()) {
+                            for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+
+                                String serviceType = childSnapshot.child("service").getValue(String.class);
+                                String dateOfService = childSnapshot.child("dateofservice").getValue(String.class);
+                                String newSelectedDate = selecteddate;
+
+
+
+
+                                if(newSelectedDate.contains(dateOfService)){
+                                    Toast.makeText(CustomerCheckOutActivity.this, "This date is not available", Toast.LENGTH_SHORT).show();
+                                    ListOfUnvailableDates.add(dateOfService);
+                                }else {
+                                    Toast.makeText(CustomerCheckOutActivity.this,"This date is available",Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+
+                        }else {
+                            Toast.makeText(CustomerCheckOutActivity.this, "No current bookings in the database", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle database read error
+                    }
+                });
 
             }
         });
-
-
-
-
 
 
         getHeaderInfo();
@@ -233,6 +282,10 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
         placeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+
+
                 comment = "None for the moment";
                 mCustomerRef = FirebaseDatabase.getInstance().getReference()
                         .child("customers");
@@ -242,6 +295,8 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                         .child("customers")
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .child("pending-request");
+
+                //Service Providers Service Schedules
 
 
                 //Pending Jobs directory reference
@@ -259,95 +314,113 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                         .child(serviceProviderUserId);
 
 
-                mCustomerRef.child(customerUserId).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            String name = snapshot.child("name").getValue(String.class);
-                            String address = snapshot.child("address").getValue(String.class);
-                            String email = snapshot.child("email").getValue(String.class);
-                            String imgUrl = snapshot.child("profileimageurl").getValue(String.class);
+                for (String notAvaiableDates: ListOfUnvailableDates){
+                    Calendar currentDate = Calendar.getInstance();
+                    if(notAvaiableDates.contains(selecteddate)||selectedDate.before(currentDate)){
+                        Toast.makeText(CustomerCheckOutActivity.this, "Please Select Another Date", Toast.LENGTH_SHORT).show();
+                    }else {
+                        mCustomerRef.child(customerUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.exists()) {
+                                    String name = snapshot.child("name").getValue(String.class);
+                                    String address = snapshot.child("address").getValue(String.class);
+                                    String email = snapshot.child("email").getValue(String.class);
+                                    String imgUrl = snapshot.child("profileimageurl").getValue(String.class);
 
-                            String jobType = service;
-                            String daysOfWork = String.valueOf(days);
-                            String totalPrice = String.valueOf(finalPrice);
-                            String description = comment;
+                                    String jobType = service;
+//                            String daysOfWork = String.valueOf(days);
+                                    String totalPrice = String.valueOf(finalPrice);
+//                            String description = comment;
 
-                            // Create a new job offer HashMap with the customer's data
-                            HashMap<String, String> jobOffer = new HashMap<>();
+                                    // Create a new job offer HashMap with the customer's data
+                                    HashMap<String, String> jobOffer = new HashMap<>();
+                                    HashMap<String, String> datesofservices = new HashMap<>();
 
-                            jobOffer.put("userid", customerUserId);
-                            jobOffer.put("service", service);
-                            jobOffer.put("name", name);
-                            jobOffer.put("address", address);
-                            jobOffer.put("email", email);
-                            jobOffer.put("timestamp", String.valueOf(timestamp));
-                            jobOffer.put("profileimageurl", imgUrl);
-                            jobOffer.put("jobtype", jobType);
+                                    jobOffer.put("userid", customerUserId);
+                                    jobOffer.put("service", service);
+                                    jobOffer.put("name", name);
+                                    jobOffer.put("address", address);
+                                    jobOffer.put("email", email);
+                                    jobOffer.put("timestamp", String.valueOf(timestamp));
+                                    jobOffer.put("profileimageurl", imgUrl);
+                                    jobOffer.put("jobtype", jobType);
 //                            jobOffer.put("duration", daysOfWork);
-                            jobOffer.put("totalprice", totalPrice);
+                                    jobOffer.put("totalprice", totalPrice);
 //                            jobOffer.put("decription", description);
-                            jobOffer.put("dateofservice", selecteddate);
+                                    jobOffer.put("dateofservice", selecteddate);
 
 
-                            // Hashmap for to send to pending request
-                            HashMap<String, String> pendingReqData = new HashMap<>();
-                            //Service Provider Data
-                            ServiceProviderRefData.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    // Hashmap for to send to pending request
+                                    HashMap<String, String> pendingReqData = new HashMap<>();
+                                    //Service Provider Data
+                                    ServiceProviderRefData.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                                    String spName = snapshot.child("name").getValue(String.class);
-                                    String spService = snapshot.child("service").getValue(String.class);
-                                    pendingReqData.put("userid", serviceProviderUserId);
-                                    pendingReqData.put("name", spName);
-                                    pendingReqData.put("service", spService);
-                                    pendingReqData.put("totalprice", totalPrice);
-                                    pendingReqData.put("timestamp", String.valueOf(timestamp));
-                                    pendingReqData.put("jobtype", jobType);
-                                    pendingReqData.put("status", "PENDING");
-                                    pendingReqData.put("dateofservice", selecteddate);
+                                            String spName = snapshot.child("name").getValue(String.class);
+                                            String spService = snapshot.child("service").getValue(String.class);
+                                            pendingReqData.put("userid", serviceProviderUserId);
+                                            pendingReqData.put("name", spName);
+                                            pendingReqData.put("service", spService);
+                                            pendingReqData.put("totalprice", totalPrice);
+                                            pendingReqData.put("timestamp", String.valueOf(timestamp));
+                                            pendingReqData.put("jobtype", jobType);
+                                            pendingReqData.put("status", "PENDING");
+                                            pendingReqData.put("dateofservice", selecteddate);
+
+                                            //Service dates------------------------------------
+                                            datesofservices.put("dateofservice", selecteddate);
+                                            datesofservices.put("service", spService);
+                                            //--------------------------------------------------
 
 
-                                    //Sending Data to the customers pending request
-                                    customerPendingRequestRef.push().setValue(pendingReqData);
+
+
+                                            //Sending Data to the customers pending request
+                                            customerPendingRequestRef.push().setValue(pendingReqData);
+                                            serviceProviderServiceSchedules.push().setValue(datesofservices);
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+
+
+
+                                    //Sending the data to the service provider pending directory
+                                    mServiceProviderRef.push().setValue(jobOffer).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                // Data successfully added to the database
+                                                Toast.makeText(CustomerCheckOutActivity.this, "Data added successfully", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                // Failed to add data to the database
+                                                Toast.makeText(CustomerCheckOutActivity.this, "Failed to add data", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
 
 
                                 }
+                            }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                // ...
+                            }
+                        });
 
-                                }
-                            });
-
-
-                            //Sending the data to the service provider pending directory
-                            mServiceProviderRef.push().setValue(jobOffer).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        // Data successfully added to the database
-                                        Toast.makeText(CustomerCheckOutActivity.this, "Data added successfully", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        // Failed to add data to the database
-                                        Toast.makeText(CustomerCheckOutActivity.this, "Failed to add data", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-
-
-                        }
+                        Intent intent1 = new Intent(CustomerCheckOutActivity.this, CustomerMapsActivity.class);
+                        startActivity(intent1);
                     }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        // ...
-                    }
-                });
 
-                Intent intent1 = new Intent(CustomerCheckOutActivity.this, CustomerMapsActivity.class);
-                startActivity(intent1);
             }
         });
     }
@@ -422,10 +495,8 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                 service = serviceType.getItemAtPosition(i).toString();
 
                 if (servicePriceDictionary.containsKey(service)) {
-
-                    initialPrice = servicePriceDictionary.get(service);
-
-                    total.setText(String.valueOf(initialPrice));
+                    finalPrice = servicePriceDictionary.get(service);
+                    total.setText(String.valueOf(finalPrice));
 
                 } else {
                     Toast.makeText(CustomerCheckOutActivity.this, String.valueOf(servicePriceDictionary.get(service)), Toast.LENGTH_SHORT).show();

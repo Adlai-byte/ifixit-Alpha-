@@ -39,7 +39,6 @@ public class PendingRequestAdapter extends RecyclerView.Adapter<PendingRequestVi
         PendingRequestItem pendingRequestItem = pendingRequestItemList.get(position);
 
         String currentuserid = FirebaseAuth.getInstance().getUid();
-        holder.status.setText(pendingRequestItem.getJobtype());
         holder.status.setText(pendingRequestItem.getStatus());
         holder.name.setText(pendingRequestItem.getName());
         holder.service.setText(pendingRequestItem.getService());

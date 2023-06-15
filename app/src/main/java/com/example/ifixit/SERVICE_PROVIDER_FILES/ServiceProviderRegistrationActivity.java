@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
+ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +20,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -29,13 +31,13 @@ import java.util.Map;
 
 public class ServiceProviderRegistrationActivity extends AppCompatActivity {
 
-    //Variables
+    // Variables
 
-    //------Firebase
+    // Firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
 
-    //------EditTexts
+    // EditTexts
     private EditText etName;
     private EditText etAddress;
     private EditText etEmail;
@@ -46,44 +48,39 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
 
     ArrayAdapter<CharSequence> adapter;
 
-    //------Buttons
+    // Buttons
     private Button btnRegister;
 
-    //------TextView
+    // TextView
     private TextView tvAlreadyHave;
 
-    //------String
+    // Strings
     private String mService;
     private String defaultProfilePicUrl;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.service_provider_registration);
 
-
-
         defaultProfilePicUrl = "https://firebasestorage.googleapis.com/v0/b/ifixit-fac6e.appspot.com/o/profile_images%2F64_7.png?alt=media&token=f03436db-e228-4a0c-8a48-04bc480b8bca";
-        //---Layout Connecting
 
-        //Spinner
+        // Layout Connecting
+        // Spinner
         spService = findViewById(R.id.adminspinner);
-
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.service_options, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spService.setAdapter(adapter);
         spService.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // handle item selection
+                // Handle item selection
                 mService = spService.getItemAtPosition(position).toString();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // handle nothing selected
+                // Handle nothing selected
                 mService = "";
             }
         });
@@ -102,7 +99,7 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
+                if (user != null && user.isEmailVerified()) {
                     Intent intent = new Intent(ServiceProviderRegistrationActivity.this, ServiceProviderMainMenuActivity.class);
                     startActivity(intent);
                     finish();
@@ -110,7 +107,7 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
             }
         };
 
-        //---On Click Listeners
+        // On Click Listeners
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,20 +121,33 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
 
                 // Validations
                 if (TextUtils.isEmpty(name)
-                        ||TextUtils.isEmpty(email)
+                        || TextUtils.isEmpty(email)
                         || TextUtils.isEmpty(address)
                         || TextUtils.isEmpty(password)
                         || TextUtils.isEmpty(confirmPassword)
-                        || TextUtils.isEmpty(phone)) {
+                        || TextUtils.isEmpty(phone))
+                {
                     Toast.makeText(getApplicationContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 } else if (!password.equals(confirmPassword)) {
                     Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+                } else if (!isPasswordValid(password)) {
+                    Toast.makeText(getApplicationContext(), "Password should be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, and one digit", Toast.LENGTH_SHORT).show();
+                } else if (phone.length()!=11) {
+                    Toast.makeText(ServiceProviderRegistrationActivity.this, "Phone number must be 11 digits exactly", Toast.LENGTH_SHORT).show();
                 } else {
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(ServiceProviderRegistrationActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (!task.isSuccessful()) {
-                                Toast.makeText(ServiceProviderRegistrationActivity.this, "Sign-up Error", Toast.LENGTH_SHORT).show();
+                                try {
+                                    throw task.getException();
+                                } catch (FirebaseAuthInvalidUserException invalidEmail) {
+                                    Toast.makeText(ServiceProviderRegistrationActivity.this, "Invalid email", Toast.LENGTH_SHORT).show();
+                                } catch (FirebaseAuthInvalidCredentialsException malformedEmail) {
+                                    Toast.makeText(ServiceProviderRegistrationActivity.this, "Malformed email", Toast.LENGTH_SHORT).show();
+                                } catch (Exception e) {
+                                    Toast.makeText(ServiceProviderRegistrationActivity.this, "Sign-up Error", Toast.LENGTH_SHORT).show();
+                                }
                             } else {
                                 String userID = mAuth.getCurrentUser().getUid();
                                 DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference()
@@ -151,14 +161,16 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
                                 userInfo.put("email", email);
                                 userInfo.put("address", address);
                                 userInfo.put("phone", phone);
-//                                userInfo.put("password", password);
                                 userInfo.put("service", service);
                                 userInfo.put("rating", 0.0);
                                 userInfo.put("maxPrice", 0.0);
                                 userInfo.put("minPrice", 0.0);
-                                userInfo.put("profileimageurl",defaultProfilePicUrl);
+                                userInfo.put("profileimageurl", defaultProfilePicUrl);
 
                                 current_user_db.updateChildren(userInfo);
+                                Intent intent = new Intent(ServiceProviderRegistrationActivity.this, ServiceProviderMainMenuActivity.class);
+                                startActivity(intent);
+                                finish();
 
                                 Toast.makeText(ServiceProviderRegistrationActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                             }
@@ -210,10 +222,7 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
             return false;
         }
 
-
-
         // Password meets all the password standards
         return true;
     }
 }
-

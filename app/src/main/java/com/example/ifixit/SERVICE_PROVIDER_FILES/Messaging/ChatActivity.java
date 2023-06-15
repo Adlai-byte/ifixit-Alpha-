@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.ifixit.R;
+import com.example.ifixit.databinding.ServiceProviderMainMenuBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -29,14 +29,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity {
 
 
     private ImageView chatImage;
     private TextView chatName;
-    private Uri resultUri;
+    private ImageView backButton;
+
     private RecyclerView recyclerView;
     private EditText messageEditText;
     private Button sendButton;
@@ -45,6 +45,7 @@ public class ChatActivity extends AppCompatActivity {
     private List<ChatMessage> messageList;
     private List<String> contactIds;
     private DatabaseReference messagesDatabaseRef;
+    private Uri resultUri;
     private ChildEventListener messageChildEventListener;
 
     @Override
@@ -52,15 +53,16 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        backButton = (ImageView) findViewById(R.id.backArrow);
+
         // -- Contacts ArrayList --
+
+        contactIds = new ArrayList<>();
 
         // -- Chat Header --
         chatImage = findViewById(R.id.chatProfileImage);
         chatName =findViewById(R.id.chatName);
-
-        contactIds = new ArrayList<>();
-
-
+        // ---------------------------------------------
         recyclerView = findViewById(R.id.recycler_view);
         messageEditText = findViewById(R.id.message_edit_text);
         sendButton = findViewById(R.id.send_button);
@@ -72,107 +74,88 @@ public class ChatActivity extends AppCompatActivity {
 
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        Intent intent = getIntent();
+        //Fetch the data from the ChatList Activity
+        String chatKey = intent.getStringExtra("chatKey");
+        String name = intent.getStringExtra("name");
+        String service = intent.getStringExtra("service");
+        String profileimageurl = intent.getStringExtra("profileimageurl");
+
+
+
+        //Setting the information
+        Glide.with(this).load(profileimageurl).into(chatImage);
+        chatName.setText(name);
+
         DatabaseReference currentUserRef = FirebaseDatabase.getInstance().getReference()
                 .child("service-providers")
                 .child("verified")
                 .child(currentUserId);
 
+
+
         // -- Getting the Details from your database
 
-        DatabaseReference currentUserOngoingJob = FirebaseDatabase.getInstance().getReference()
+        DatabaseReference serviceProviderChatThreadList = FirebaseDatabase.getInstance().getReference()
                 .child("service-providers")
                 .child("verified")
                 .child(currentUserId)
-                .child("joboffers")
-                .child("ongoing");
+                .child("chat-thread-list");
 
-        // For single pyrpose chat
-// ...
 
-// For single purpose chat
-        currentUserOngoingJob.addValueEventListener(new ValueEventListener() {
+
+        messagesDatabaseRef = FirebaseDatabase.getInstance().getReference()
+                .child("chat-rooms")
+                .child(chatKey);
+
+
+
+
+        sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                contactIds.clear();
-                if (snapshot.exists()) {
-                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                        String userId = childSnapshot.getKey();
-                        contactIds.add(userId);
-                    }
-
-                    if (!contactIds.isEmpty()) {
-                        //Lets assume na isa ra imong contact
-                        String customerId = contactIds.get(0);
-                        String chatId =  customerId+currentUserId; // Replace with your own chat ID
-
-                        DatabaseReference customerRef = FirebaseDatabase.getInstance().getReference()
-                                .child("customers")
-                                .child(customerId);
-
-                        customerRef.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if(snapshot.exists()&& snapshot.getChildrenCount()>0){
-                                    Map<String,Object> map =(Map<String, Object>)snapshot.getValue();
-                                    if(map.get("name")!=null){
-                                        String name =  map.get("name").toString();
-                                        chatName.setText(name);
-                                    }
-                                    if(map.get("profileimageurl")!=null){
-                                        String url = map.get("profileimageurl").toString();
-                                        Glide.with(getApplication()).load(url).into(chatImage);
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-
-
-
-                        messagesDatabaseRef = FirebaseDatabase.getInstance().getReference().child("messages").child(chatId);
-                        sendButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                sendMessage(currentUserRef,currentUserId);
-                            }
-                        });
-
-                        retrieveMessages();
-                    } else {
-                        // Handle case when contactIds is empty
-                        Toast.makeText(ChatActivity.this, "No contacts found.", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(ChatActivity.this, "Snapshot doesn't exist", Toast.LENGTH_SHORT).show();
-                }
+            public void onClick(View v) {
+                sendMessage(currentUserRef,currentUserId);
             }
+        });
 
+
+        retrieveMessages();
+
+
+
+
+
+        //Back
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Handle onCancelled event
+            public void onClick(View view) {
+                Intent intent = new Intent(ChatActivity.this, ServiceProviderMainMenuBinding.class);
+                startActivity(intent);
+                finish();
             }
         });
 
 
     }
 
-    private void sendMessage(DatabaseReference currentUserRef, String currentUserId) {
+
+    //Send Message Function
+    private void sendMessage(DatabaseReference currentUserRef,String currentUserId) {
+
         String message = messageEditText.getText().toString().trim();
         if (!message.isEmpty()) {
             String timestamp = String.valueOf(System.currentTimeMillis());
 
 
-            currentUserRef.addValueEventListener(new ValueEventListener() {
+
+
+            currentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                     String senderName = snapshot.child("name").getValue(String.class);
                     boolean isOutgoing = true; // Assume all messages sent by the current user are outgoing
-                    ChatMessage chatMessage = new ChatMessage(message, timestamp, isOutgoing, senderName,currentUserId);
+                    ChatMessage chatMessage = new ChatMessage(message, timestamp, isOutgoing,senderName,currentUserId);
                     messagesDatabaseRef.push().setValue(chatMessage);
                     messageEditText.setText("");
                 }
@@ -182,6 +165,8 @@ public class ChatActivity extends AppCompatActivity {
 
                 }
             });
+
+
 
 
         }
@@ -236,4 +221,7 @@ public class ChatActivity extends AppCompatActivity {
             chatImage.setImageURI(resultUri);
         }
     }
+
+
+
 }

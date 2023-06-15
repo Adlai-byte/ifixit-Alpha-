@@ -22,7 +22,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.ifixit.R;
-import com.example.ifixit.SERVICE_PROVIDER_FILES.Messaging.ChatActivity;
+import com.example.ifixit.SERVICE_PROVIDER_FILES.Messaging.ChatListActivity;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderJobPostingFragment;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderOngoingJob;
 import com.example.ifixit.SERVICE_PROVIDER_FILES.SERVICEPROVIDER_FRAGMENTS.ServiceProviderProfileFragment;
@@ -44,6 +44,7 @@ public class ServiceProviderMainMenuActivity extends AppCompatActivity implement
     private DrawerLayout drawer;
     private TextView headerUserName;
     private TextView headerEmail;
+
     private View headerInfo;
     private View notificationFragment;
     private FirebaseAuth mAuth;
@@ -54,7 +55,10 @@ public class ServiceProviderMainMenuActivity extends AppCompatActivity implement
     private String mProfileImageUrl;
     private ImageView serviceProviderImage;
     private Uri resultUri;
-    private boolean backPressedOnce = false;
+    private boolean backPressedOnce;
+
+
+
     //Notification
     ArrayList<String> requestUserID = new ArrayList<>();
 
@@ -67,10 +71,11 @@ public class ServiceProviderMainMenuActivity extends AppCompatActivity implement
         setContentView(R.layout.service_provider_main_menu);
         Toolbar toolbar = findViewById(R.id.SPtoolbar);
         setSupportActionBar(toolbar);
-        NavigationView navigationViews = findViewById(R.id.SPnav_view);
 
+        NavigationView navigationViews = findViewById(R.id.SPnav_view);
         headerInfo = navigationViews.getHeaderView(0);
         navigationViews.setNavigationItemSelectedListener(this);
+
 
         serviceProviderImage = headerInfo.findViewById(R.id.SPheaderImageView);
         headerEmail = headerInfo.findViewById(R.id.SPemailTV);
@@ -86,16 +91,21 @@ public class ServiceProviderMainMenuActivity extends AppCompatActivity implement
         getHeaderInfo();
 
         drawer = findViewById(R.id.SPdrawer_layout);
+
         NavigationView navigationView = findViewById(R.id.SPnav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+
+
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.SPfragment_container, new ServiceProviderOngoingJob()).commit();
-//            navigationView.setCheckedItem(R.id.SPnav_ongoing);
+            getSupportFragmentManager().beginTransaction().replace(R.id.SPfragment_container, new ServiceProviderProfileFragment()).commit();
+            navigationView.setCheckedItem(R.id.SPnav_profile);
         }
 
 
@@ -118,7 +128,7 @@ public class ServiceProviderMainMenuActivity extends AppCompatActivity implement
                 startActivity(intent);
                 break;
             case R.id.SPnav_message:
-                Intent intent1 = new Intent(ServiceProviderMainMenuActivity.this, ChatActivity.class);
+                Intent intent1 = new Intent(ServiceProviderMainMenuActivity.this, ChatListActivity.class);
                 startActivity(intent1);
                 finish();
                 break;

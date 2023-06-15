@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="CMnavigation_view">
     <group android:checkableBehavior="single">
+
         <item
-            android:id="@+id/CMnav_profile"
-            android:icon="@drawable/ic_profile"
-            android:title="Profile" />
+            app:actionLayout="@layout/menu_item_profile"
+            android:id="@+id/CMnav_profile" />
         <item
-            android:id="@+id/CMnav_listview"
-            android:icon="@drawable/ic_listview"
-            android:title="List View" />
+
+            app:actionLayout="@layout/menu_item_listview"
+            android:id="@+id/CMnav_listview" />
+
         <item
-            android:id="@+id/CMnav_map"
-            android:icon="@drawable/ic_map"
-            android:title="Map View" />
+
+            app:actionLayout="@layout/menu_item_maps"
+            android:id="@+id/CMnav_map" />
 
 
         <item
-            android:id="@+id/CMnav_message"
-            android:icon="@drawable/ic_message"
-            android:title="Message" />
+
+            app:actionLayout="@layout/menu_item_message"
+            android:id="@+id/CMnav_message" />
 
 
         <item
+
+            app:actionLayout="@layout/menu_item_service_request"
             android:id="@+id/CMnav_requests"
-            android:icon="@drawable/ic_request"
-            android:title="Requests" />
+          />
         <item
-            android:id="@+id/CMnav_notification"
-            android:icon="@drawable/ic_notification"
-            android:title="Notification" />
+            app:actionLayout="@layout/menu_item_notification"
+            android:id="@+id/CMnav_notification" />
 
         <item
+            app:actionLayout="@layout/menu_item_transaction_history"
             android:id="@+id/CMnav_trasaction_history"
-            android:icon="@drawable/ic_history"
-            android:title="Transaction history" />
-
-
+         />
 
 
         <item android:title="Miscellaneous">
-                <!--Add more later-->
+            <!--Add more later-->
             <menu>
 
                 <item

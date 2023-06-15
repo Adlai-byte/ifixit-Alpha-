@@ -26,7 +26,7 @@ import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerNotification
 import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerPendingRequestsFragment;
 import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerProfileFragment;
 import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerTransactionHistoryFragment;
-import com.example.ifixit.CUSTOMER_FILES.Messaging.ChatActivity;
+import com.example.ifixit.CUSTOMER_FILES.Messaging.ChatListActivity;
 import com.example.ifixit.ORGANIZATIONAL_FILES.ORG_FRAGMENTS.OrgJobPostingFragment;
 import com.example.ifixit.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -59,6 +59,14 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
     private Uri resultUri;
     private boolean backPressedOnce;
 
+    long notificationChildCount;
+
+
+    private MenuItem notificationItem;
+    private TextView notificationBadge;
+    private MenuItem messagingItem;
+    private TextView messagingBadge;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,17 +89,67 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
         mCustomerDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("customers")
                 .child(userID);
+
+
+        //Customer Notification Reference
+        DatabaseReference notificationRef = FirebaseDatabase.getInstance().getReference()
+                .child("customers")
+                .child(userID)
+                .child("notifications");
+
+
+
         mProfileImageStorage = FirebaseStorage.getInstance().getReference().child("profile_images");
 
         getHeaderInfo();
 
         drawer = findViewById(R.id.CMdrawer_layout);
-        NavigationView navigationView = findViewById(R.id.CMnav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+
+
+        //Notification Badge
+
+        navigationViews.setNavigationItemSelectedListener(this);
+
+
+        notificationItem = navigationViews.getMenu().findItem(R.id.CMnav_notification);
+        notificationBadge = (TextView) notificationItem.getActionView().findViewById(R.id.badge);
+
+        messagingItem = navigationViews.getMenu().findItem(R.id.CMnav_message);
+        messagingBadge = (TextView) messagingItem.getActionView().findViewById(R.id.badge);
+
+
+        messagingBadge.setVisibility(View.GONE);
+
+        notificationRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                notificationChildCount =snapshot.getChildrenCount() ;
+                if(notificationChildCount>0){
+                    notificationBadge.setText(String.valueOf(notificationChildCount));
+                }else {
+                    notificationBadge.setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+
+            }
+        });
+
+
+
+
+
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerListViewFragment()).commit();
@@ -100,6 +158,11 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+
+
+
+
         switch (item.getItemId()) {
             case R.id.CMnav_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerProfileFragment()).commit();
@@ -112,7 +175,7 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
                 startActivity(intent);
                 break;
             case R.id.CMnav_message:
-                Intent intent2 = new Intent(CustomerMainMenuActivity.this, ChatActivity.class);
+                Intent intent2 = new Intent(CustomerMainMenuActivity.this, ChatListActivity.class);
                 startActivity(intent2);
                 break;
             case R.id.CMnav_jobposting:
@@ -123,6 +186,8 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
                 break;
             case R.id.CMnav_notification:
                 getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerNotificationFragment()).commit();
+
+                notificationBadge.setVisibility(View.GONE);
                 break;
             case R.id.CMnav_trasaction_history:
                 getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerTransactionHistoryFragment()).commit();

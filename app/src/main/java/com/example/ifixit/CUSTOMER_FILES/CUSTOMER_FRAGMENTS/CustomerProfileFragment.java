@@ -20,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.bumptech.glide.Glide;
 import com.example.ifixit.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -60,9 +59,9 @@ public class CustomerProfileFragment extends Fragment {
     private Uri resultUri;
     private String mProfileImageUrl;
 
+
+
     private EditText name, email, address;
-
-
 
 
     @Nullable
@@ -75,13 +74,15 @@ public class CustomerProfileFragment extends Fragment {
         customerAddress = (TextView) rootView.findViewById(R.id.customerAddress);
         mSettings = (ImageView) rootView.findViewById(R.id.customerSettingBtn);
 
-        uploadImage = (Button)rootView.findViewById(R.id.uploadImage);
+        uploadImage = (Button) rootView.findViewById(R.id.uploadImage);
         saveBtn = (Button) rootView.findViewById(R.id.saveBtn);
         customerImage = (ImageView) rootView.findViewById(R.id.customerProfileImage);
 
         name = (EditText) rootView.findViewById(R.id.NameET);
         email = (EditText) rootView.findViewById(R.id.PhoneET);
         address = (EditText) rootView.findViewById(R.id.AddressET);
+
+
 
 
 
@@ -108,8 +109,6 @@ public class CustomerProfileFragment extends Fragment {
 
             }
         });
-
-
 
 
         uploadImage.setOnClickListener(new View.OnClickListener() {
@@ -148,8 +147,8 @@ public class CustomerProfileFragment extends Fragment {
                                 mAddress = map.get("address").toString();
                                 address.setText(mAddress);
                             }
-                            if(map.get("email")!=null){
-                                mEmail = map.get("email") .toString();
+                            if (map.get("email") != null) {
+                                mEmail = map.get("email").toString();
                                 email.setText(mEmail);
                             }
 
@@ -168,7 +167,6 @@ public class CustomerProfileFragment extends Fragment {
                 editLayout.setVisibility(View.VISIBLE);
 
 
-
             }
         });
 
@@ -176,7 +174,6 @@ public class CustomerProfileFragment extends Fragment {
         return rootView;
 
     }
-
 
 
     public void getHeaderInfo() {
@@ -201,10 +198,6 @@ public class CustomerProfileFragment extends Fragment {
                         customerAddress.setText(mAddress);
                     }
 
-                    if (map.get("profileimageurl") != null) {
-                        mProfileImageUrl = map.get("profileimageurl").toString();
-                        Glide.with(getContext().getApplicationContext()).load(mProfileImageUrl).into(customerImage);
-                    }
 
                 }
 
@@ -226,12 +219,11 @@ public class CustomerProfileFragment extends Fragment {
         mPhone = email.getText().toString();
 
 
-        Map <String,Object>userInfo = new HashMap();
+        Map<String, Object> userInfo = new HashMap();
         userInfo.put("name", mUserName);
         userInfo.put("phone", mPhone);
         userInfo.put("address", mAddress);
         DatabaseRef.updateChildren(userInfo);
-
 
 
         if (resultUri != null) {
@@ -258,7 +250,7 @@ public class CustomerProfileFragment extends Fragment {
                         public void onSuccess(Uri downloadUrl) {
                             String downloadUrlStr = downloadUrl.toString();
 
-                            Map<String,Object>  newImage = new HashMap<>();
+                            Map<String, Object> newImage = new HashMap<>();
                             newImage.put("profileimageurl", downloadUrlStr);
 
                             DatabaseRef.updateChildren(newImage).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -294,8 +286,6 @@ public class CustomerProfileFragment extends Fragment {
         } else {
 //            finish();
         }
-
-
 
 
     }

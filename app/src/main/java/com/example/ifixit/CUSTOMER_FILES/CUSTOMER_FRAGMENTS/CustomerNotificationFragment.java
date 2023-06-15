@@ -71,6 +71,7 @@ public class CustomerNotificationFragment extends Fragment {
 
                             String serviceProviderId = childSnapShot.child("userid").getValue(String.class);
                             String key = childSnapShot.getKey();
+
                             Toast.makeText(getContext(), serviceProviderId, Toast.LENGTH_SHORT).show();
                             DatabaseReference serviceProviderRef = FirebaseDatabase.getInstance().getReference()
                                     .child("service-providers")

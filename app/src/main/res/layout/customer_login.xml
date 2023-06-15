@@ -61,6 +61,17 @@
             android:text="Log-in"
             android:textSize="15dp" />
 
+        <Button
+            android:id="@+id/adminbtnSignInWithGoogle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="Sign-in with google "
+            android:textSize="15dp" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -90,6 +101,9 @@
 
 
         </RelativeLayout>
+
+
+
 
 
     </LinearLayout>

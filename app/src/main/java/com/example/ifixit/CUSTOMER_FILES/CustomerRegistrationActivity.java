@@ -26,8 +26,6 @@ import java.util.Map;
 
 public class CustomerRegistrationActivity extends AppCompatActivity {
 
-    // Variables
-
     // Firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
@@ -39,7 +37,6 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
     private EditText etPhone;
     private EditText etPassword;
     private EditText etConfirmPassword;
-    private String defaultProfilePicUrl;
 
     // Buttons
     private Button btnRegister;
@@ -52,33 +49,31 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customer_registration);
 
-
-        defaultProfilePicUrl = "https://firebasestorage.googleapis.com/v0/b/ifixit-fac6e.appspot.com/o/profile_images%2F64_7.png?alt=media&token=f03436db-e228-4a0c-8a48-04bc480b8bca";
-        // Layout Connecting
-        etConfirmPassword = findViewById(R.id.etadminPassword2);
-        etName = findViewById(R.id.etFullName);
-        etAddress = findViewById(R.id.etAddress);
-        etEmail = findViewById(R.id.etadminEmail);
-        etPassword = findViewById(R.id.etadminPassword);
-        etPhone = findViewById(R.id.etPhone);
-        btnRegister = findViewById(R.id.btnRegister);
-        tvAlreadyHave = findViewById(R.id.tvAlreadyHaveAnAccount);
-
+        // Firebase
         mAuth = FirebaseAuth.getInstance();
         firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
-                    Intent intent = new Intent(CustomerRegistrationActivity.this, CustomerMapsActivity.class);
+                    Intent intent = new Intent(CustomerRegistrationActivity.this, CustomerMainMenuActivity.class);
                     startActivity(intent);
                     finish();
-                    return;
                 }
             }
         };
 
-        // On Click Listeners
+        // Initialize Views
+        etName = findViewById(R.id.etFullName);
+        etAddress = findViewById(R.id.etAddress);
+        etEmail = findViewById(R.id.etadminEmail);
+        etPhone = findViewById(R.id.etPhone);
+        etPassword = findViewById(R.id.etadminPassword);
+        etConfirmPassword = findViewById(R.id.etadminPassword2);
+        btnRegister = findViewById(R.id.btnRegister);
+        tvAlreadyHave = findViewById(R.id.tvAlreadyHaveAnAccount);
+
+        // Register Button Click Listener
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,12 +81,13 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
             }
         });
 
+        // Already Have an Account TextView Click Listener
         tvAlreadyHave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CustomerRegistrationActivity.this, CustomerLoginActivity.class);
                 startActivity(intent);
-                return;
+                finish();
             }
         });
     }
@@ -104,40 +100,36 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
         final String phone = etPhone.getText().toString().trim();
         final String confirmPassword = etConfirmPassword.getText().toString().trim();
 
-
-        if (TextUtils.isEmpty(name)
-                || TextUtils.isEmpty(email)
-                || TextUtils.isEmpty(address)
-                || TextUtils.isEmpty(password)
-                || TextUtils.isEmpty(confirmPassword)
+        // Input Validations
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(address)
+                || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)
                 || TextUtils.isEmpty(phone)) {
             showToast("Please fill in all fields");
         } else if (!password.equals(confirmPassword)) {
-
-            showToast("Password does not match");
+            showToast("Passwords do not match");
+        } else if (phone.length() != 11) {
+            showToast("Phone number must be 11 digits exactly");
         } else {
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(CustomerRegistrationActivity.this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
                         if (firebaseUser != null) {
                             String userID = firebaseUser.getUid();
                             DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference()
                                     .child("customers")
                                     .child(userID);
                             current_user_db.setValue(true);
+
                             Map<String, Object> userInfo = new HashMap<>();
                             userInfo.put("name", name);
                             userInfo.put("email", email);
                             userInfo.put("address", address);
                             userInfo.put("phone", phone);
-//                            userInfo.put("profileimageurl",defaultProfilePicUrl);
-
-
                             current_user_db.updateChildren(userInfo);
 
-                            showToast("Registration successful");
+                            showToast("User registered successfully");
                             Intent intent = new Intent(CustomerRegistrationActivity.this, CustomerMainMenuActivity.class);
                             startActivity(intent);
                             finish();
@@ -166,57 +158,5 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         mAuth.removeAuthStateListener(firebaseAuthStateListener);
-    }
-
-    public static boolean isPasswordValid(String password) {
-        // Check if password length is at least 8 characters
-        if (password.length() < 8) {
-            return false;
-        }
-
-        // Check if password contains at least one uppercase letter
-        if (!password.matches(".*[A-Z].*")) {
-            return false;
-        }
-
-        // Check if password contains at least one lowercase letter
-        if (!password.matches(".*[a-z].*")) {
-            return false;
-        }
-
-        // Check if password contains at least one digit
-        if (!password.matches(".*\\d.*")) {
-            return false;
-        }
-
-        // Check if password contains at least one special character
-
-
-        // Password meets all the password standards
-        return true;
-
-
-//        public static void main(String[] args) {
-//            String password = "MyPassword123!"; // Replace with the password you want to check
-//            if (isPasswordValid(password)) {
-//                System.out.println("Password meets the password standards.");
-//            } else {
-//                System.out.println("Password does not meet the password standards.");
-//            }
-//        }
-
-
-        //else if ( isPasswordValid(password) == false) {
-        //
-        //            String message = "The password must contain:\n" +
-        //                    "- At least 8 characters\n" +
-        //                    "- At least one uppercase letter\n" +
-        //                    "- At least one lowercase letter\n" +
-        //                    "- At least one digit\n" +
-        //                    "- At least one special character";
-        //
-        //            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        //        }
-
     }
 }

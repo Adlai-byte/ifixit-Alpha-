@@ -18,36 +18,34 @@
         android:orientation="vertical">
 
 
-
         <EditText
             android:id="@+id/etadminEmail"
+            style="@style/Widget.AppCompat.EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.EditText"
-            android:hint="Email"
+            android:layout_margin="5dp"
             android:background="@color/white"
             android:elevation="5dp"
-            android:padding="10dp"
-            android:layout_margin="5dp"
             android:ems="10"
+            android:hint="Email"
             android:inputType="textPersonName"
-            android:text="kein@gmail.com" />
-
+            android:padding="10dp"
+            android:text="dorsu.alferezvinz@gmail.com" />
 
 
         <EditText
             android:id="@+id/etadminPassword"
+            style="@style/Widget.AppCompat.EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
-            style="@style/Widget.AppCompat.EditText"
+            android:layout_margin="5dp"
             android:background="@color/white"
             android:elevation="5dp"
-            android:padding="10dp"
-            android:layout_margin="5dp"
             android:ems="10"
+            android:hint="Password"
             android:inputType="textPassword"
-            android:text="admins" />
+            android:padding="10dp"
+            android:text="Alferez123" />
 
         <Button
             android:id="@+id/adminbtnLogin"

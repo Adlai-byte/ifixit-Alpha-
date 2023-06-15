@@ -101,27 +101,27 @@
         <item>Masonry columns and pillars</item>
         <item>Masonry garden sculptures</item>
     </string-array>
-    
+
     <string-array name="computer_services">
-            <item>Computer Assembly and Installation</item>
-            <item>Hardware Troubleshooting and Repair</item>
-            <item>System Upgrades and Expansion</item>
-            <item>Data Backup and Recovery</item>
-            <item>Virus and Malware Removal</item>
-            <item>System Maintenance and Optimization</item>
-            <item>Network Setup and Troubleshooting</item>
-            <item>Peripheral Setup and Configuration</item>
+        <item>Computer Assembly and Installation</item>
+        <item>Hardware Troubleshooting and Repair</item>
+        <item>System Upgrades and Expansion</item>
+        <item>Data Backup and Recovery</item>
+        <item>Virus and Malware Removal</item>
+        <item>System Maintenance and Optimization</item>
+        <item>Network Setup and Troubleshooting</item>
+        <item>Peripheral Setup and Configuration</item>
     </string-array>
 
     <string-array name="gardening_services">
-            <item>Lawn Care</item>
-            <item>Planting and Bed Maintenance</item>
-            <item>Garden Design and Landscaping</item>
-            <item>Seasonal Plantings and Container Gardens</item>
-            <item>Vegetable and Herb Gardens</item>
-            <item>Tree and Shrub Care</item>
-            <item>Garden Cleanup and Waste Removal</item>
-            <item>Consultation and Maintenance Planning</item>
+        <item>Lawn Care</item>
+        <item>Planting and Bed Maintenance</item>
+        <item>Garden Design and Landscaping</item>
+        <item>Seasonal Plantings and Container Gardens</item>
+        <item>Vegetable and Herb Gardens</item>
+        <item>Tree and Shrub Care</item>
+        <item>Garden Cleanup and Waste Removal</item>
+        <item>Consultation and Maintenance Planning</item>
 
 
     </string-array>

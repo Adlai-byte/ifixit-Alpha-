@@ -28,6 +28,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View view;
         if (viewType == ChatMessage.TYPE_OUTGOING) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_received_message, parent, false);
@@ -42,6 +43,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
         ChatMessage message = messageList.get(position);
         holder.messageTextView.setText(message.getMessage());
         holder.timestampTextView.setText(message.getFormattedTimestamp());
+
         itemUserId = message.getCurrentUserUid(); // Initialize itemUserId
     }
 
@@ -54,14 +56,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
     public int getItemViewType(int position) {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         ChatMessage message = messageList.get(position);
-        itemUserId = message.getCurrentUserUid();
+        itemUserId = message.getCurrentUserUid(); // Ensure itemUserId is up to date
+
         if (itemUserId != null && itemUserId.equals(currentUserId)) {
-            return com.example.ifixit.CUSTOMER_FILES.Messaging.ChatMessage.TYPE_INCOMING;
+            return ChatMessage.TYPE_INCOMING;
 
         } else {
-            return com.example.ifixit.CUSTOMER_FILES.Messaging.ChatMessage.TYPE_OUTGOING;
+            return ChatMessage.TYPE_OUTGOING;
         }
-
     }
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
@@ -74,5 +76,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
             timestampTextView = itemView.findViewById(R.id.timestamp_text_view);
         }
     }
+
 }
 

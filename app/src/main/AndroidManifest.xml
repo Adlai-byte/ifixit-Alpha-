@@ -16,6 +16,15 @@
         android:theme="@style/Theme.Ifixit"
         tools:targetApi="31">
         <activity
+            android:name=".SERVICE_PROVIDER_FILES.Messaging.ChatListActivity"
+            android:parentActivityName=".CUSTOMER_FILES.CustomerMainMenuActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".CUSTOMER_FILES.Messaging.ChatListActivity"
+            android:parentActivityName=".SERVICE_PROVIDER_FILES.ServiceProviderMainMenuActivity"
+            android:exported="false" />
+        <activity
             android:name=".CustomerLogin"
             android:exported="false" />
 
@@ -25,8 +34,8 @@
 
         <activity
             android:name=".ORGANIZATIONAL_FILES.OrgLoginActivity"
-            android:parentActivityName=".CustomerLogin"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".CustomerLogin" />
         <activity
             android:name=".ORGANIZATIONAL_FILES.OrgRegistrationActivity"
             android:exported="false" />
@@ -35,19 +44,16 @@
             android:exported="false" />
         <activity
             android:name=".ORGANIZATIONAL_FILES.OrgMapsActivity"
-            android:parentActivityName=".ORGANIZATIONAL_FILES.OrgMainMenuActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".ORGANIZATIONAL_FILES.OrgMainMenuActivity" />
         <activity
             android:name=".ORGANIZATIONAL_FILES.OrgCheckOutActivity"
-            android:parentActivityName=".ORGANIZATIONAL_FILES.OrgMainMenuActivity"
-            android:exported="false" />
-
-
+            android:exported="false"
+            android:parentActivityName=".ORGANIZATIONAL_FILES.OrgMainMenuActivity" />
         <activity
             android:name=".CUSTOMER_FILES.Messaging.ChatActivity"
-            android:exported="false" />
-        <activity
-            android:name=".CUSTOMER_FILES.CustomerNewMapsActivity"
+            android:parentActivityName=".CUSTOMER_FILES.Messaging.ChatListActivity"
+
             android:exported="false" />
         <activity
             android:name=".SUPER_ADMIN_FILES.AdminMainMenuActivity"
@@ -60,10 +66,8 @@
             android:exported="false" />
         <activity
             android:name=".SUPER_ADMIN_FILES.AdminLoginActivity"
-            android:parentActivityName=".LoginActivity"
-            android:exported="false" />
-
-
+            android:exported="false"
+            android:parentActivityName=".LoginActivity" />
         <activity
             android:name=".CUSTOMER_FILES.CustomerCheckOutActivity"
             android:exported="false"
@@ -74,12 +78,10 @@
         <activity
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderRegistrationActivity"
             android:exported="false" />
-
         <activity
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderMapsActivity"
             android:exported="false"
             android:parentActivityName=".SERVICE_PROVIDER_FILES.ServiceProviderMainMenuActivity" />
-
         <activity
             android:name=".CUSTOMER_FILES.CustomerMapsActivity"
             android:exported="false"
@@ -94,10 +96,8 @@
             android:exported="false" />
         <activity
             android:name=".SERVICE_PROVIDER_FILES.Messaging.ChatActivity"
-            android:parentActivityName=".SERVICE_PROVIDER_FILES.ServiceProviderMainMenuActivity"
-            android:exported="false" />
-
-
+            android:exported="false"
+            android:parentActivityName="SERVICE_PROVIDER_FILES.Messaging.ChatListActivity" />
         <activity
             android:name=".SERVICE_PROVIDER_FILES.ServiceProviderLoginActivity"
             android:exported="false"
@@ -106,8 +106,8 @@
             android:theme="@style/Theme.Ifixit.NoActionBar" />
         <activity
             android:name=".CUSTOMER_FILES.CustomerLoginActivity"
-            android:parentActivityName=".LoginActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".LoginActivity" />
         <activity
             android:name=".LoginActivity"
             android:exported="false" />

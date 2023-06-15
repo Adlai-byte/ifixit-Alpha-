@@ -29,6 +29,7 @@
                 android:padding="20sp"
                 android:src="@mipmap/ic_default_image" />
 
+
             <!--Text Views-->
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -59,6 +60,7 @@
             </LinearLayout>
 
 
+
         </LinearLayout>
 
         <LinearLayout
@@ -68,21 +70,21 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
 
 
                 <TextView
                     android:id="@+id/serviceType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:padding="5sp"
                     android:text="Service:"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/adminspinner"
@@ -91,12 +93,12 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
-                    android:dropDownVerticalOffset="40dp"
                     android:layout_toEndOf="@+id/serviceType"
                     android:background="@drawable/orange_outline"
-                    android:popupBackground="@color/colorPrimary"
+                    android:dropDownVerticalOffset="40dp"
                     android:entries="@array/service_type"
                     android:padding="10dp"
+                    android:popupBackground="@color/colorPrimary"
                     android:spinnerMode="dropdown"
                     android:textAlignment="center" />
 
@@ -105,21 +107,23 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Schedule Service Date:"
-                android:textStyle="bold"
                 android:layout_marginStart="20dp"
+                android:text="Schedule Service Date:"
                 android:textSize="18dp"
+                android:textStyle="bold"
 
                 />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="10sp"
+                android:layout_marginStart="20dp"
                 android:text="Note:It is advised to set date 3 day ahead
 from the actual service day."
-                android:layout_marginStart="20dp"
+                android:textSize="10sp"
 
                 />
+
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -138,13 +142,40 @@ from the actual service day."
 
             </FrameLayout>
 
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="120dp"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:layout_marginEnd="10dp"-->
+<!--                android:background="@color/white"-->
+<!--                android:orientation="vertical"-->
+<!--                android:elevation="5dp"-->
+<!--                android:padding="10dp">-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<!--                <TextView-->
+<!--                    android:text="Date Information: "-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textSize="16dp"-->
+<!--                    android:textStyle="bold" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/dateStatusTextView"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Status:"-->
+<!--                    />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/dateTextView"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Date:"-->
+<!--                    />-->
 
 
-            </RelativeLayout>
+<!--            </LinearLayout>-->
+
 
 
         </LinearLayout>
@@ -183,12 +214,12 @@ from the actual service day."
                 />
 
             <Button
-                android:layout_marginEnd="20dp"
                 android:id="@+id/placeOrderButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="right"
+                android:layout_marginEnd="20dp"
                 android:padding="15dp"
                 android:text="Request Service" />
         </RelativeLayout>
