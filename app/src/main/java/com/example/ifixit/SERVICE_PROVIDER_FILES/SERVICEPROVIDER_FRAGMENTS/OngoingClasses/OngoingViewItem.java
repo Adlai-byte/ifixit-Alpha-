@@ -6,6 +6,8 @@ public class OngoingViewItem {
     String LOCATION;
     String JOBTYPE;
     String TOTALPRICE;
+    String key;
+    String date;
 
     public String getNAME() {
         return NAME;
@@ -39,12 +41,22 @@ public class OngoingViewItem {
         this.TOTALPRICE = TOTALPRICE;
     }
 
-    public OngoingViewItem(String NAME, String LOCATION, String JOBTYPE, String TOTALPRICE,String USERID) {
+    public String getKey() {
+        return key;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public OngoingViewItem(String NAME, String LOCATION, String JOBTYPE, String TOTALPRICE, String USERID, String key, String date) {
         this.NAME = NAME;
         this.LOCATION = LOCATION;
         this.JOBTYPE = JOBTYPE;
         this.TOTALPRICE = TOTALPRICE;
         this.USERID= USERID;
+        this.key = key;
+        this.date = date;
     }
 
     public String getUSERID() {

@@ -69,14 +69,15 @@ public class ServiceProviderTransactionHistoryFragment extends Fragment {
                 transactionItemList.clear();
                 if(snapshot.exists()){
                     for (DataSnapshot chilSnapShot : snapshot.getChildren()){
-                        String userId = chilSnapShot.getKey();
+                        String key = chilSnapShot.getKey();
+                        String userId = "userid";
                         String name = chilSnapShot.child("name").getValue(String.class);
                         String service = chilSnapShot.child("service").getValue(String.class);
-                        String timestamp = chilSnapShot.child("timestamp").getValue(String.class);
+                        String date = chilSnapShot.child("date").getValue(String.class);
                         String total = chilSnapShot.child("total").getValue(String.class);
                         String status = chilSnapShot.child("status").getValue(String.class);
 
-                        TransactionItem item = new TransactionItem(userId,name,timestamp,total,status,service);
+                        TransactionItem item = new TransactionItem(userId,name,date,total,status,service);
                         transactionItemList.add(item);
                         transactionAdapter.notifyDataSetChanged();
                     }

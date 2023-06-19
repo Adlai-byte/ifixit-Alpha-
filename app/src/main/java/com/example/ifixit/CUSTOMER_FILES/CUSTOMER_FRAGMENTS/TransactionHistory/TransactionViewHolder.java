@@ -23,7 +23,7 @@ public class TransactionViewHolder extends RecyclerView.ViewHolder {
 
         service = itemView.findViewById(R.id.transactionService);
         name = itemView.findViewById(R.id.transactionName);
-        timestamp = itemView.findViewById(R.id.transactionTimeStamp);
+        timestamp = itemView.findViewById(R.id.transactionDate);
         price = itemView.findViewById(R.id.transactionTotalPrice);
         status =itemView.findViewById(R.id.transactionStatus);
 

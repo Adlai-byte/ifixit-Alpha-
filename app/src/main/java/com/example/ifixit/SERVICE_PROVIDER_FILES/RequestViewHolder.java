@@ -20,6 +20,7 @@ public class RequestViewHolder extends RecyclerView.ViewHolder {
 
     public Button BtnAccept;
     public Button Btndecline;
+    public TextView dateView;
 
     public RequestViewHolder(@NonNull View itemView) {
 
@@ -31,7 +32,7 @@ public class RequestViewHolder extends RecyclerView.ViewHolder {
         totalPrice = itemView.findViewById(R.id.notificationTotalPrice);
         BtnAccept = itemView.findViewById(R.id.notificationAccept);
         Btndecline = itemView.findViewById(R.id.notificationDecline);
-
+        dateView = itemView.findViewById(R.id.notificationDate);
 
     }
 }

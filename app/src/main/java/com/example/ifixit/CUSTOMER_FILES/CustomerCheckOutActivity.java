@@ -74,7 +74,7 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
     // Variables from customer maps
     long timestamp = System.currentTimeMillis();
     DatabaseReference serviceProviderServiceSchedules;
-    DatabaseReference mServiceProviderRef;
+    DatabaseReference serviceProviderPendingRef;
     DatabaseReference mCustomerRef;
     DatabaseReference mServiceProviderRefForHeader;
 
@@ -184,17 +184,43 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
         mCustomerRef = FirebaseDatabase.getInstance().getReference()
                 .child("customers");
 
-        mServiceProviderRef = FirebaseDatabase.getInstance().getReference()
+        serviceProviderPendingRef = FirebaseDatabase.getInstance().getReference()
                 .child("service-providers")
                 .child("verified")
                 .child(serviceProviderUserId)
                 .child("joboffers")
                 .child("pending")
                 .child(customerUserId);
-        //------------------
+        //-------------Database References------------
+        mCustomerRef = FirebaseDatabase.getInstance().getReference()
+                .child("customers");
+
+        //Customer Pending request reference
+        DatabaseReference customerPendingRequestRef = FirebaseDatabase.getInstance().getReference()
+                .child("customers")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("pending-request");
+
+        //Service Providers Service Schedules
 
 
-        //Layputs
+        //Pending Jobs directory reference
+        serviceProviderPendingRef = FirebaseDatabase.getInstance().getReference()
+                .child("service-providers")
+                .child("verified")
+                .child(serviceProviderUserId)
+                .child("joboffers")
+                .child("pending");
+
+        //Service Provider reference
+        DatabaseReference ServiceProviderRefData = FirebaseDatabase.getInstance().getReference()
+                .child("service-providers")
+                .child("verified")
+                .child(serviceProviderUserId);
+        //-----------------------------------------------------------
+
+
+        //Layouts
         profileImage = (ImageView) findViewById(R.id.serviceProviderProfileImage);
         name = (TextView) findViewById(R.id.serviceProviderName);
         job = (TextView) findViewById(R.id.serviceProviderJob);
@@ -232,7 +258,7 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                 selecteddate = (month + 1) + "/" + dayOfMonth + "/" + year;
 
 
-                serviceProviderServiceSchedules.addListenerForSingleValueEvent(new ValueEventListener() {
+                serviceProviderServiceSchedules.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         StringBuilder statusBuilder = new StringBuilder();
@@ -243,9 +269,6 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                                 String serviceType = childSnapshot.child("service").getValue(String.class);
                                 String dateOfService = childSnapshot.child("dateofservice").getValue(String.class);
                                 String newSelectedDate = selecteddate;
-
-
-
 
                                 if(newSelectedDate.contains(dateOfService)){
                                     Toast.makeText(CustomerCheckOutActivity.this, "This date is not available", Toast.LENGTH_SHORT).show();
@@ -283,141 +306,118 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
-
-
+                Boolean dateAvaible = true;
                 comment = "None for the moment";
-                mCustomerRef = FirebaseDatabase.getInstance().getReference()
-                        .child("customers");
-
-                //Customer Pending request reference
-                DatabaseReference customerPendingRequestRef = FirebaseDatabase.getInstance().getReference()
-                        .child("customers")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child("pending-request");
-
-                //Service Providers Service Schedules
-
-
-                //Pending Jobs directory reference
-                mServiceProviderRef = FirebaseDatabase.getInstance().getReference()
-                        .child("service-providers")
-                        .child("verified")
-                        .child(serviceProviderUserId)
-                        .child("joboffers")
-                        .child("pending");
-
-                //Service Provider reference
-                DatabaseReference ServiceProviderRefData = FirebaseDatabase.getInstance().getReference()
-                        .child("service-providers")
-                        .child("verified")
-                        .child(serviceProviderUserId);
 
 
                 for (String notAvaiableDates: ListOfUnvailableDates){
                     Calendar currentDate = Calendar.getInstance();
                     if(notAvaiableDates.contains(selecteddate)||selectedDate.before(currentDate)){
                         Toast.makeText(CustomerCheckOutActivity.this, "Please Select Another Date", Toast.LENGTH_SHORT).show();
-                    }else {
-                        mCustomerRef.child(customerUserId).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if (snapshot.exists()) {
-                                    String name = snapshot.child("name").getValue(String.class);
-                                    String address = snapshot.child("address").getValue(String.class);
-                                    String email = snapshot.child("email").getValue(String.class);
-                                    String imgUrl = snapshot.child("profileimageurl").getValue(String.class);
+                        dateAvaible = false;
+                    }
+                }
 
-                                    String jobType = service;
+                if(dateAvaible){
+                    Toast.makeText(CustomerCheckOutActivity.this, "Sheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeehhhhhh", Toast.LENGTH_SHORT).show();
+                    mCustomerRef.child(customerUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                String name = snapshot.child("name").getValue(String.class);
+                                String address = snapshot.child("address").getValue(String.class);
+                                String email = snapshot.child("email").getValue(String.class);
+                                String imgUrl = snapshot.child("profileimageurl").getValue(String.class);
+
+                                String jobType = service;
 //                            String daysOfWork = String.valueOf(days);
-                                    String totalPrice = String.valueOf(finalPrice);
+                                String totalPrice = String.valueOf(finalPrice);
 //                            String description = comment;
 
-                                    // Create a new job offer HashMap with the customer's data
-                                    HashMap<String, String> jobOffer = new HashMap<>();
-                                    HashMap<String, String> datesofservices = new HashMap<>();
+                                // Create a new job offer HashMap with the customer's data
+                                HashMap<String, String> jobOffer = new HashMap<>();
+                                HashMap<String, String> datesofservices = new HashMap<>();
 
-                                    jobOffer.put("userid", customerUserId);
-                                    jobOffer.put("service", service);
-                                    jobOffer.put("name", name);
-                                    jobOffer.put("address", address);
-                                    jobOffer.put("email", email);
-                                    jobOffer.put("timestamp", String.valueOf(timestamp));
-                                    jobOffer.put("profileimageurl", imgUrl);
-                                    jobOffer.put("jobtype", jobType);
+                                jobOffer.put("userid", customerUserId);
+                                jobOffer.put("service", service);
+                                jobOffer.put("name", name);
+                                jobOffer.put("address", address);
+                                jobOffer.put("email", email);
+                                jobOffer.put("timestamp", String.valueOf(timestamp));
+                                jobOffer.put("profileimageurl", imgUrl);
+                                jobOffer.put("jobtype", jobType);
 //                            jobOffer.put("duration", daysOfWork);
-                                    jobOffer.put("totalprice", totalPrice);
+                                jobOffer.put("totalprice", totalPrice);
 //                            jobOffer.put("decription", description);
-                                    jobOffer.put("dateofservice", selecteddate);
+                                jobOffer.put("dateofservice", selecteddate);
 
 
-                                    // Hashmap for to send to pending request
-                                    HashMap<String, String> pendingReqData = new HashMap<>();
-                                    //Service Provider Data
-                                    ServiceProviderRefData.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                // Hashmap for to send to pending request
+                                HashMap<String, String> pendingReqData = new HashMap<>();
+                                //Service Provider Data
+                                ServiceProviderRefData.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                                            String spName = snapshot.child("name").getValue(String.class);
-                                            String spService = snapshot.child("service").getValue(String.class);
-                                            pendingReqData.put("userid", serviceProviderUserId);
-                                            pendingReqData.put("name", spName);
-                                            pendingReqData.put("service", spService);
-                                            pendingReqData.put("totalprice", totalPrice);
-                                            pendingReqData.put("timestamp", String.valueOf(timestamp));
-                                            pendingReqData.put("jobtype", jobType);
-                                            pendingReqData.put("status", "PENDING");
-                                            pendingReqData.put("dateofservice", selecteddate);
+                                        String spName = snapshot.child("name").getValue(String.class);
+                                        String spService = snapshot.child("service").getValue(String.class);
+                                        pendingReqData.put("userid", serviceProviderUserId);
+                                        pendingReqData.put("name", spName);
+                                        pendingReqData.put("service", spService);
+                                        pendingReqData.put("totalprice", totalPrice);
+                                        pendingReqData.put("timestamp", String.valueOf(timestamp));
+                                        pendingReqData.put("jobtype", jobType);
+                                        pendingReqData.put("status", "PENDING");
+                                        pendingReqData.put("dateofservice", selecteddate);
 
-                                            //Service dates------------------------------------
-                                            datesofservices.put("dateofservice", selecteddate);
-                                            datesofservices.put("service", spService);
-                                            //--------------------------------------------------
-
-
+                                        //Service dates------------------------------------
+                                        datesofservices.put("dateofservice", selecteddate);
+                                        datesofservices.put("service", spService);
+                                        //--------------------------------------------------
 
 
-                                            //Sending Data to the customers pending request
-                                            customerPendingRequestRef.push().setValue(pendingReqData);
-                                            serviceProviderServiceSchedules.push().setValue(datesofservices);
 
+
+                                        //Sending Data to the customers pending request
+                                        customerPendingRequestRef.push().setValue(pendingReqData);
+                                        serviceProviderServiceSchedules.push().setValue(datesofservices);
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+
+
+
+                                //Sending the data to the service provider pending directory
+                                serviceProviderPendingRef.push().setValue(jobOffer).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            // Data successfully added to the database
+                                            Toast.makeText(CustomerCheckOutActivity.this, "Data added successfully", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            // Failed to add data to the database
+                                            Toast.makeText(CustomerCheckOutActivity.this, "Failed to add data", Toast.LENGTH_SHORT).show();
                                         }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-                                    });
+                                    }
+                                });
 
 
-
-                                    //Sending the data to the service provider pending directory
-                                    mServiceProviderRef.push().setValue(jobOffer).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                // Data successfully added to the database
-                                                Toast.makeText(CustomerCheckOutActivity.this, "Data added successfully", Toast.LENGTH_SHORT).show();
-                                            } else {
-                                                // Failed to add data to the database
-                                                Toast.makeText(CustomerCheckOutActivity.this, "Failed to add data", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
-
-
-                                }
                             }
+                        }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                // ...
-                            }
-                        });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            // ...
+                        }
+                    });
 
-                        Intent intent1 = new Intent(CustomerCheckOutActivity.this, CustomerMapsActivity.class);
-                        startActivity(intent1);
-                    }
+                    Intent intent1 = new Intent(CustomerCheckOutActivity.this, CustomerMapsActivity.class);
+                    startActivity(intent1);
                 }
 
 

@@ -9,11 +9,18 @@ public class RequestItem {
     String JOBTYPE;
     String TOTALPRICE;
     String LOCATION;
+    String key;
+    String date;
 
+    public String getKey() {
+        return key;
+    }
 
+    public String getDate() {
+        return date;
+    }
 
-
-    public RequestItem(String NAME, String ADDRESS, String USERID, String profileImageUrl, String EMAIL, String JOBTYPE, String TOTALPRICE, String LOCATION) {
+    public RequestItem(String NAME, String ADDRESS, String USERID, String profileImageUrl, String EMAIL, String JOBTYPE, String TOTALPRICE, String LOCATION, String key, String date) {
         this.NAME = NAME;
         this.ADDRESS = ADDRESS;
         this.USERID = USERID;
@@ -22,6 +29,9 @@ public class RequestItem {
         this.JOBTYPE = JOBTYPE;
         this.TOTALPRICE = TOTALPRICE;
         this.LOCATION = LOCATION;
+        this.key = key;
+        this.date = date;
+
     }
 
     public String getADDRESS() {
