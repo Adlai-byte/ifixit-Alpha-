@@ -8,7 +8,7 @@ import java.util.Locale;
 public class TransactionItem {
     String userid;
     String name;
-    String timestamp;
+
     String total;
     String status;
     String transaction;
@@ -30,10 +30,9 @@ public class TransactionItem {
         this.transaction = transaction;
     }
 
-    public TransactionItem(String userid, String name, String timestamp, String total, String status, String service) {
+    public TransactionItem(String userid, String name, String total, String status, String service) {
         this.userid = userid;
         this.name = name;
-        this.timestamp = timestamp;
         this.total = total;
         this.status = status;
         this.service = service;
@@ -47,13 +46,7 @@ public class TransactionItem {
         this.name = name;
     }
 
-    public String getTimestamp() {
-        return timestamp;
-    }
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
 
     public String getTotal() {
         return total;
@@ -81,19 +74,7 @@ public class TransactionItem {
 
 
     String service;
-    public String getFormattedTimestamp() {
-        try {
-            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
-            Date date = inputFormat.parse(timestamp);
 
-            SimpleDateFormat outputFormat = new SimpleDateFormat("MM:dd:yyyy HH:mm:ss", Locale.getDefault());
-            return outputFormat.format(date);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
 
 
 

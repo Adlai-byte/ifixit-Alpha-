@@ -55,7 +55,7 @@ public class ServiceProviderLoginActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = mAuth.getCurrentUser();
-                if (user != null && user.isEmailVerified()) {
+                if (user != null ) {
                     Intent intent = new Intent(ServiceProviderLoginActivity.this, ServiceProviderMainMenuActivity.class);
                     startActivity(intent);
                     finish();

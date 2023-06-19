@@ -127,6 +127,7 @@ public class CustomerRegistrationActivity extends AppCompatActivity {
                             userInfo.put("email", email);
                             userInfo.put("address", address);
                             userInfo.put("phone", phone);
+                            userInfo.put("notificationcount",0);
                             current_user_db.updateChildren(userInfo);
 
                             showToast("User registered successfully");

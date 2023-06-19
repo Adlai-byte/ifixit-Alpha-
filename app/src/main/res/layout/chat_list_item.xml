@@ -4,7 +4,7 @@
     android:orientation="horizontal"
     android:background="@color/white"
     android:elevation="5dp"
-    android:layout_marginBottom="5dp"
+    android:layout_marginBottom="1dp"
     android:padding="10dp"
     android:id="@+id/listLayout"
     android:layout_height="wrap_content">
@@ -20,6 +20,7 @@
 
 
     <RelativeLayout
+        android:layout_marginStart="10sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -27,8 +28,9 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:textColor="#494949"
           android:layout_centerVertical="true"
+            android:textStyle="bold"
             android:layout_gravity="center"
             android:text="Vinz Lloyd Alferez" />
         <TextView

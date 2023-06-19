@@ -1,6 +1,7 @@
 package com.example.ifixit.SERVICE_PROVIDER_FILES.Messaging;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -65,6 +66,8 @@ public class ChatListActivity extends AppCompatActivity {
                     }
                     chatListAdapter.notifyDataSetChanged();
 
+                }else {
+                    Toast.makeText(ChatListActivity.this, "Chat list is empty", Toast.LENGTH_SHORT).show();
                 }
 
 

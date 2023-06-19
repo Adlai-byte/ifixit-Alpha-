@@ -35,7 +35,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionViewHold
 
         TransactionItem transactionItem = transactionItemList.get(position);
 
-        holder.timestamp.setText(transactionItem.getFormattedTimestamp());
+
         holder.service.setText(transactionItem.getService());
         holder.name.setText(transactionItem.getName());
         holder.price.setText(transactionItem.getTotal());

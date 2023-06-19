@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.ifixit.R;
+import com.example.ifixit.SERVICE_PROVIDER_FILES.ServiceProviderMainMenuActivity;
 import com.example.ifixit.databinding.ServiceProviderMainMenuBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -129,7 +130,7 @@ public class ChatActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChatActivity.this, ServiceProviderMainMenuBinding.class);
+                Intent intent = new Intent(ChatActivity.this, ServiceProviderMainMenuActivity.class);
                 startActivity(intent);
                 finish();
             }

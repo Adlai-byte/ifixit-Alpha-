@@ -127,7 +127,7 @@ public class ChatActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChatActivity.this, CustomerMainMenuActivity.class);
+                Intent intent = new Intent(ChatActivity.this, ChatListActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -143,9 +143,6 @@ public class ChatActivity extends AppCompatActivity {
         String message = messageEditText.getText().toString().trim();
         if (!message.isEmpty()) {
             String timestamp = String.valueOf(System.currentTimeMillis());
-
-
-
 
             currentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override

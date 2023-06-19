@@ -130,9 +130,7 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 } else if (!password.equals(confirmPassword)) {
                     Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
-                } else if (!isPasswordValid(password)) {
-                    Toast.makeText(getApplicationContext(), "Password should be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, and one digit", Toast.LENGTH_SHORT).show();
-                } else if (phone.length()!=11) {
+                }  else if (phone.length()!=11) {
                     Toast.makeText(ServiceProviderRegistrationActivity.this, "Phone number must be 11 digits exactly", Toast.LENGTH_SHORT).show();
                 } else {
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(ServiceProviderRegistrationActivity.this, new OnCompleteListener<AuthResult>() {
@@ -165,6 +163,7 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
                                 userInfo.put("rating", 0.0);
                                 userInfo.put("maxPrice", 0.0);
                                 userInfo.put("minPrice", 0.0);
+                                userInfo.put("service-schedules",true);
                                 userInfo.put("profileimageurl", defaultProfilePicUrl);
 
                                 current_user_db.updateChildren(userInfo);

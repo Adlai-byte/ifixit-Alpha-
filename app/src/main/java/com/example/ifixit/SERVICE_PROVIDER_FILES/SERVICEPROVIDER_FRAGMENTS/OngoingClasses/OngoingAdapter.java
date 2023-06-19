@@ -65,7 +65,7 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingHolder> {
             public void onClick(View view) {
 
 
-                HashMap <String,Object> notification = new HashMap<>();
+
                 String key = ongoingViewItem.getKey();
                 String customerUserId = ongoingViewItem.getUSERID();
                 String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -78,12 +78,11 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingHolder> {
                         .child(customerUserId)
                         .child("notification");
 
-                notification.put("status",paymentStatus);
-                notification.put("userid",currentUserId);
-                customerRef.push().setValue(notification);
 
 
-                //Transaction History Reference
+
+
+                //Transaction History Reference (Service Provider)
                 DatabaseReference serviceProviderTransactionHistory = FirebaseDatabase.getInstance().getReference()
                         .child("service-providers")
                         .child("verified")
@@ -97,9 +96,36 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingHolder> {
                 transactionHistory.put("total",ongoingViewItem.getTOTALPRICE());
                 transactionHistory.put("date",ongoingViewItem.getDate());
                 transactionHistory.put("status",paymentStatus);
+                transactionHistory.put("userid",currentUserId);
 
                 //Sending data to the transaction History
                 serviceProviderTransactionHistory.push().setValue(transactionHistory);
+                //Sending data to the customers notification
+                customerRef.push().setValue(transactionHistory);
+
+
+                //Deleting the chat room
+                DatabaseReference currentChatRoom = FirebaseDatabase.getInstance().getReference()
+                        .child("chat-rooms")
+                        .child(currentUserId+customerUserId);
+                currentChatRoom.removeValue();
+                //Deleting the chat room in the respected threads
+                DatabaseReference spThread = FirebaseDatabase.getInstance().getReference()
+                        .child("service-providers")
+                        .child("verified")
+                        .child(currentUserId)
+                        .child("chat-thread-list")
+                        .child(currentUserId+customerUserId);
+                spThread.removeValue();
+
+                DatabaseReference custThread = FirebaseDatabase.getInstance().getReference()
+                        .child("customers")
+                        .child(customerUserId)
+                        .child("chat-thread-list")
+                        .child(currentUserId+customerUserId);
+                custThread.removeValue();
+                //----------------------------------------------------------------------------------
+
 
 
                 //Removing the values

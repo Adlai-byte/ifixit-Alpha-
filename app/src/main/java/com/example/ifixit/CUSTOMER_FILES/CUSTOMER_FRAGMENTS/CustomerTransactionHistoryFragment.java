@@ -56,7 +56,7 @@ public class CustomerTransactionHistoryFragment extends Fragment {
                 .child("customers")
                 .child(currentUserId)
                 .child("transaction-history")
-                .orderByChild("timestamp");
+                .orderByChild("status");
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -64,14 +64,14 @@ public class CustomerTransactionHistoryFragment extends Fragment {
                 transactionItemList.clear();
                 if(snapshot.exists()){
                     for (DataSnapshot chilSnapShot : snapshot.getChildren()){
-                        String userId = chilSnapShot.getKey();
+
+                        String userId = chilSnapShot.child("userid").getValue(String.class);
                         String name = chilSnapShot.child("name").getValue(String.class);
                         String service = chilSnapShot.child("service").getValue(String.class);
-                        String timestamp = chilSnapShot.child("timestamp").getValue(String.class);
                         String total = chilSnapShot.child("total").getValue(String.class);
                         String status = chilSnapShot.child("status").getValue(String.class);
 
-                        TransactionItem item = new TransactionItem(userId,name,timestamp,total,status,service);
+                        TransactionItem item = new TransactionItem(userId,name,total,status,service);
                         transactionItemList.add(item);
                         transactionAdapter.notifyDataSetChanged();
                     }

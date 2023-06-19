@@ -49,7 +49,7 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
     //Calendar
     private CalendarView calendarView;
     private String selecteddate;
-
+    private Boolean dateAvaible;
     //Calendar View
     private CalendarView calendar;
 
@@ -100,6 +100,8 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                 .child("verified")
                 .child(serviceProviderUserId)
                 .child("service-schedules");
+
+
         //Database References
         mServiceProviderRefForHeader = FirebaseDatabase.getInstance().getReference()
                 .child("service-providers")
@@ -250,7 +252,10 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                 // Compare the selected date with the current date
                 if (selectedDate.before(currentDate)) {
                     Toast.makeText(CustomerCheckOutActivity.this, "Can't select a date before the current date", Toast.LENGTH_SHORT).show();
+                    dateAvaible = false;
                     return;
+                }else {
+                    dateAvaible = true;
                 }
 
 
@@ -261,14 +266,15 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                 serviceProviderServiceSchedules.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        StringBuilder statusBuilder = new StringBuilder();
+
                         Boolean isFound = false;
                         if (snapshot.exists()) {
                             for (DataSnapshot childSnapshot : snapshot.getChildren()) {
 
+                                String newSelectedDate = selecteddate;
                                 String serviceType = childSnapshot.child("service").getValue(String.class);
                                 String dateOfService = childSnapshot.child("dateofservice").getValue(String.class);
-                                String newSelectedDate = selecteddate;
+
 
                                 if(newSelectedDate.contains(dateOfService)){
                                     Toast.makeText(CustomerCheckOutActivity.this, "This date is not available", Toast.LENGTH_SHORT).show();
@@ -306,20 +312,19 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Boolean dateAvaible = true;
+
                 comment = "None for the moment";
 
 
                 for (String notAvaiableDates: ListOfUnvailableDates){
                     Calendar currentDate = Calendar.getInstance();
-                    if(notAvaiableDates.contains(selecteddate)||selectedDate.before(currentDate)){
+                    if(notAvaiableDates.contains(selecteddate)){
                         Toast.makeText(CustomerCheckOutActivity.this, "Please Select Another Date", Toast.LENGTH_SHORT).show();
                         dateAvaible = false;
                     }
                 }
 
                 if(dateAvaible){
-                    Toast.makeText(CustomerCheckOutActivity.this, "Sheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeehhhhhh", Toast.LENGTH_SHORT).show();
                     mCustomerRef.child(customerUserId).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {

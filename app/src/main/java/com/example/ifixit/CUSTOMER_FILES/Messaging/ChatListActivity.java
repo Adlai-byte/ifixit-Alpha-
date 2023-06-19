@@ -1,6 +1,9 @@
 package com.example.ifixit.CUSTOMER_FILES.Messaging;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -8,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ifixit.CUSTOMER_FILES.CustomerMainMenuActivity;
 import com.example.ifixit.CUSTOMER_FILES.Messaging.ChatListThreads.ChatListAdapter;
 import com.example.ifixit.CUSTOMER_FILES.Messaging.ChatListThreads.ChatListItem;
 import com.example.ifixit.R;
@@ -25,6 +29,7 @@ public class ChatListActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private List<ChatListItem> chatListItemList;
+    private ImageView backButton;
     private ChatListAdapter chatListAdapter;
 
     @Override
@@ -35,7 +40,7 @@ public class ChatListActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.chatListRecyclerView);
         chatListItemList = new ArrayList<>();
         chatListAdapter = new ChatListAdapter(chatListItemList,this);
-
+        backButton = (ImageView) findViewById(R.id.backArrow);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -53,7 +58,7 @@ public class ChatListActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 chatListItemList.clear();
                 if(snapshot.exists()){
-                    Toast.makeText(ChatListActivity.this, "snapshop", Toast.LENGTH_SHORT).show();
+
                     for (DataSnapshot childSnapshot :snapshot.getChildren()){
                         String chatKey = childSnapshot.getKey();
                         String name =childSnapshot.child("name").getValue(String.class);
@@ -77,6 +82,17 @@ public class ChatListActivity extends AppCompatActivity {
 
             }
         });
+
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChatListActivity.this, CustomerMainMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
 
 

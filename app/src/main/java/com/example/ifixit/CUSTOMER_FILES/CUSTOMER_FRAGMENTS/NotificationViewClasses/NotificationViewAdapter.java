@@ -107,31 +107,26 @@ public class NotificationViewAdapter extends RecyclerView.Adapter<NotificationVi
                 String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
-
-
-
                 notificationRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-
 
                             if(snapshot.exists()){
                                 String key = snapshot.getKey();
                                 String serviceProviderId = snapshot.child("userid").getValue(String.class);
                                 String name = snapshot.child("name").getValue(String.class);
                                 String service = snapshot.child("service").getValue(String.class);
-                                String timestamp = snapshot.child("timestamp").getValue(String.class);
+                                String date = snapshot.child("date").getValue(String.class);
                                 String total = snapshot.child("total").getValue(String.class);
                                 String status = snapshot.child("status").getValue(String.class);
 
 
-                                transactionItem.put("serviceProviderId",serviceProviderId);
+                                transactionItem.put("userid",serviceProviderId);
                                 transactionItem.put("status",status);
                                 transactionItem.put("name",name);
                                 transactionItem.put("service",service);
-                                transactionItem.put("timestamp",timestamp);
                                 transactionItem.put("total",total);
+                                transactionItem.put("date",date);
 
                                 //Transaction History reference
                                 DatabaseReference transactionHistoryRef = FirebaseDatabase.getInstance().getReference()
