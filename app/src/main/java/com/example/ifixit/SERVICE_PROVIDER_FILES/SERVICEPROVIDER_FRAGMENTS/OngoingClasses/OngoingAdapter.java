@@ -64,6 +64,8 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingHolder> {
             @Override
             public void onClick(View view) {
 
+
+                HashMap <String,Object> notification = new HashMap<>();
                 String key = ongoingViewItem.getKey();
                 String customerUserId = ongoingViewItem.getUSERID();
                 String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -74,9 +76,11 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingHolder> {
                 DatabaseReference customerRef = FirebaseDatabase.getInstance().getReference()
                         .child("customers")
                         .child(customerUserId)
-                        .child("notification")
-                        .child(currentUserId);
-                customerRef.setValue(paymentStatus);
+                        .child("notification");
+
+                notification.put("status",paymentStatus);
+                notification.put("userid",currentUserId);
+                customerRef.push().setValue(notification);
 
 
                 //Transaction History Reference

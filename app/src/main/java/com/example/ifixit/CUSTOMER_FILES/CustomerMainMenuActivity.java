@@ -91,7 +91,6 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
                 .child(userID);
 
 
-        //Customer Notification Reference
         DatabaseReference notificationRef = FirebaseDatabase.getInstance().getReference()
                 .child("customers")
                 .child(userID)
