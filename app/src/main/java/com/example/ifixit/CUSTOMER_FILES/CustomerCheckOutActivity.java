@@ -263,7 +263,7 @@ public class CustomerCheckOutActivity extends AppCompatActivity {
                 selecteddate = (month + 1) + "/" + dayOfMonth + "/" + year;
 
 
-                serviceProviderServiceSchedules.addValueEventListener(new ValueEventListener() {
+                serviceProviderServiceSchedules.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
