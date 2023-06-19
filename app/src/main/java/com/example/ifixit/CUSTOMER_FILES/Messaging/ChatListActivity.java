@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ifixit.CUSTOMER_FILES.CustomerMainMenuActivity;
-import com.example.ifixit.CUSTOMER_FILES.Messaging.ChatListThreads.ChatListAdapter;
-import com.example.ifixit.CUSTOMER_FILES.Messaging.ChatListThreads.ChatListItem;
+
 import com.example.ifixit.R;
+import com.example.ifixit.SERVICE_PROVIDER_FILES.Messaging.ChatListThreads.ChatListAdapter;
+import com.example.ifixit.SERVICE_PROVIDER_FILES.Messaging.ChatListThreads.ChatListItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

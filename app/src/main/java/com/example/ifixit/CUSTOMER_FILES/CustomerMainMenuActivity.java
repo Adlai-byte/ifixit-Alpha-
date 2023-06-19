@@ -26,6 +26,7 @@ import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerNotification
 import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerPendingRequestsFragment;
 import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerProfileFragment;
 import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerTransactionHistoryFragment;
+import com.example.ifixit.CUSTOMER_FILES.CUSTOMER_FRAGMENTS.CustomerTutorialFragment;
 import com.example.ifixit.CUSTOMER_FILES.Messaging.ChatListActivity;
 import com.example.ifixit.ORGANIZATIONAL_FILES.ORG_FRAGMENTS.OrgJobPostingFragment;
 import com.example.ifixit.R;
@@ -191,6 +192,10 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
             case R.id.CMnav_trasaction_history:
                 getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerTransactionHistoryFragment()).commit();
                 break;
+            case R.id.CMnav_tutorial:
+                getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container,new CustomerTutorialFragment()).commit();
+                break;
+
             case R.id.CMnav_share:
                 Toast.makeText(this, "Shared", Toast.LENGTH_SHORT).show();
                 break;

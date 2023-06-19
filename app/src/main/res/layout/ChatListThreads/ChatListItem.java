@@ -1,4 +1,4 @@
-package com.example.ifixit.CUSTOMER_FILES.Messaging.ChatListThreads;
+package layout.ChatListThreads;
 
 public class ChatListItem {
 

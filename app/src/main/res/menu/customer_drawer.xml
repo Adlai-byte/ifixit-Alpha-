@@ -33,6 +33,10 @@
         <item
             app:actionLayout="@layout/menu_item_notification"
             android:id="@+id/CMnav_notification" />
+        <item
+            app:actionLayout="@layout/menu_item_tutorial"
+            android:id="@+id/CMnav_tutorial" />
+
 
         <item
             app:actionLayout="@layout/menu_item_transaction_history"
