@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ifixit.R;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+//import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -38,7 +38,7 @@ public class CustomerLoginActivity extends AppCompatActivity {
     private TextView tvNoAccount;
 
     // Google
-    private GoogleSignInClient googleSignInClient;
+//    private GoogleSignInClient googleSignInClient;
     private static final int RC_SIGN_IN = 1234;
 
     @Override
@@ -111,11 +111,11 @@ public class CustomerLoginActivity extends AppCompatActivity {
 
 
     }
-
-    private void signInWithGoogle() {
-        Intent signInIntent = googleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
+//
+//    private void signInWithGoogle() {
+//        Intent signInIntent = googleSignInClient.getSignInIntent();
+//        startActivityForResult(signInIntent, RC_SIGN_IN);
+//    }
 
 
 
