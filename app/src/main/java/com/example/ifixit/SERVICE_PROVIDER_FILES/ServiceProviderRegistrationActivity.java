@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
- import android.widget.AdapterView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -99,10 +99,14 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null && user.isEmailVerified()) {
-                    Intent intent = new Intent(ServiceProviderRegistrationActivity.this, ServiceProviderMainMenuActivity.class);
-                    startActivity(intent);
-                    finish();
+                if (user != null) {
+                    if (user.isEmailVerified()) {
+                        Intent intent = new Intent(ServiceProviderRegistrationActivity.this, ServiceProviderMainMenuActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        showToast("Please verify your email to proceed.");
+                    }
                 }
             }
         };
@@ -125,53 +129,81 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
                         || TextUtils.isEmpty(address)
                         || TextUtils.isEmpty(password)
                         || TextUtils.isEmpty(confirmPassword)
-                        || TextUtils.isEmpty(phone))
-                {
-                    Toast.makeText(getApplicationContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                        || TextUtils.isEmpty(phone)) {
+                    showToast("Please fill in all fields");
                 } else if (!password.equals(confirmPassword)) {
-                    Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
-                }  else if (phone.length()!=11) {
-                    Toast.makeText(ServiceProviderRegistrationActivity.this, "Phone number must be 11 digits exactly", Toast.LENGTH_SHORT).show();
+                    showToast("Passwords do not match");
+                } else if (phone.length() != 11) {
+                    showToast("Phone number must be 11 digits exactly");
                 } else {
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(ServiceProviderRegistrationActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (!task.isSuccessful()) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                                if (firebaseUser != null) {
+                                    String userID = firebaseUser.getUid();
+                                    DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference()
+                                            .child("service-providers")
+                                            .child("verified")
+                                            .child(userID);
+                                    current_user_db.setValue(true);
+
+                                    Map<String, Object> userInfo = new HashMap<>();
+                                    userInfo.put("name", name);
+                                    userInfo.put("email", email);
+                                    userInfo.put("address", address);
+                                    userInfo.put("phone", phone);
+                                    userInfo.put("service", service);
+                                    userInfo.put("rating", 0.0);
+                                    userInfo.put("maxPrice", 0.0);
+                                    userInfo.put("minPrice", 0.0);
+                                    userInfo.put("service-schedules", true);
+                                    userInfo.put("profileimageurl", defaultProfilePicUrl);
+
+                                    current_user_db.updateChildren(userInfo);
+
+                                    firebaseUser.sendEmailVerification().addOnCompleteListener(ServiceProviderRegistrationActivity.this, new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                showToast("Verification email sent. Please check your email.");
+                                            } else {
+                                                showToast("Failed to send verification email.");
+                                            }
+                                        }
+                                    });
+
+                                    firebaseUser.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                if (firebaseUser.isEmailVerified()) {
+                                                    showToast("Registration successful");
+                                                    Intent intent = new Intent(ServiceProviderRegistrationActivity.this, ServiceProviderMainMenuActivity.class);
+                                                    startActivity(intent);
+                                                    finish();
+                                                } else {
+                                                    showToast("Please verify your email to proceed.");
+                                                }
+                                            } else {
+                                                showToast("Registration failed: " + task.getException().getMessage());
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    showToast("Registration failed");
+                                }
+                            } else {
                                 try {
                                     throw task.getException();
                                 } catch (FirebaseAuthInvalidUserException invalidEmail) {
-                                    Toast.makeText(ServiceProviderRegistrationActivity.this, "Invalid email", Toast.LENGTH_SHORT).show();
+                                    showToast("Invalid email");
                                 } catch (FirebaseAuthInvalidCredentialsException malformedEmail) {
-                                    Toast.makeText(ServiceProviderRegistrationActivity.this, "Malformed email", Toast.LENGTH_SHORT).show();
+                                    showToast("Malformed email");
                                 } catch (Exception e) {
-                                    Toast.makeText(ServiceProviderRegistrationActivity.this, "Sign-up Error", Toast.LENGTH_SHORT).show();
+                                    showToast("Sign-up Error");
                                 }
-                            } else {
-                                String userID = mAuth.getCurrentUser().getUid();
-                                DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference()
-                                        .child("service-providers")
-                                        .child("verified")
-                                        .child(userID);
-                                current_user_db.setValue(true);
-
-                                Map<String, Object> userInfo = new HashMap<>();
-                                userInfo.put("name", name);
-                                userInfo.put("email", email);
-                                userInfo.put("address", address);
-                                userInfo.put("phone", phone);
-                                userInfo.put("service", service);
-                                userInfo.put("rating", 0.0);
-                                userInfo.put("maxPrice", 0.0);
-                                userInfo.put("minPrice", 0.0);
-                                userInfo.put("service-schedules",true);
-                                userInfo.put("profileimageurl", defaultProfilePicUrl);
-
-                                current_user_db.updateChildren(userInfo);
-                                Intent intent = new Intent(ServiceProviderRegistrationActivity.this, ServiceProviderMainMenuActivity.class);
-                                startActivity(intent);
-                                finish();
-
-                                Toast.makeText(ServiceProviderRegistrationActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -223,5 +255,9 @@ public class ServiceProviderRegistrationActivity extends AppCompatActivity {
 
         // Password meets all the password standards
         return true;
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }
