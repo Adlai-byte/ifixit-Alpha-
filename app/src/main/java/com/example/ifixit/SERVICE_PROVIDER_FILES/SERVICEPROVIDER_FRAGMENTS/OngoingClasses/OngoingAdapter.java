@@ -49,6 +49,83 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingHolder> {
         holder.dateView.setText(ongoingViewItem.getDate());
         holder.jobTypeView.setText(ongoingViewItem.getJOBTYPE());
 
+
+        holder.ongoingCancelledButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                String key = ongoingViewItem.getKey();
+                String customerUserId = ongoingViewItem.getUSERID();
+                String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                DatabaseReference customerTransactionHistory = FirebaseDatabase.getInstance().getReference()
+                        .child("customers")
+                        .child(customerUserId)
+                        .child("transaction-history");
+
+                //Transaction History Reference (Service Provider)
+                DatabaseReference serviceProviderTransactionHistory = FirebaseDatabase.getInstance().getReference()
+                        .child("service-providers")
+                        .child("verified")
+                        .child(currentUserId)
+                        .child("transaction-history");
+
+                //Transaction Item HashMap
+                Map<String,Object> transactionHistory = new HashMap();
+                transactionHistory.put("service",ongoingViewItem.getJOBTYPE());
+                transactionHistory.put("name",ongoingViewItem.getNAME());
+                transactionHistory.put("total",ongoingViewItem.getTOTALPRICE());
+                transactionHistory.put("date",ongoingViewItem.getDate());
+                transactionHistory.put("status","Cancelled");
+                transactionHistory.put("userid",currentUserId);
+
+                //Sending data to the transaction History
+                serviceProviderTransactionHistory.push().setValue(transactionHistory);
+                customerTransactionHistory.push().setValue(transactionHistory);
+
+
+                //Deleting the chat room
+                DatabaseReference currentChatRoom = FirebaseDatabase.getInstance().getReference()
+                        .child("chat-rooms")
+                        .child(currentUserId+customerUserId);
+                currentChatRoom.removeValue();
+                //Deleting the chat room in the respected threads
+                DatabaseReference spThread = FirebaseDatabase.getInstance().getReference()
+                        .child("service-providers")
+                        .child("verified")
+                        .child(currentUserId)
+                        .child("chat-thread-list")
+                        .child(currentUserId+customerUserId);
+                spThread.removeValue();
+
+                DatabaseReference custThread = FirebaseDatabase.getInstance().getReference()
+                        .child("customers")
+                        .child(customerUserId)
+                        .child("chat-thread-list")
+                        .child(currentUserId+customerUserId);
+                custThread.removeValue();
+                //----------------------------------------------------------------------------------
+
+                //Removing the values
+                DatabaseReference ongoingRef = FirebaseDatabase.getInstance().getReference()
+                        .child("service-providers")
+                        .child("verified")
+                        .child(currentUserId)
+                        .child("joboffers")
+                        .child("ongoing")
+                        .child(key);
+                ongoingRef.removeValue();
+
+                int itemPosition  = holder.getAdapterPosition();
+                ongoingViewItems.remove(itemPosition);
+                notifyItemRemoved(itemPosition);
+                notifyItemRangeChanged(itemPosition,ongoingViewItems.size());
+
+
+
+            }
+        });
         holder.completeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,9 +154,6 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingHolder> {
                         .child("customers")
                         .child(customerUserId)
                         .child("notification");
-
-
-
 
 
                 //Transaction History Reference (Service Provider)
@@ -148,6 +222,8 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingHolder> {
 
             }
         });
+
+
         holder.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {

@@ -26,7 +26,10 @@
         <color name="colorBackground">#FFFFFF</color> <!-- White -->
         <color name="colorText">#333333</color> <!-- Black -->
 
-
+    <color name="quantum_lightblue">#FF0000</color>
+    <color name="quantum_vanillablue200">#00FF00</color>
+    <color name="quantum_googgreen">#0000FF</color>
+    <color name="quantum_googred">#FFFF00</color>
 
     <!-- res/values/colors.xml -->
 

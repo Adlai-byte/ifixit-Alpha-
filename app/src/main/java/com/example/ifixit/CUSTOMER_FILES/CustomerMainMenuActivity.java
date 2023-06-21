@@ -43,6 +43,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class CustomerMainMenuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -60,7 +61,7 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
     private Uri resultUri;
     private boolean backPressedOnce;
 
-    long notificationChildCount;
+    int notificationChildCount;
 
 
     private MenuItem notificationItem;
@@ -87,15 +88,17 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
         mAuth = FirebaseAuth.getInstance();
         userID = mAuth.getCurrentUser().getUid();
 
+
+        //Customer References
         mCustomerDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("customers")
                 .child(userID);
 
-
+        //Notification
         DatabaseReference notificationRef = FirebaseDatabase.getInstance().getReference()
                 .child("customers")
                 .child(userID)
-                .child("notifications");
+                .child("notification");
 
 
 
@@ -120,14 +123,20 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
 
         messagingBadge.setVisibility(View.GONE);
 
+
+        Map<String,Object> notificationCount= new HashMap<>();
+
+
+        //Notification Badge (Get the value of the notification (Children Count) and store it in the notificationCount
         notificationRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                notificationChildCount =snapshot.getChildrenCount() ;
+                notificationChildCount = (int) snapshot.getChildrenCount();
+
                 if(notificationChildCount>0){
-                    notificationBadge.setText(String.valueOf(notificationChildCount));
-                }else {
-                    notificationBadge.setVisibility(View.GONE);
+                    notificationCount.put("notificationcount",notificationChildCount);
+                    //Setting the value of notification count
+                        mCustomerDatabase.updateChildren(notificationCount);
                 }
 
             }
@@ -135,6 +144,30 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+
+            }
+        });
+
+
+        //Displays the notification
+        mCustomerDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    int count = snapshot.child("notificationcount").getValue(Integer.class);
+                    if(count>0){
+                        notificationBadge.setText(String.valueOf(count));
+                        notificationBadge.setVisibility(View.VISIBLE);
+
+                    }else {
+                        notificationBadge.setVisibility(View.GONE);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
@@ -187,7 +220,12 @@ public class CustomerMainMenuActivity extends AppCompatActivity implements Navig
             case R.id.CMnav_notification:
                 getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerNotificationFragment()).commit();
 
+                //If the notification is clicked the value of the count becomes 0
+                HashMap <String,Object> count  =new HashMap<>();
+                count.put("notificationcount",0);
+                mCustomerDatabase.updateChildren(count);
                 notificationBadge.setVisibility(View.GONE);
+
                 break;
             case R.id.CMnav_trasaction_history:
                 getSupportFragmentManager().beginTransaction().replace(R.id.CMfragment_container, new CustomerTransactionHistoryFragment()).commit();

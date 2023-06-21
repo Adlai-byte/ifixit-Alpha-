@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.codebyashish.autoimageslider.AutoImageSlider;
 import com.codebyashish.autoimageslider.Enums.ImageActionTypes;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 public class CustomerTutorialFragment extends Fragment implements ItemsListener {
 
     private ItemsListener listener;
+    ViewPager2 viewPager2;
 
     @Nullable
     @Override
@@ -34,21 +36,76 @@ public class CustomerTutorialFragment extends Fragment implements ItemsListener 
         AutoImageSlider autoImageSlider = rootView.findViewById(R.id.autoImageSlider);
 
         // add some imagees or titles (text) inside the imagesArrayList
+
         try {
-            autoImageList.add(new ImageSlidesModel("https://picsum.photos/id/237/200/300", "First image"));
+            autoImageList.add(new ImageSlidesModel(R.drawable.a1, "Step 1 "));
         } catch (ExceptionsClass e) {
             throw new RuntimeException(e);
         }
         try {
-            autoImageList.add(new ImageSlidesModel("https://picsum.photos/id/238/200/300", ""));
+            autoImageList.add(new ImageSlidesModel(R.drawable.a2, "Step 2"));
+        } catch (ExceptionsClass e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            autoImageList.add(new ImageSlidesModel(R.drawable.a3, "Step 3 "));
+        } catch (ExceptionsClass e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            autoImageList.add(new ImageSlidesModel(R.drawable.a4, "Step 4 "));
+        } catch (ExceptionsClass e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            autoImageList.add(new ImageSlidesModel(R.drawable.a5, "Step 5 "));
+        } catch (ExceptionsClass e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            autoImageList.add(new ImageSlidesModel(R.drawable.a6, "Step 6 "));
+        } catch (ExceptionsClass e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            autoImageList.add(new ImageSlidesModel(R.drawable.a7, "Step 7 "));
         } catch (ExceptionsClass e) {
             throw new RuntimeException(e);
         }
         try {
-            autoImageList.add(new ImageSlidesModel("https://picsum.photos/id/239/200/300", "Third image"));
+            autoImageList.add(new ImageSlidesModel(R.drawable.a8, "Step a8 "));
         } catch (ExceptionsClass e) {
             throw new RuntimeException(e);
         }
+        try {
+            autoImageList.add(new ImageSlidesModel(R.drawable.a9, "Step 9 "));
+        } catch (ExceptionsClass e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            autoImageList.add(new ImageSlidesModel(R.drawable.a10, "Step 10 "));
+        } catch (ExceptionsClass e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            autoImageList.add(new ImageSlidesModel(R.drawable.a11, "Step 11 "));
+        } catch (ExceptionsClass e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            autoImageList.add(new ImageSlidesModel(R.drawable.a12, "Step 12 "));
+        } catch (ExceptionsClass e) {
+            throw new RuntimeException(e);
+        }
+
+
+
+
 
         // set the added images inside the AutoImageSlider
         autoImageSlider.setImageList(autoImageList, ImageScaleType.FIT);

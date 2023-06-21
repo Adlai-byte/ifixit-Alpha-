@@ -24,6 +24,7 @@ public class OngoingHolder extends RecyclerView.ViewHolder {
     public LinearLayout validation;
     public Button completeStatusButton;
     public RadioGroup radioGroup;
+    public Button ongoingCancelledButton;
 
     public OngoingHolder(@NonNull View itemView) {
         super(itemView);
@@ -36,7 +37,7 @@ public class OngoingHolder extends RecyclerView.ViewHolder {
         jobTypeView = itemView.findViewById(R.id.ongoingJobType);
         totalPriceView = itemView.findViewById(R.id.ongoingTotalPrice);
         dateView = itemView.findViewById(R.id.ongoingDate);
-
+        ongoingCancelledButton = itemView.findViewById(R.id.ongoingCancelledButton);
         validation = itemView.findViewById(R.id.completeStatusLayout);
         completeStatusButton = itemView.findViewById(R.id.completeStatusButton);
 
